@@ -1,0 +1,1 @@
+# msinvar - SageMath package for computing various moduli spaces invariants.

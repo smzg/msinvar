@@ -1,0 +1,94 @@
+r"""
+Some base rings where our invariants live
+
+EXAMPLES::
+    sage: from msinvar.rings import RF
+    sage: R=RF('u,v')
+    sage: R.inject_variables(verbose=False)
+    sage: (u-v).adams(2)/(u+v)
+    u - v
+"""
+
+# *****************************************************************************
+#  Copyright (C) 2021 Sergey Mozgovoy <mozhov@gmail.com>
+#
+#  Distributed under the terms of the GNU General Public License (GPL)
+#                  http://www.gnu.org/licenses/
+# ******************************************************************************
+
+from sage.symbolic.ring import SymbolicRing, SR
+from sage.rings.fraction_field import FractionField_generic
+from sage.rings.polynomial.multi_polynomial_libsingular import MPolynomialRing_libsingular
+from sage.rings.rational_field import QQ
+from msinvar.lambda_rings import LambdaRings
+
+
+class SR1(SymbolicRing):
+    def __init__(self, vars):
+        super().__init__()
+        self.var(vars)
+        LambdaRings.add_ring(self)
+        # Parent.__init__(self, category=LambdaRings()) # wee add category explicitly now
+        # self.inject_variables() #does not work globally; need to invoke it later
+
+    def ngens(self):
+        return len(self.symbols)
+
+    def gen(self, i=0):  # needed for gens, inject_variables to work
+        return list(self.symbols.values())[i]
+
+    def variable_names(self):  # needed for inject_variables to work
+        return tuple(self.symbols.keys())
+
+    def _repr_(self):
+        return 'Symbolic ring with lambda-ring structure'
+
+    def inject(self):
+        self.inject_variables(verbose=False)
+
+
+class RationalFunctionField(FractionField_generic):
+    """
+    Field of rational functions in several variables, meaning fractions P/Q, where P, Q
+    are polynomials in several variables.
+
+    Examples::
+
+        sage: from msinvar.rings import RF
+        sage: R=RF(); R
+        Fraction Field of Multivariate Polynomial Ring in y over Rational Field
+        sage: y=R.gen()
+        sage: f=(1-y)**3/(1+y)**2; f
+        (-y^3 + 3*y^2 - 3*y + 1)/(y^2 + 2*y + 1)
+        sage: factor(f)
+        (-1) * (y + 1)^-2 * (y - 1)^3
+        sage: f.adams(2)
+        (-y^6 + 3*y^4 - 3*y^2 + 1)/(y^4 + 2*y^2 + 1)
+
+        sage: R=RF('x,y'); R
+        Fraction Field of Multivariate Polynomial Ring in x, y over Rational Field
+        sage: R.inject_variables(verbose=False)
+        sage: f=(1-y**2)**5/(1-y)**5*(x-y)
+        sage: f.factor()
+        (-1) * (-x + y) * (y + 1)^5
+    """
+
+    def __init__(self, vars='y', base=QQ):
+        vars = vars.split(',')
+        R = MPolynomialRing_libsingular(base, n=len(vars), names=vars)
+        # cat=Category.join([QuotientFields(),LambdaRings()])
+        super().__init__(R)  # , category=cat)
+        LambdaRings.add_ring(self)
+
+    def symbolic(self, f):
+        """
+        Symbolic expression of a given rational function f.
+        """
+        d = {v: SR.var(n) for n, v in zip(self.variable_names(), self.gens())}
+        return f.subs(d)
+
+    def inject(self):
+        self.inject_variables(verbose=False)
+
+
+RF = RationalFunctionField
