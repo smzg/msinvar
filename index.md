@@ -1,1 +1,1 @@
-## msinvar - SageMath package for computing various moduli space invariants
+SageMath package for computing various moduli space invariants.
