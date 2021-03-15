@@ -10,21 +10,21 @@ sage: invar(C,l=2,r=2).factor()
 (y - 1)^4 * y^10 * (y^2 + 1) * (y^4 - 4*y + 2)
 """
 
-#*****************************************************************************
+# *****************************************************************************
 #  Copyright (C) 2021 Sergey Mozgovoy <mozhov@gmail.com>
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
 #                  http://www.gnu.org/licenses/
-#******************************************************************************
+# *****************************************************************************
 
 from sage.combinat.partition import Partitions
-from msinvar.multi_polynomial_trunc import MPTRing
+from msinvar.tm_polynomials import TMPoly
 from msinvar.rings import RationalFunctionField
 
 
 class CurveAlgebra(RationalFunctionField):
     """
-    The algebra where zeta function of a curve leaves.
+    The algebra where zeta function of a curve lives.
 
     For simplicity we define the algebra to be Q(y,t) or Q(u,v,t).
     In the first case the zeta function is
@@ -78,7 +78,7 @@ def twisted_higgs_bundles_invariant(C, l, r):
     """
     u, v, t, g = C.u, C.v, C.t, C.g
     p = l-(2*g-2)
-    R = MPTRing(C, 1, 'T', prec=r)
+    R = TMPoly(C, 1, 'T', prec=r)
     T = R.gen()
     F = 0
     for i in range(r+1):
@@ -87,5 +87,5 @@ def twisted_higgs_bundles_invariant(C, l, r):
     H = F.Log().coeff([r])*(1-t)*(1-u*v*t)
     M = H(t=1)*(-1)**(p*r)*(u*v)**((g-1)*r**2+p*r*(r+1)/2)
     if p == 0:
-        return M*u*v #the dimension of the moduli space increases by 1 for p=0
+        return M*u*v  # the dimension of the moduli space increases by 1 for p=0
     return M

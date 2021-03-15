@@ -14,12 +14,14 @@ EXAMPLES::
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
 #                  http://www.gnu.org/licenses/
-# ******************************************************************************
+# *****************************************************************************
 
 from sage.symbolic.ring import SymbolicRing, SR
 from sage.rings.fraction_field import FractionField_generic
+from sage.rings.fraction_field_element import FractionFieldElement
 from sage.rings.polynomial.multi_polynomial_libsingular import MPolynomialRing_libsingular
 from sage.rings.rational_field import QQ
+from sage.categories.quotient_fields import QuotientFields
 from msinvar.lambda_rings import LambdaRings
 
 
@@ -43,16 +45,13 @@ class SR1(SymbolicRing):
     def _repr_(self):
         return 'Symbolic ring with lambda-ring structure'
 
-    def inject(self):
-        self.inject_variables(verbose=False)
-
 
 class RationalFunctionField(FractionField_generic):
     """
     Field of rational functions in several variables, meaning fractions P/Q, where P, Q
     are polynomials in several variables.
 
-    Examples::
+    EXAMPLES::
 
         sage: from msinvar.rings import RF
         sage: R=RF(); R
@@ -77,7 +76,7 @@ class RationalFunctionField(FractionField_generic):
         vars = vars.split(',')
         R = MPolynomialRing_libsingular(base, n=len(vars), names=vars)
         # cat=Category.join([QuotientFields(),LambdaRings()])
-        super().__init__(R)  # , category=cat)
+        super().__init__(R, element_class=RationalFunction)  # , category=cat)
         LambdaRings.add_ring(self)
 
     def symbolic(self, f):
@@ -87,8 +86,27 @@ class RationalFunctionField(FractionField_generic):
         d = {v: SR.var(n) for n, v in zip(self.variable_names(), self.gens())}
         return f.subs(d)
 
-    def inject(self):
-        self.inject_variables(verbose=False)
+    def _repr_(self):
+        vars = ', '.join(self.variable_names())
+        return 'Field of Rational Functions in '+vars
 
 
 RF = RationalFunctionField
+
+
+class RationalFunction(FractionFieldElement):
+    def root_vars(self, k=2):
+        return root_vars(self, k)
+
+
+def root_vars(f, k=2):
+    """
+    Substitute every variable x in a fraction f by x^(1/k).
+    """
+    R = f.parent()
+    if R in QuotientFields:
+        return R(root_vars(f.numerator(), k)/root_vars(f.denominator(), k))
+
+    def root(e): return tuple(i//k for i in e)
+    dct = {root(e): c for e, c in f.dict().items()}
+    return R(dct)

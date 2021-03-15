@@ -2,8 +2,8 @@ r"""
 Truncated Multivariate polynomials
 
 EXAMPLES::
-    sage: from msinvar.multi_polynomial_trunc import MPTRing
-    sage: R=MPTRing(QQ,2,'x',prec=(2,2))
+    sage: from msinvar.tm_polynomials import TMPoly
+    sage: R=TMPoly(QQ,2,'x',prec=(2,2))
     sage: R.inject_variables(verbose=False)
     sage: (x0+x1).Exp()
     1 + x0 + x1 + x0^2 + x0*x1 + x1^2 + x0^2*x1 + x0*x1^2 + x0^2*x1^2
@@ -14,33 +14,16 @@ EXAMPLES::
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
 #                  http://www.gnu.org/licenses/
-# ******************************************************************************
+# *****************************************************************************
 
 from sage.rings.polynomial.multi_polynomial_element import MPolynomial_polydict
 from sage.rings.polynomial.multi_polynomial_ring import MPolynomialRing_polydict
-from sage.rings.infinity import infinity
 from sage.arith.misc import moebius
-from sage.rings.integer_ring import ZZ
-from msinvar.lambda_rings import LambdaRings
+from msinvar.lambda_rings import LambdaRings, adams
+from msinvar.utils import isiterable
 
 
-def adams(f, n):
-    try:
-        return f.adams(n)
-    except:
-        pass
-    try:
-        return f.parent().adams(f, n)
-    except:
-        pass
-    try:
-        gens = tuple(x**n for x in f.parent().gens())
-        return f(gens)
-    except:
-        return f
-
-
-class MPolynomial_trunc(MPolynomial_polydict):
+class TMPolynomial(MPolynomial_polydict):
     """
     The element class for  truncated multivariate polynomials.
     The parent class is **MPolynomialRing_trunc**.
@@ -80,8 +63,10 @@ class MPolynomial_trunc(MPolynomial_polydict):
 
     def exp(self):
         N = self.prec_num()
-        if N == infinity:
-            raise TypeError("Error: series is untruncated")
+        if N == None:
+            raise ValueError("Series is untruncated")
+        if self.constant_coefficient() != 0:
+            raise ValueError("The constant coefficient should be 0")
         s = self.parent().one()
         f, x = 1, self
         for i in range(1, N+1):
@@ -93,8 +78,10 @@ class MPolynomial_trunc(MPolynomial_polydict):
 
     def log(self):
         N = self.prec_num()
-        if N == infinity:
-            raise TypeError("Error: series is untruncated")
+        if N == None:
+            raise ValueError("Series is untruncated")
+        if self.constant_coefficient() != 1:
+            raise ValueError("The constant coefficient should be 1")
         s = self.parent().zero()
         f, x = 1, 1-self  # need _new_constasnt_poly to have 1-self of type MPT!
         for i in range(1, N+1):
@@ -108,14 +95,11 @@ class MPolynomial_trunc(MPolynomial_polydict):
         """
         For simplicity we invert only poly with constant coefficient 1
         """
-        if self.is_one():
-            return self
         N = self.prec_num()
-        if N == infinity:
-            raise TypeError("Error: series is untruncated")
-        u = self.constant_coefficient()
-        if not u.is_one():
-            raise TypeError("The constant coefficient should be 1")
+        if N == None:
+            raise ValueError("Series is untruncated")
+        if self.constant_coefficient() != 1:
+            raise ValueError("The constant coefficient should be 1")
         s = self.parent().one()
         f, x = 1, 1-self
         for i in range(1, N+1):
@@ -130,8 +114,10 @@ class MPolynomial_trunc(MPolynomial_polydict):
 
     def Psi(self):
         N = self.prec_num()
-        if N == infinity:
-            raise TypeError("Error: series is untruncated")
+        if N == None:
+            raise ValueError("Error: series is untruncated")
+        if self.constant_coefficient() != 0:
+            raise ValueError("The constant coefficient should be 0")
         s = self.parent().zero()
         for i in range(1, N+2):
             f = self.adams(i)
@@ -142,8 +128,10 @@ class MPolynomial_trunc(MPolynomial_polydict):
 
     def IPsi(self):
         N = self.prec_num()
-        if N == infinity:
-            raise TypeError("Error: series is untruncated")
+        if N == None:
+            raise ValueError("Error: series is untruncated")
+        if self.constant_coefficient() != 0:
+            raise ValueError("The constant coefficient should be 0")
         s = self.parent().zero()
         for i in range(1, N+2):
             f = self.adams(i)
@@ -158,13 +146,13 @@ class MPolynomial_trunc(MPolynomial_polydict):
     def Log(self):
         return self.log().IPsi()
 
-    def twist(self, f):
+    def term_twist(self, f):
         """Multiply every term c*x^v by f(v)"""
         d = {e: c*f(e) for e, c in self.dict().items()}
         return self._new_element(d)
 
     def _mul_(self, right):
-        f = self.parent().twist_prod
+        f = self.parent().prod_twist
         if f is None:
             return super()._mul_(right)
         if len(self.dict()) == 0:   # product is zero anyways
@@ -185,14 +173,51 @@ class MPolynomial_trunc(MPolynomial_polydict):
         return self._new_element(d)
 
     def coeff(self, e):
-        # returns element from the base_ring; note that coefficient returns element from the ring
+        """
+        Return the coefficient of degree e monomial as an element of
+        the base_ring.
+
+        Note that **coefficient** returns an element of the polynomial ring.
+        """
         try:
             return self.element()[list(e)]
         except:
             return 0
 
+    def subs_base(self, **kw):
+        dct = {}
+        for e, c in self.dict().items():
+            try:
+                c = c.subs(**kw)
+            except:
+                pass
+            dct[e] = c
+        return self._new_element(dct)
 
-class MPolynomialRing_trunc(MPolynomialRing_polydict):
+    def subs(self, **kw):
+        f = super().subs(**kw)
+        if f != self:
+            return f
+        return self.subs_base(**kw)
+
+    def invar(self):
+        from msinvar.invariants import Invariant
+        return Invariant(self)
+
+    def pLog(self):
+        """
+        Plethystic logarithm along every ray.
+        """
+        return self.invar().pLog().poly()
+
+    def pExp(self):
+        """
+        Plethystic logarithm along every ray.
+        """
+        return self.invar().pExp().poly()
+
+
+class TMPolynomialRing(MPolynomialRing_polydict):
     """
     Truncated Multivariable polynomial ring.
 
@@ -203,7 +228,7 @@ class MPolynomialRing_trunc(MPolynomialRing_polydict):
     (without connection to the category of lambda rings in sage).
 
     This is the parent class for truncated multivariate polynomials.
-    It has an alias **MPTRing**.
+    It has an alias **TMPoly**.
     The element class is **MPolynomial_trunc**.
 
     PARAMETERS:
@@ -213,34 +238,42 @@ class MPolynomialRing_trunc(MPolynomialRing_polydict):
 
     EXAMPLES::
 
-        sage: from msinvar.multi_polynomial_trunc import MPTRing
-        sage: R=MPTRing(QQ,2,prec=(2,2)); R
+        sage: from msinvar.tm_polynomials import TMPoly
+        sage: R=TMPoly(QQ,2,prec=(2,2)); R
         Multivariate Polynomial Ring in x0, x1 over Rational Field truncated at degree (2, 2)
         sage: x=R.gens(); (x[0]+x[1])**3
         3*x0^2*x1 + 3*x0*x1^2
 
         sage: QR=Frac(PolynomialRing(QQ,'y,t'))
-        sage: S=MPTRing(QR,2,'x',prec=(2,2))
+        sage: S=TMPoly(QR,2,'x',prec=(2,2))
         sage: y,t=QR.gens(); x=S.gens()
         sage: (y*x[0]+x[1]).adams(2)
         y^2*x0^2 + x1^2
         sage: (y*x[0]).Exp()
         1 + y*x0 + y^2*x0^2
 
-        sage: R=MPTRing(QQ,1,prec=2, twist_prod=lambda a,b:2)
+        sage: R=TMPoly(QQ,1,prec=2, twist_prod=lambda a,b:2)
         sage: x=R.gen(); x*x
         2*x^2
     """
 
-    Element = MPolynomial_trunc
+    Element = TMPolynomial
 
     def __init__(self, base_ring, n, names='x', order='negdegrevlex',
-                 prec=infinity, twist_prod=None):
-        """prec is a precision vector for the truncation.
-        twist_prod is a function that maps exponents (u,v) to the base_ring"""
+                 prec=None, prod_twist=None):
+        """
+        PARAMETERS:
+
+        1. base_ring -- the base of our polynomial algebra.
+        2. n -- the number of vairables.
+        3. names -- names of variables; can be just 'x' or 'x,y,..'.
+        4. prec -- precision vector for the truncation.
+        5. order -- the order of variables.
+        6. twist_prod -- a function that maps exponents (u,v) to the base_ring
+        """
         # Parent.__init__(self, category=LambdaRings())#not needed anymore
         self._prec = prec
-        self.twist_prod = twist_prod
+        self.prod_twist = prod_twist
         super().__init__(base_ring, n, names, order)
         LambdaRings.add_ring(self)
 
@@ -249,8 +282,10 @@ class MPolynomialRing_trunc(MPolynomialRing_polydict):
              if self.le_prec(e.emul(n))}
         return self.Element(self, d)
 
-    def __call__(self, x, check=True):  # needed so that the result is MPT
-        x = super().__call__(x, check)
+    def __call__(self, x):  # needed so that the result is MPT
+        if isinstance(x, list) or isinstance(x, tuple):
+            return self.Element(self, {tuple(x): 1})
+        x = super().__call__(x)
         return self.Element(self, x.dict())
 
     def _poly_class(self):  # needed so that gens() are of type MPT
@@ -263,26 +298,39 @@ class MPolynomialRing_trunc(MPolynomialRing_polydict):
     def zero_tuple(self):
         return self._zero_tuple
 
+    def prec(self, d=None):
+        if d is not None:
+            self._prec = d
+            return None
+        return self._prec
+
     def prec_num(self):
-        if self._prec == infinity:
-            return infinity
-        if self._prec in ZZ:
-            return self._prec
-        return sum(self._prec)
+        d = self._prec
+        if d == None:
+            return None
+        if isiterable(d):
+            return sum(d)
+        return d
 
     def le_prec(self, v):
         d = self._prec
-        if d == infinity:
+        if d == None:
             return True
-        if d in ZZ:
-            return sum(v) <= d
-        return all(i <= j for i, j in zip(v, d))
-
-    def set_twist_product(self, twist_prod):
-        self.twist_prod = twist_prod
-
-    def inject(self):
-        self.inject_variables(verbose=False)
+        if isiterable(d):
+            return all(i <= j for i, j in zip(v, d))
+        return sum(v) <= d
 
 
-MPTRing = MPolynomialRing_trunc
+TMPoly = TMPolynomialRing
+
+def Exp(f):
+    return f.Exp()
+
+def Log(f):
+    return f.Log()
+
+def Psi(f):
+    return f.Psi()
+
+def IPsi(f):
+    return f.IPsi()
