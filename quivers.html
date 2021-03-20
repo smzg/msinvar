@@ -178,10 +178,11 @@
   <div class="section" id="module-msinvar.quivers">
 <span id="quivers"></span><h1>Quivers<a class="headerlink" href="#module-msinvar.quivers" title="Permalink to this headline">¶</a></h1>
 <p>Quivers and quivers with potentials</p>
-<p>Define a Quiver class (with or without potental) as well as scpecial
-subclasses ChainQuiver, CyclicQuiver and constructors KroneckerQuiver, 
-JordanQuiver and translation_PQ (for translation potential quivers of quivers
-with automorphisms, see <a class="reference external" href="https://arxiv.org/abs/1911.01788">arXiv:1911.01788</a>).</p>
+<p>Define a Quiver class (with or without potental) as well as special
+subclasses ChainQuiver, CyclicQuiver, 
+TranslationPQ (for translation potential quivers of quivers
+with automorphisms, see <a class="reference external" href="https://arxiv.org/abs/1911.01788">arXiv:1911.01788</a>),
+and constructors KroneckerQuiver, JordanQuiver.</p>
 <p>EXAMPLES:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar.quivers</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">KroneckerQuiver</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="n">Q</span>
@@ -381,16 +382,35 @@ list self.arrows().</p>
 
 <dl class="py method">
 <dt id="msinvar.quivers.Quiver.translation_PQ">
-<code class="sig-name descname"><span class="pre">translation_PQ</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#Quiver.translation_PQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.Quiver.translation_PQ" title="Permalink to this definition">¶</a></dt>
-<dd><p>See <a class="reference internal" href="#msinvar.quivers.translation_PQ" title="msinvar.quivers.translation_PQ"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translation_PQ()</span></code></a></p>
+<code class="sig-name descname"><span class="pre">translation_PQ</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind_tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#Quiver.translation_PQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.Quiver.translation_PQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#msinvar.quivers.Quiver.translation_PQ" title="msinvar.quivers.Quiver.translation_PQ"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translation_PQ()</span></code></a></p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.quivers.Quiver.Ginzburg_PQ">
 <code class="sig-name descname"><span class="pre">Ginzburg_PQ</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#Quiver.Ginzburg_PQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.Quiver.Ginzburg_PQ" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the Ginzburg quiver (with potential) for the original quiver.</p>
-<p>This construction corresponds to <a class="reference internal" href="#msinvar.quivers.translation_PQ" title="msinvar.quivers.translation_PQ"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translation_PQ()</span></code></a> for the
+<p>This construction corresponds to <a class="reference internal" href="#msinvar.quivers.Quiver.translation_PQ" title="msinvar.quivers.Quiver.translation_PQ"><code class="xref py py-meth docutils literal notranslate"><span class="pre">translation_PQ()</span></code></a> for the
 trivial automorphism.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.quivers.Quiver.ind_list">
+<code class="sig-name descname"><span class="pre">ind_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#Quiver.ind_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.Quiver.ind_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of indecomposable representations.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.quivers.Quiver.ind_dim">
+<code class="sig-name descname"><span class="pre">ind_dim</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#Quiver.ind_dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.Quiver.ind_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimension vector of an indecomposable representation <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.quivers.Quiver.ind_hom">
+<code class="sig-name descname"><span class="pre">ind_hom</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#Quiver.ind_hom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.Quiver.ind_hom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimension of the Hom-space between indecomposable
+representations <code class="docutils literal notranslate"><span class="pre">a</span></code> and  <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -421,35 +441,34 @@ trivial automorphism.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">ChainQuiver</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="n">Q</span><span class="o">.</span><span class="n">arrows</span><span class="p">()</span>
 <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">)]</span>
-<span class="n">sage</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">indecs</span><span class="p">())</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_list</span><span class="p">()</span>
 <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
-<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_dim</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_dim</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
-<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">.</span><span class="n">hom</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_hom</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
 <span class="mi">1</span>
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="msinvar.quivers.ChainQuiver.dim">
-<code class="sig-name descname"><span class="pre">dim</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#ChainQuiver.dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.ChainQuiver.dim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the dimension vector of an indecomposable representation
-parametrized by a pair a=(i,j) with <span class="math notranslate nohighlight">\(i&lt;=j\)</span>.</p>
+<dt id="msinvar.quivers.ChainQuiver.ind_list">
+<code class="sig-name descname"><span class="pre">ind_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#ChainQuiver.ind_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.ChainQuiver.ind_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the list of all indecomposable representations, paramertized by
+pairs (i,j) with i&lt;=j.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.quivers.ChainQuiver.hom">
-<code class="sig-name descname"><span class="pre">hom</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#ChainQuiver.hom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.ChainQuiver.hom" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the dimension of the Hom-space between indecomposable
-representations parametrized by pairs a, b.</p>
+<dt id="msinvar.quivers.ChainQuiver.ind_dim">
+<code class="sig-name descname"><span class="pre">ind_dim</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#ChainQuiver.ind_dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.ChainQuiver.ind_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimension vector of an indecomposable representation <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.quivers.ChainQuiver.indecs">
-<code class="sig-name descname"><span class="pre">indecs</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#ChainQuiver.indecs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.ChainQuiver.indecs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return all indecomposable representations (that is, pairs
-(i,j) representing them).</p>
+<dt id="msinvar.quivers.ChainQuiver.ind_hom">
+<code class="sig-name descname"><span class="pre">ind_hom</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#ChainQuiver.ind_hom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.ChainQuiver.ind_hom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimension of the Hom-space between indecomposable
+representations <code class="docutils literal notranslate"><span class="pre">a</span></code> and  <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
 </dd></dl>
 
 </dd></dl>
@@ -471,46 +490,48 @@ representations parametrized by pairs a, b.</p>
 </pre></div>
 </div>
 <dl class="py method">
-<dt id="msinvar.quivers.CyclicQuiver.dim">
-<code class="sig-name descname"><span class="pre">dim</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.dim" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the dimension vector of an indecomposable representation
-parametrized by a triple a=(i,j,n).</p>
+<dt id="msinvar.quivers.CyclicQuiver.ind_list">
+<code class="sig-name descname"><span class="pre">ind_list</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.ind_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.ind_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>The list of nilpotent indecomposables up to dimension vector d, where
+indecomposables are parametrized by triples (i,j,n) with 
+<span class="math notranslate nohighlight">\(i, j\in Z_r\)</span> and <span class="math notranslate nohighlight">\(n\ge 0\)</span>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.quivers.CyclicQuiver.hom">
-<code class="sig-name descname"><span class="pre">hom</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.hom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.hom" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the dimension of the Hom-space between indecomposable
-representations parametrized by triples a, b.</p>
+<dt id="msinvar.quivers.CyclicQuiver.ind_dim">
+<code class="sig-name descname"><span class="pre">ind_dim</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.ind_dim"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.ind_dim" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimension vector of an indecomposable representation <code class="docutils literal notranslate"><span class="pre">a</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.quivers.CyclicQuiver.indecs">
-<code class="sig-name descname"><span class="pre">indecs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.indecs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.indecs" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return nilpotent indecomposables up to dimension vector d.</p>
+<dt id="msinvar.quivers.CyclicQuiver.ind_hom">
+<code class="sig-name descname"><span class="pre">ind_hom</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.ind_hom"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.ind_hom" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dimension of the Hom-space between indecomposable
+representations <code class="docutils literal notranslate"><span class="pre">a</span></code> and  <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.quivers.CyclicQuiver.shift_indec">
-<code class="sig-name descname"><span class="pre">shift_indec</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.shift_indec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.shift_indec" title="Permalink to this definition">¶</a></dt>
-<dd><p>Cyclic shift for indecomposable modules: (SM)_i=M_{i+k}.</p>
-<p>EXAMPLES:</p>
-<blockquote>
-<div><p>sage: from msinvar import *
-sage: Q=CyclicQuiver(3)
-sage: Q.shift_indec((0,1,0),1)
-(2, 0, 0)</p>
-</div></blockquote>
-</dd></dl>
-
-<dl class="py method">
-<dt id="msinvar.quivers.CyclicQuiver.translation">
-<code class="sig-name descname"><span class="pre">translation</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.translation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.translation" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a quiver automorphism given by the k-cyclic shift.</p>
+<dt id="msinvar.quivers.CyclicQuiver.ind_shift">
+<code class="sig-name descname"><span class="pre">ind_shift</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.ind_shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.ind_shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>k-cyclic shift for indecomposable modules: <span class="math notranslate nohighlight">\((SM)_i=M_{i-k}\)</span>.</p>
 <p>EXAMPLES:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">CyclicQuiver</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-<span class="n">sage</span><span class="p">:</span> <span class="n">f</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">f</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">ind_shift</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">f</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.quivers.CyclicQuiver.shift">
+<code class="sig-name descname"><span class="pre">shift</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#CyclicQuiver.shift"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.CyclicQuiver.shift" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quiver automorphism given by the k-cyclic shift.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">CyclicQuiver</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">f</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">sage</span><span class="p">:</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">vertices</span><span class="p">()}</span>
 <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
 <span class="n">sage</span><span class="p">:</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span><span class="n">f</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">arrows</span><span class="p">()}</span>
@@ -535,12 +556,14 @@ and its k-cyclic shift.</p>
 
 </dd></dl>
 
-<dl class="py function">
-<dt id="msinvar.quivers.translation_PQ">
-<code class="sig-prename descclassname"><span class="pre">msinvar.quivers.</span></code><code class="sig-name descname"><span class="pre">translation_PQ</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#translation_PQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.translation_PQ" title="Permalink to this definition">¶</a></dt>
-<dd><p>Construct a new quiver with potential based on a quiver <code class="docutils literal notranslate"><span class="pre">Q</span></code> and its
+<dl class="py class">
+<dt id="msinvar.quivers.TranslationPQ">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">msinvar.quivers.</span></code><code class="sig-name descname"><span class="pre">TranslationPQ</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ind_tau</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#TranslationPQ"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.TranslationPQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#msinvar.quivers.Quiver" title="msinvar.quivers.Quiver"><code class="xref py py-class docutils literal notranslate"><span class="pre">msinvar.quivers.Quiver</span></code></a></p>
+<p>Construct a new quiver with potential based on a quiver <code class="docutils literal notranslate"><span class="pre">Q</span></code> and its
 automorphism <code class="docutils literal notranslate"><span class="pre">tau</span></code>. See <a class="reference external" href="https://arxiv.org/abs/1911.01788">arXiv:1911.01788</a>.</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">tau</span></code> is None, we consider the trivial automorphism.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">tau</span></code> is None, we consider the trivial automorphism.
+The method <code class="docutils literal notranslate"><span class="pre">ind_tau</span></code> should be the induced bijection on indecomposables.</p>
 <ol class="arabic">
 <li><p>For any arrow a:i-&gt;j we add an arrow tau(j)-&gt;i.</p></li>
 <li><p>For any vertex i we add an arrow i-&gt;tau(i).</p></li>
@@ -553,6 +576,30 @@ automorphism <code class="docutils literal notranslate"><span class="pre">tau</s
 </div></blockquote>
 </li>
 </ol>
+<dl class="py method">
+<dt id="msinvar.quivers.TranslationPQ.translation_PQ_total">
+<code class="sig-name descname"><span class="pre">translation_PQ_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/quivers.html#TranslationPQ.translation_PQ_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.quivers.TranslationPQ.translation_PQ_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="potential_quiver_invar.html#msinvar.potential_quiver_invar.translation_PQ_total" title="msinvar.potential_quiver_invar.translation_PQ_total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">msinvar.potential_quiver_invar.translation_PQ_total()</span></code></a>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar.potential_quiver_invar</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">CyclicQuiver</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="n">Q</span>
+<span class="n">Quiver</span> <span class="k">with</span> <span class="mi">3</span> <span class="n">vertices</span> <span class="ow">and</span> <span class="mi">3</span> <span class="n">arrows</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">PQ</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">translation_PQ</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="n">PQ</span>
+<span class="n">Quiver</span> <span class="k">with</span> <span class="mi">3</span> <span class="n">vertices</span><span class="p">,</span> <span class="mi">9</span> <span class="n">arrows</span> <span class="ow">and</span> <span class="n">potential</span> <span class="k">with</span> <span class="mi">6</span> <span class="n">terms</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">=</span><span class="n">PQ</span><span class="o">.</span><span class="n">translation_PQ_total</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">=</span><span class="n">PQ</span><span class="o">.</span><span class="n">wcs</span><span class="p">();</span> <span class="n">W</span>
+<span class="n">Wall</span><span class="o">-</span><span class="n">crossing</span> <span class="n">structure</span> <span class="n">on</span> <span class="n">a</span> <span class="n">lattice</span> <span class="n">of</span> <span class="n">rank</span> <span class="mi">3</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">.</span><span class="n">intAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">simp</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">y</span><span class="p">,</span>
+ <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">y</span><span class="p">}</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </dd></dl>
 
 </div>

@@ -203,10 +203,10 @@
 
 <span class="sd">::</span>
 <span class="sd">    </span>
-<span class="sd">    sage: Q = CQ.translation_PQ(1); Q # translation quiver with potential</span>
+<span class="sd">    sage: PQ = CQ.translation_PQ(1); PQ # translation quiver with potential</span>
 <span class="sd">    Quiver with 3 vertices, 9 arrows and potential with 6 terms</span>
-<span class="sd">    sage: W = Q.wcs([2]*3)</span>
-<span class="sd">    sage: total=cyclic_TPQ_total(W, 1)</span>
+<span class="sd">    sage: W = PQ.wcs([2,2,2])</span>
+<span class="sd">    sage: total=translation_PQ_total(PQ)</span>
 <span class="sd">    sage: W.intAtt(total).simp().dict() #Attractor invar for the translation quiver with potential</span>
 <span class="sd">    {(0, 0, 1): 1,</span>
 <span class="sd">     (0, 1, 0): 1,</span>
@@ -239,10 +239,10 @@
 
 <span class="sd">    1. W is a WCS, y=W.y, r=W.rank.</span>
 <span class="sd">    2. S is a list.</span>
-<span class="sd">    3. :math:`\sigma:S\times S\to Z` is a map (interaction form).</span>
-<span class="sd">    4. :math:`\dim:S\to Z^r` is a map (dimension vectors).</span>
-<span class="sd">    5. :math:`(q)_m=\prod_{i\in S}(q)_{m_i},\ (q)_k=(1-q)...(1-q^k)`.</span>
-<span class="sd">    6. The sum runs over m such that :math:`\sum_i m_i \dim(i)\le` W.prec().</span>
+<span class="sd">    3. `\sigma:S\times S\to Z` is a map (interaction form).</span>
+<span class="sd">    4. `\dim:S\to Z^r` is a map (dimension vectors).</span>
+<span class="sd">    5. `(q)_m=\prod_{i\in S}(q)_{m_i},\ (q)_k=(1-q)...(1-q^k)`.</span>
+<span class="sd">    6. The sum runs over m such that `\sum_i m_i \dim(i)\le` W.prec().</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">prec</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">prec</span><span class="p">()</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">y</span>
@@ -261,51 +261,142 @@
     <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="cyclic_TPQ_total"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.cyclic_TPQ_total">[docs]</a><span class="k">def</span> <span class="nf">cyclic_TPQ_total</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="translation_PQ_total"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.translation_PQ_total">[docs]</a><span class="k">def</span> <span class="nf">translation_PQ_total</span><span class="p">(</span><span class="n">PQ</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Return total stacky invariants (for the trivial stability) for the translation</span>
-<span class="sd">    potential quiver of a cyclic quiver (with the translation given by the k-shift).</span>
+<span class="sd">    Return total invariant (stacky invariant for the trivial stability)</span>
+<span class="sd">    for the translation potential quiver, assuming that the base quiver has </span>
+<span class="sd">    implemented methods :meth:`ind_list`, :meth:`ind_dim`, :meth:`ind_hom`.</span>
 
-<span class="sd">    W is the potential quiver or its wall-crossing structure.</span>
+<span class="sd">    ``PQ`` -- translation potential quiver or its wall-crossing structure.</span>
+
+<span class="sd">    See :class:`msinvar.quivers.TranslationPQ`.</span>
+
+<span class="sd">    EXAMPLES::</span>
+
+<span class="sd">        sage: from msinvar import *</span>
+<span class="sd">        sage: from msinvar.potential_quiver_invar import *</span>
+<span class="sd">        sage: Q=CyclicQuiver(3); Q</span>
+<span class="sd">        Quiver with 3 vertices and 3 arrows</span>
+<span class="sd">        sage: PQ=Q.translation_PQ(1); PQ</span>
+<span class="sd">        Quiver with 3 vertices, 9 arrows and potential with 6 terms</span>
+<span class="sd">        sage: I=translation_PQ_total(PQ, [2,2,2])</span>
+<span class="sd">        sage: W=PQ.wcs(); W</span>
+<span class="sd">        Wall-crossing structure on a lattice of rank 3</span>
+<span class="sd">        sage: W.intAtt(I).simp().dict()</span>
+<span class="sd">        {(0, 0, 1): 1,</span>
+<span class="sd">         (0, 1, 0): 1,</span>
+<span class="sd">         (1, 0, 0): 1,</span>
+<span class="sd">         (1, 1, 1): (-2*y^2 - 1)/y,</span>
+<span class="sd">         (2, 2, 2): (-2*y^2 - 1)/y}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">Quiver</span><span class="p">):</span>
-        <span class="n">W</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">wcs</span><span class="p">()</span>
-    <span class="n">W</span><span class="o">.</span><span class="n">prec</span><span class="p">(</span><span class="n">prec</span><span class="p">)</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">rank</span>
-    <span class="k">if</span> <span class="n">Q</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">Q</span> <span class="o">=</span> <span class="n">CyclicQuiver</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">PQ</span><span class="p">,</span> <span class="n">Quiver</span><span class="p">):</span>
+        <span class="n">PQ</span> <span class="o">=</span> <span class="n">PQ</span><span class="o">.</span><span class="n">quiver</span>
+    <span class="n">PQ</span><span class="o">.</span><span class="n">prec</span><span class="p">(</span><span class="n">prec</span><span class="p">)</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">PQ</span><span class="o">.</span><span class="n">base_quiver</span>
+    <span class="n">hom</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_hom</span>
+    <span class="n">dim</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_dim</span>
 
     <span class="k">def</span> <span class="nf">rho</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="n">b</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">]</span><span class="o">-</span><span class="n">b</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">]</span>
-                         <span class="o">+</span> <span class="n">b</span><span class="p">[(</span><span class="n">i</span><span class="o">-</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">))</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">PQ</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span> <span class="o">+</span> <span class="nb">sum</span><span class="p">([</span><span class="mi">2</span> <span class="o">*</span> <span class="n">a</span><span class="p">[</span><span class="n">PQ</span><span class="o">.</span><span class="n">tau</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">1</span><span class="p">])]</span> <span class="o">*</span> <span class="n">b</span><span class="p">[</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">arrows</span><span class="p">()])</span>
 
     <span class="k">def</span> <span class="nf">si</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">hom</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">hom</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">shift_indec</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>\
-            <span class="o">-</span> <span class="n">rho</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">hom</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">hom</span><span class="p">(</span><span class="n">PQ</span><span class="o">.</span><span class="n">ind_tau</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">b</span><span class="p">)</span> <span class="o">-</span> <span class="n">rho</span><span class="p">(</span><span class="n">dim</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">dim</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">interaction_invariant</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">indecs</span><span class="p">,</span> <span class="n">si</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">interaction_invariant</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">ind_list</span><span class="p">,</span> <span class="n">si</span><span class="p">,</span> <span class="n">dim</span><span class="p">,</span> <span class="n">PQ</span><span class="o">.</span><span class="n">wcs</span><span class="p">())</span></div>
 
 
-<div class="viewcode-block" id="cyclic_potential_total"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.cyclic_potential_total">[docs]</a><span class="k">def</span> <span class="nf">cyclic_potential_total</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="n">cyclic_TPQ_total</span> <span class="o">=</span> <span class="n">translation_PQ_total</span>  <span class="c1"># backwards compatibility</span>
+
+
+<div class="viewcode-block" id="cyclic_potential_total"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.cyclic_potential_total">[docs]</a><span class="k">def</span> <span class="nf">cyclic_potential_total</span><span class="p">(</span><span class="n">CQ</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Return total stacky invariants (for the trivial stability) for a cyclic</span>
 <span class="sd">    quiver with the cyclic potential.</span>
 
-<span class="sd">    W is the cyclic quiver or its wall-crossing structure.</span>
+<span class="sd">    CQ is the cyclic quiver or its wall-crossing structure.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">Quiver</span><span class="p">):</span>
-        <span class="n">W</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">wcs</span><span class="p">()</span>
-    <span class="n">W</span><span class="o">.</span><span class="n">prec</span><span class="p">(</span><span class="n">prec</span><span class="p">)</span>
-    <span class="n">r</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">rank</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">CQ</span><span class="p">,</span> <span class="n">Quiver</span><span class="p">):</span>
+        <span class="n">CQ</span> <span class="o">=</span> <span class="n">CQ</span><span class="o">.</span><span class="n">quiver</span>
+    <span class="n">CQ</span><span class="o">.</span><span class="n">prec</span><span class="p">(</span><span class="n">prec</span><span class="p">)</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">CQ</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
     <span class="n">Q</span> <span class="o">=</span> <span class="n">ChainQuiver</span><span class="p">(</span><span class="n">r</span><span class="p">)</span>
-    <span class="n">S</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">indecs</span><span class="p">())</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_list</span><span class="p">()</span>
     <span class="n">S</span><span class="o">.</span><span class="n">remove</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="n">r</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>  <span class="c1"># this representation doesn&#39;t satisfy relations</span>
 
     <span class="k">def</span> <span class="nf">si</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="n">da</span><span class="p">,</span> <span class="n">db</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">hom</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">da</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">db</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">W</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
+        <span class="n">da</span><span class="p">,</span> <span class="n">db</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_dim</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_dim</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="n">Q</span><span class="o">.</span><span class="n">ind_hom</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span><span class="o">-</span><span class="mi">2</span><span class="o">*</span><span class="n">da</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">db</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">CQ</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">da</span><span class="p">,</span> <span class="n">db</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">interaction_invariant</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">si</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">dim</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">interaction_invariant</span><span class="p">(</span><span class="n">S</span><span class="p">,</span> <span class="n">si</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">ind_dim</span><span class="p">,</span> <span class="n">CQ</span><span class="o">.</span><span class="n">wcs</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="QuiverExample1"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1">[docs]</a><span class="k">class</span> <span class="nc">QuiverExample1</span><span class="p">(</span><span class="n">Quiver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Quiver 1-&gt;0, 1-&gt;2 with methods for indecomposables and a non-trivial</span>
+<span class="sd">    automorphism.</span>
+
+<span class="sd">    EXAMPLES::</span>
+
+<span class="sd">        sage: from msinvar.potential_quiver_invar import *</span>
+<span class="sd">        sage: Q=QuiverExample1(); Q</span>
+<span class="sd">        Quiver with 3 vertices and 2 arrows</span>
+<span class="sd">        sage: PQ=Q.translation_PQ(); PQ</span>
+<span class="sd">        Quiver with 3 vertices, 7 arrows and potential with 4 terms</span>
+<span class="sd">        sage: W=PQ.wcs([3,3,3]); W</span>
+<span class="sd">        Wall-crossing structure on a lattice of rank 3</span>
+<span class="sd">        sage: I=PQ.translation_PQ_total()</span>
+<span class="sd">        sage: W.intAtt(I).dict()</span>
+<span class="sd">        {(0, 0, 1): 1,</span>
+<span class="sd">         (0, 1, 0): -y,</span>
+<span class="sd">         (0, 1, 1): 1,</span>
+<span class="sd">         (1, 0, 0): 1,</span>
+<span class="sd">         (1, 0, 1): -y,</span>
+<span class="sd">         (1, 1, 0): 1,</span>
+<span class="sd">         (1, 1, 1): -y,</span>
+<span class="sd">         (1, 2, 1): -y}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="s1">&#39;1-0,1-2&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="QuiverExample1.ind_list"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1.ind_list">[docs]</a>    <span class="k">def</span> <span class="nf">ind_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the list of all indecomposable representations, paramertized by</span>
+<span class="sd">        pairs (i,j) with i&lt;=j.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">l</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">l</span></div>
+
+<div class="viewcode-block" id="QuiverExample1.ind_dim"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1.ind_dim">[docs]</a>    <span class="k">def</span> <span class="nf">ind_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
+        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="QuiverExample1.ind_hom"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1.ind_hom">[docs]</a>    <span class="k">def</span> <span class="nf">ind_hom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="n">dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ind_dim</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)}</span> <span class="ow">or</span> <span class="n">b</span> <span class="ow">in</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)}:</span>
+            <span class="c1"># a is projective or b is injective</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">dim</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">dim</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+        <span class="c1"># if b=(0,0) or (2,2), we get 0 as a is generated at the vertex 1</span>
+        <span class="c1"># if b=(0,2), we also get 0 -- direct check</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="QuiverExample1.tau"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1.tau">[docs]</a>    <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Non-trivial automorphism of the quiver.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>  <span class="c1"># an arrow</span>
+            <span class="k">return</span> <span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">-</span><span class="n">a</span>  <span class="c1"># a vertex</span></div>
+
+<div class="viewcode-block" id="QuiverExample1.ind_tau"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1.ind_tau">[docs]</a>    <span class="k">def</span> <span class="nf">ind_tau</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Bijection on indecomposables induced by :meth:`tau`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">2</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">2</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="QuiverExample1.translation_PQ"><a class="viewcode-back" href="../../potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1.translation_PQ">[docs]</a>    <span class="k">def</span> <span class="nf">translation_PQ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="n">TranslationPQ</span>
+        <span class="k">return</span> <span class="n">TranslationPQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tau</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ind_tau</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

@@ -174,10 +174,11 @@
 <span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Quivers and quivers with potentials</span>
 
-<span class="sd">Define a Quiver class (with or without potental) as well as scpecial</span>
-<span class="sd">subclasses ChainQuiver, CyclicQuiver and constructors KroneckerQuiver, </span>
-<span class="sd">JordanQuiver and translation_PQ (for translation potential quivers of quivers</span>
-<span class="sd">with automorphisms, see :arxiv:`1911.01788`).</span>
+<span class="sd">Define a Quiver class (with or without potental) as well as special</span>
+<span class="sd">subclasses ChainQuiver, CyclicQuiver, </span>
+<span class="sd">TranslationPQ (for translation potential quivers of quivers</span>
+<span class="sd">with automorphisms, see :arxiv:`1911.01788`),</span>
+<span class="sd">and constructors KroneckerQuiver, JordanQuiver.</span>
 
 <span class="sd">EXAMPLES::</span>
 
@@ -256,16 +257,16 @@
 <span class="sd">        Quiver with 4 vertices and 3 arrows</span>
 <span class="sd">        sage: Q.arrows()</span>
 <span class="sd">        [(1, 2, 1), (2, 3, 1), (3, 4, 1)]</span>
-<span class="sd">        </span>
+
 <span class="sd">    ::</span>
-<span class="sd">        </span>
+
 <span class="sd">        sage: Q=Quiver(potential=&#39;a[1,2]a[2,3]a[3,1]&#39;); Q.arrows()</span>
 <span class="sd">        [(1, 2, 1), (2, 3, 1), (3, 1, 1)]</span>
 <span class="sd">        sage: Q.potential()</span>
 <span class="sd">        [[(1, 2, 1), (2, 3, 1), (3, 1, 1)]]</span>
-<span class="sd">        </span>
+
 <span class="sd">    ::</span>
-<span class="sd">        </span>
+
 <span class="sd">        sage: Q=Quiver(potential=[&#39;1-2-3-1&#39;,[[1,2,2],[2,1]]]); Q.arrows()</span>
 <span class="sd">        [(1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 3, 1), (3, 1, 1)]</span>
 <span class="sd">        sage: Q.potential()</span>
@@ -278,7 +279,7 @@
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">Quiver</span><span class="o">.</span><span class="n">_get_arrow_set</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">potential</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="o">=</span><span class="n">Quiver</span><span class="o">.</span><span class="n">_get_potential</span><span class="p">(</span><span class="n">potential</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_potential</span> <span class="o">=</span> <span class="n">Quiver</span><span class="o">.</span><span class="n">_get_potential</span><span class="p">(</span><span class="n">potential</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">data</span> <span class="o">=</span> <span class="n">Quiver</span><span class="o">.</span><span class="n">_get_arrow_set</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -292,9 +293,9 @@
 
 <div class="viewcode-block" id="Quiver.wcs"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.wcs">[docs]</a>    <span class="k">def</span> <span class="nf">wcs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Wall-crossing structure of the quiver.</span>
-<span class="sd">        </span>
+
 <span class="sd">        EXAMPLES::</span>
-<span class="sd">            </span>
+
 <span class="sd">            sage: from msinvar.quivers import *</span>
 <span class="sd">            sage: Q=KroneckerQuiver(2); Q</span>
 <span class="sd">            Quiver with 2 vertices and 2 arrows</span>
@@ -340,7 +341,7 @@
 <div class="viewcode-block" id="Quiver.s"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.s">[docs]</a>    <span class="k">def</span> <span class="nf">s</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Source of an arrow ``a``, which can be an arrow or an index in the</span>
 <span class="sd">        list self.arrows().</span>
-<span class="sd">        </span>
+
 <span class="sd">        EXAMPLES::</span>
 
 <span class="sd">            sage: from msinvar import *</span>
@@ -385,9 +386,9 @@
 
 <div class="viewcode-block" id="Quiver.eform"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.eform">[docs]</a>    <span class="k">def</span> <span class="nf">eform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Euler form of the quiver.</span>
-<span class="sd">        </span>
+
 <span class="sd">        EXAMPLES::</span>
-<span class="sd">            </span>
+
 <span class="sd">            sage: from msinvar import *</span>
 <span class="sd">            sage: Q=KroneckerQuiver(2); Q.arrows()</span>
 <span class="sd">            [(1, 2, 0), (1, 2, 1)]</span>
@@ -403,9 +404,9 @@
 
 <div class="viewcode-block" id="Quiver.sform"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.sform">[docs]</a>    <span class="k">def</span> <span class="nf">sform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Skew-symmetrized Euler form of the quiver.</span>
-<span class="sd">        </span>
+
 <span class="sd">        EXAMPLES::</span>
-<span class="sd">            </span>
+
 <span class="sd">            sage: from msinvar import *</span>
 <span class="sd">            sage: Q=KroneckerQuiver(2); Q.arrows()</span>
 <span class="sd">            [(1, 2, 0), (1, 2, 1)]</span>
@@ -444,11 +445,11 @@
             <span class="k">return</span> <span class="n">sv</span><span class="o">+</span><span class="s2">&quot;, &quot;</span><span class="o">+</span><span class="n">sa</span><span class="o">+</span><span class="s2">&quot; and potential with &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">W</span><span class="p">))</span><span class="o">+</span><span class="s2">&quot; terms&quot;</span>
         <span class="k">return</span> <span class="n">sv</span><span class="o">+</span><span class="s2">&quot; and &quot;</span><span class="o">+</span><span class="n">sa</span>
 
-<div class="viewcode-block" id="Quiver.translation_PQ"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.translation_PQ">[docs]</a>    <span class="k">def</span> <span class="nf">translation_PQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Quiver.translation_PQ"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.translation_PQ">[docs]</a>    <span class="k">def</span> <span class="nf">translation_PQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ind_tau</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        See :meth:`translation_PQ`</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">translation_PQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">TranslationPQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">ind_tau</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Quiver.Ginzburg_PQ"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.Ginzburg_PQ">[docs]</a>    <span class="k">def</span> <span class="nf">Ginzburg_PQ</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -464,7 +465,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a string or list potential to a list of cycles and drop the </span>
 <span class="sd">        coefficients. </span>
-<span class="sd">        </span>
+
 <span class="sd">        Potential is of the form:</span>
 
 <span class="sd">        - F[1,2,1]*F[2,3]F[3,1]...-F[1,2,2]F[2,1]...+...</span>
@@ -473,15 +474,15 @@
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">+|</span><span class="se">\\</span><span class="s1">-&#39;</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">Quiver</span><span class="o">.</span><span class="n">_get_path</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">s</span><span class="p">]</span>
-    
+
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_arrow_set</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the set of arrows that appear in the string or list of paths.</span>
-<span class="sd">        </span>
+
 <span class="sd">        The string can be of the form:</span>
 <span class="sd">            - &#39;1-2-3,3-&gt;4&#39;</span>
-<span class="sd">            </span>
+
 <span class="sd">        The list can be of the form:        </span>
 <span class="sd">            - [[[1,2],[2,3]],[[3,4]]]</span>
 <span class="sd">            - [&#39;1-2-3&#39;,&#39;3-4&#39;]</span>
@@ -494,37 +495,37 @@
             <span class="n">arrs</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">Quiver</span><span class="o">.</span><span class="n">_get_path</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">arrs</span><span class="p">)</span>
 
-
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_path</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a path string or list to a list of arrows.</span>
 
 <span class="sd">        A path string can be of the form:</span>
-<span class="sd">            </span>
+
 <span class="sd">            - &#39;a[1,2,1]*a[2,1]a[1,2,2]b[2,3]&#39; (sequence of arrows)</span>
 <span class="sd">            - &#39;1-2-3&#39; (sequence of vertices)</span>
-<span class="sd">        </span>
+
 <span class="sd">        A path list can be of the form:</span>
 <span class="sd">            - [[1,2],[2,1],[1,2,2]]</span>
 <span class="sd">            - [&#39;1,2&#39;,&#39;2,1&#39;,&#39;1,2,2&#39;]</span>
-<span class="sd">        </span>
+
 <span class="sd">        Only the content inside square brackets is used in the first case.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="c1"># get a list of strings between [,]; use .*? for a non greeedy search</span>
             <span class="n">l</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="s2">&quot;.*?</span><span class="se">\\</span><span class="s2">[(.*?)</span><span class="se">\\</span><span class="s2">]&quot;</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="p">[</span><span class="n">Quiver</span><span class="o">.</span><span class="n">_get_arrow</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">l</span><span class="p">]</span>
-            <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\D&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)]</span> <span class="c1"># remove non-digits</span>
-            <span class="k">return</span> <span class="p">[(</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>                
+            <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\D&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+                 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">p</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)]</span>  <span class="c1"># remove non-digits</span>
+            <span class="k">return</span> <span class="p">[(</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
         <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">Quiver</span><span class="o">.</span><span class="n">_get_arrow</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">p</span><span class="p">)</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_get_arrow</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert a string or a list to a tuple (arrow).</span>
-<span class="sd">        </span>
+
 <span class="sd">        A string can be of the form:</span>
 <span class="sd">            - &#39;1,2&#39;</span>
 <span class="sd">            - &#39;1,2,1&#39; (the last integer is the number of the arrow)</span>
@@ -533,7 +534,22 @@
             <span class="n">a</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">))</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">a</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">a</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="o">*</span><span class="n">a</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span> <span class="k">else</span> <span class="n">a</span>
+
+<div class="viewcode-block" id="Quiver.ind_list"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.ind_list">[docs]</a>    <span class="k">def</span> <span class="nf">ind_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="s2">&quot;The list of indecomposable representations.&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Quiver.ind_dim"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.ind_dim">[docs]</a>    <span class="k">def</span> <span class="nf">ind_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="s2">&quot;Dimension vector of an indecomposable representation ``a``.&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Quiver.ind_hom"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.Quiver.ind_hom">[docs]</a>    <span class="k">def</span> <span class="nf">ind_hom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dimension of the Hom-space between indecomposable</span>
+<span class="sd">        representations ``a`` and  ``b``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
 
 
 <div class="viewcode-block" id="KroneckerQuiver"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.KroneckerQuiver">[docs]</a><span class="k">def</span> <span class="nf">KroneckerQuiver</span><span class="p">(</span><span class="n">m</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
@@ -562,47 +578,41 @@
 <span class="sd">        sage: from msinvar import *</span>
 <span class="sd">        sage: Q=ChainQuiver(3); Q.arrows()</span>
 <span class="sd">        [(0, 1, 1), (1, 2, 1)]</span>
-<span class="sd">        sage: list(Q.indecs())</span>
+<span class="sd">        sage: Q.ind_list()</span>
 <span class="sd">        [(0, 0), (0, 1), (0, 2), (1, 1), (1, 2), (2, 2)]</span>
-<span class="sd">        sage: Q.dim([0,2])</span>
+<span class="sd">        sage: Q.ind_dim([0,2])</span>
 <span class="sd">        [1, 1, 1]</span>
-<span class="sd">        sage: Q.dim([2,2])</span>
+<span class="sd">        sage: Q.ind_dim([2,2])</span>
 <span class="sd">        [0, 0, 1]</span>
-<span class="sd">        sage: Q.hom([2,2],[0,2])</span>
+<span class="sd">        sage: Q.ind_hom([2,2],[0,2])</span>
 <span class="sd">        1</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">l</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span>
 
-<div class="viewcode-block" id="ChainQuiver.dim"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.ChainQuiver.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+<div class="viewcode-block" id="ChainQuiver.ind_list"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.ChainQuiver.ind_list">[docs]</a>    <span class="k">def</span> <span class="nf">ind_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the dimension vector of an indecomposable representation</span>
-<span class="sd">        parametrized by a pair a=(i,j) with `i&lt;=j`.</span>
+<span class="sd">        Return the list of all indecomposable representations, paramertized by</span>
+<span class="sd">        pairs (i,j) with i&lt;=j.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+            <span class="n">l</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">l</span></div>
+
+<div class="viewcode-block" id="ChainQuiver.ind_dim"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.ChainQuiver.ind_dim">[docs]</a>    <span class="k">def</span> <span class="nf">ind_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
         <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">return</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">i</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">j</span><span class="o">-</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">j</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="ChainQuiver.hom"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.ChainQuiver.hom">[docs]</a>    <span class="k">def</span> <span class="nf">hom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the dimension of the Hom-space between indecomposable</span>
-<span class="sd">        representations parametrized by pairs a, b.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ChainQuiver.ind_hom"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.ChainQuiver.ind_hom">[docs]</a>    <span class="k">def</span> <span class="nf">ind_hom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">l</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">i</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">l</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&gt;=</span> <span class="n">l</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="mi">0</span></div>
-
-<div class="viewcode-block" id="ChainQuiver.indecs"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.ChainQuiver.indecs">[docs]</a>    <span class="k">def</span> <span class="nf">indecs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return all indecomposable representations (that is, pairs</span>
-<span class="sd">        (i,j) representing them).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                <span class="k">yield</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="mi">0</span></div></div>
 
 
 <div class="viewcode-block" id="CyclicQuiver"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver">[docs]</a><span class="k">class</span> <span class="nc">CyclicQuiver</span><span class="p">(</span><span class="n">Quiver</span><span class="p">):</span>
@@ -620,6 +630,7 @@
 <span class="sd">        sage: Q=CyclicQuiver(3); Q.arrows()</span>
 <span class="sd">        [(0, 1, 1), (1, 2, 1), (2, 0, 1)]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">l</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span>
@@ -627,11 +638,22 @@
         <span class="n">l</span> <span class="o">=</span> <span class="p">[[</span><span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span><span class="o">+</span><span class="p">[[</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span>
 
-<div class="viewcode-block" id="CyclicQuiver.dim"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.dim">[docs]</a>    <span class="k">def</span> <span class="nf">dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the dimension vector of an indecomposable representation</span>
-<span class="sd">        parametrized by a triple a=(i,j,n).</span>
+<div class="viewcode-block" id="CyclicQuiver.ind_list"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.ind_list">[docs]</a>    <span class="k">def</span> <span class="nf">ind_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The list of nilpotent indecomposables up to dimension vector d, where</span>
+<span class="sd">        indecomposables are parametrized by triples (i,j,n) with </span>
+<span class="sd">        `i, j\in Z_r` and `n\ge 0`.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+                <span class="n">l</span> <span class="o">+=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+                      <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">le</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ind_dim</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span><span class="p">]),</span> <span class="n">d</span><span class="p">)]</span>
+        <span class="k">return</span> <span class="n">l</span></div>
+
+<div class="viewcode-block" id="CyclicQuiver.ind_dim"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.ind_dim">[docs]</a>    <span class="k">def</span> <span class="nf">ind_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
         <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
         <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
         <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">*</span><span class="n">r</span>
@@ -639,11 +661,7 @@
             <span class="n">d</span><span class="p">[(</span><span class="n">i</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="n">d</span></div>
 
-<div class="viewcode-block" id="CyclicQuiver.hom"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.hom">[docs]</a>    <span class="k">def</span> <span class="nf">hom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return the dimension of the Hom-space between indecomposable</span>
-<span class="sd">        representations parametrized by triples a, b.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="CyclicQuiver.ind_hom"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.ind_hom">[docs]</a>    <span class="k">def</span> <span class="nf">ind_hom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">0</span>
         <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
@@ -653,42 +671,33 @@
         <span class="n">d2</span> <span class="o">=</span> <span class="p">(</span><span class="n">l</span><span class="o">-</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="o">+</span><span class="n">r</span><span class="o">*</span><span class="n">n</span>
         <span class="k">return</span> <span class="n">_cong_number</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">d2</span><span class="o">-</span><span class="n">d1</span><span class="p">),</span> <span class="n">d2</span><span class="p">,</span> <span class="n">i</span><span class="o">-</span><span class="n">k</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CyclicQuiver.indecs"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.indecs">[docs]</a>    <span class="k">def</span> <span class="nf">indecs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="CyclicQuiver.ind_shift"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.ind_shift">[docs]</a>    <span class="k">def</span> <span class="nf">ind_shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return nilpotent indecomposables up to dimension vector d.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
-        <span class="n">m</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
-                <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-                    <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-                    <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">le</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">d</span><span class="p">):</span>
-                        <span class="k">yield</span> <span class="n">a</span></div>
-
-<div class="viewcode-block" id="CyclicQuiver.shift_indec"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.shift_indec">[docs]</a>    <span class="k">def</span> <span class="nf">shift_indec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Cyclic shift for indecomposable modules: (SM)_i=M_{i+k}.</span>
-
-<span class="sd">        EXAMPLES:</span>
-
-<span class="sd">            sage: from msinvar import *</span>
-<span class="sd">            sage: Q=CyclicQuiver(3)</span>
-<span class="sd">            sage: Q.shift_indec((0,1,0),1)</span>
-<span class="sd">            (2, 0, 0)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
-        <span class="k">return</span> <span class="p">((</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span></div>
-
-<div class="viewcode-block" id="CyclicQuiver.translation"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.translation">[docs]</a>    <span class="k">def</span> <span class="nf">translation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Return a quiver automorphism given by the k-cyclic shift.</span>
+<span class="sd">        k-cyclic shift for indecomposable modules: `(SM)_i=M_{i-k}`.</span>
 
 <span class="sd">        EXAMPLES::</span>
 
 <span class="sd">            sage: from msinvar import *</span>
 <span class="sd">            sage: Q=CyclicQuiver(3)</span>
-<span class="sd">            sage: f=Q.translation(2)</span>
+<span class="sd">            sage: f=Q.ind_shift(1)</span>
+<span class="sd">            sage: f((0,1,0))</span>
+<span class="sd">            (1, 2, 0)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">((</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">tau</span></div>
+
+<div class="viewcode-block" id="CyclicQuiver.shift"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.shift">[docs]</a>    <span class="k">def</span> <span class="nf">shift</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Quiver automorphism given by the k-cyclic shift.</span>
+
+<span class="sd">        EXAMPLES::</span>
+
+<span class="sd">            sage: from msinvar import *</span>
+<span class="sd">            sage: Q=CyclicQuiver(3)</span>
+<span class="sd">            sage: f=Q.shift(2)</span>
 <span class="sd">            sage: {i:f(i) for i in Q.vertices()}</span>
 <span class="sd">            {0: 2, 1: 0, 2: 1}</span>
 <span class="sd">            sage: {i:f(i) for i in Q.arrows()}</span>
@@ -699,7 +708,7 @@
         <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>  <span class="c1"># an arrow</span>
                 <span class="k">return</span> <span class="p">((</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-            <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">a</span><span class="o">+</span><span class="n">k</span><span class="p">)</span> <span class="o">%</span> <span class="n">r</span>  <span class="c1"># a vertex</span>
         <span class="k">return</span> <span class="n">tau</span></div>
 
 <div class="viewcode-block" id="CyclicQuiver.translation_PQ"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.CyclicQuiver.translation_PQ">[docs]</a>    <span class="k">def</span> <span class="nf">translation_PQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -714,8 +723,10 @@
 <span class="sd">            sage: Q2=Q.translation_PQ(1); Q2</span>
 <span class="sd">            Quiver with 3 vertices, 9 arrows and potential with 6 terms</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">translation_PQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">)</span></div></div>
+        <span class="n">tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shift</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="n">ind_tau</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ind_shift</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">TranslationPQ</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tau</span><span class="p">,</span> <span class="n">ind_tau</span><span class="p">)</span></div></div>
+
 
 <span class="k">def</span> <span class="nf">_cong_number</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -729,35 +740,68 @@
     <span class="k">return</span> <span class="n">q</span><span class="o">+</span><span class="mi">1</span>
 
 
-<div class="viewcode-block" id="translation_PQ"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.translation_PQ">[docs]</a><span class="k">def</span> <span class="nf">translation_PQ</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="TranslationPQ"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.TranslationPQ">[docs]</a><span class="k">class</span> <span class="nc">TranslationPQ</span><span class="p">(</span><span class="n">Quiver</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Construct a new quiver with potential based on a quiver ``Q`` and its</span>
 <span class="sd">    automorphism ``tau``. See :arxiv:`1911.01788`.</span>
-<span class="sd">    </span>
+
 <span class="sd">    If ``tau`` is None, we consider the trivial automorphism.</span>
+<span class="sd">    The method ``ind_tau`` should be the induced bijection on indecomposables.</span>
 
 <span class="sd">    1. For any arrow a:i-&gt;j we add an arrow tau(j)-&gt;i.</span>
 <span class="sd">    2. For any vertex i we add an arrow i-&gt;tau(i).</span>
 <span class="sd">    3. We consider potential consisting of 3-cycles (for every arrow i-&gt;j):</span>
-<span class="sd">    </span>
+
 <span class="sd">        1. i-&gt;j-&gt;tau(j)-&gt;i</span>
 <span class="sd">        2. -i-&gt;tau(i)-&gt;tau(j)-&gt;i</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">tau</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="k">return</span> <span class="n">i</span>
-    <span class="n">W</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">arrows</span><span class="p">():</span>
-        <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="n">tau</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
-        <span class="n">na</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
-        <span class="n">nb</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
-        <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">na</span><span class="p">)</span>
-        <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nb</span><span class="p">)</span>
-        <span class="n">a1</span> <span class="o">=</span> <span class="p">(</span><span class="n">tau</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">i</span><span class="p">,</span> <span class="n">na</span><span class="o">+</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
-        <span class="n">li</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tau</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s1">&#39;l&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
-        <span class="n">lj</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">tau</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="s1">&#39;l&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
-        <span class="n">W</span> <span class="o">+=</span> <span class="p">[[</span><span class="n">a</span><span class="p">,</span> <span class="n">lj</span><span class="p">,</span> <span class="n">a1</span><span class="p">],</span> <span class="p">[</span><span class="n">li</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a1</span><span class="p">]]</span>
-    <span class="k">return</span> <span class="n">Quiver</span><span class="p">(</span><span class="n">potential</span><span class="o">=</span><span class="n">W</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">tau</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ind_tau</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tau</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">tau</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="k">return</span> <span class="n">i</span>
+        <span class="k">if</span> <span class="n">ind_tau</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">ind_tau</span><span class="p">(</span><span class="n">i</span><span class="p">):</span> <span class="k">return</span> <span class="n">i</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base_quiver</span> <span class="o">=</span> <span class="n">Q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tau</span> <span class="o">=</span> <span class="n">tau</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ind_tau</span> <span class="o">=</span> <span class="n">ind_tau</span>
+        <span class="n">W</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">Q</span><span class="o">.</span><span class="n">arrows</span><span class="p">():</span>
+            <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="n">tau</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">na</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+            <span class="n">nb</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">(</span><span class="n">b</span><span class="p">))</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">na</span><span class="p">)</span>
+            <span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">nb</span><span class="p">)</span>
+            <span class="n">a1</span> <span class="o">=</span> <span class="p">(</span><span class="n">tau</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="n">i</span><span class="p">,</span> <span class="n">na</span><span class="o">+</span><span class="s1">&#39;*&#39;</span><span class="p">)</span>
+            <span class="n">li</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">tau</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="s1">&#39;l&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+            <span class="n">lj</span> <span class="o">=</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">tau</span><span class="p">(</span><span class="n">j</span><span class="p">),</span> <span class="s1">&#39;l&#39;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">j</span><span class="p">))</span>
+            <span class="n">W</span> <span class="o">+=</span> <span class="p">[[</span><span class="n">a</span><span class="p">,</span> <span class="n">lj</span><span class="p">,</span> <span class="n">a1</span><span class="p">],</span> <span class="p">[</span><span class="n">li</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">a1</span><span class="p">]]</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">potential</span><span class="o">=</span><span class="n">W</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TranslationPQ.translation_PQ_total"><a class="viewcode-back" href="../../quivers.html#msinvar.quivers.TranslationPQ.translation_PQ_total">[docs]</a>    <span class="k">def</span> <span class="nf">translation_PQ_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See :meth:`msinvar.potential_quiver_invar.translation_PQ_total`.</span>
+<span class="sd">        </span>
+<span class="sd">        EXAMPLES::</span>
+<span class="sd">        </span>
+<span class="sd">            sage: from msinvar import *</span>
+<span class="sd">            sage: from msinvar.potential_quiver_invar import *</span>
+<span class="sd">            sage: Q=CyclicQuiver(3); Q</span>
+<span class="sd">            Quiver with 3 vertices and 3 arrows</span>
+<span class="sd">            sage: PQ=Q.translation_PQ(1); PQ</span>
+<span class="sd">            Quiver with 3 vertices, 9 arrows and potential with 6 terms</span>
+<span class="sd">            sage: I=PQ.translation_PQ_total([2,2,2])</span>
+<span class="sd">            sage: W=PQ.wcs(); W</span>
+<span class="sd">            Wall-crossing structure on a lattice of rank 3</span>
+<span class="sd">            sage: W.intAtt(I).simp().dict()</span>
+<span class="sd">            {(0, 0, 1): 1,</span>
+<span class="sd">             (0, 1, 0): 1,</span>
+<span class="sd">             (1, 0, 0): 1,</span>
+<span class="sd">             (1, 1, 1): (-2*y^2 - 1)/y,</span>
+<span class="sd">             (2, 2, 2): (-2*y^2 - 1)/y}</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="kn">from</span> <span class="nn">msinvar.potential_quiver_invar</span> <span class="kn">import</span> <span class="n">translation_PQ_total</span>
+        <span class="k">return</span> <span class="n">translation_PQ_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prec</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
