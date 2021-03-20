@@ -35,15 +35,25 @@ def cache(function):
 
 
 class vec:
+    @staticmethod
     def le(a, b): return all(i <= j for i, j in zip(a, b))
+    @staticmethod
     def iszero(a): return all(i == 0 for i in a)
+    zero = iszero
+    @staticmethod
     def equal(a, b): return all(i == j for i, j in zip(a, b))
+    @staticmethod
     def vmin(a, b): return [min(i, j) for i, j in zip(a, b)]
+    @staticmethod
     def vmax(a, b): return [max(i, j) for i, j in zip(a, b)]
+    @staticmethod
     def scal(c, v): return [c*i for i in v]
+    @staticmethod
     def dot(a, b): return sum(i*j for i, j in zip(a, b))
+    @staticmethod
     def sub(a, b): return [i-j for i, j in zip(a, b)]
 
+    @staticmethod
     def add(a, b=None):
         """
         Return the sum of vectors a, b.
@@ -56,20 +66,24 @@ class vec:
             v = vec.add(v, a[i])
         return v
 
-    def basis(i, n): return [0]*i+[1]+[0]*(n-i-1)
-    def zero(n): return [0]*n
+    @staticmethod
+    def basis(i, n):
+        """Return the standard ``i``-th basis vector of dimension ``n``.
+        Here 0<=i<n."""
+        return [0]*i+[1]+[0]*(n-i-1)
+    # def zero(n): return [0]*n
 
 
-le_vec = vec.le
-min_vec = vec.vmin
-max_vec = vec.vmax
-zero_vec = vec.iszero
-eq_vec = vec.equal
-scal_vec = vec.scal
-add_vec = vec.add
-add_vecs = vec.add
-sub_vec = vec.sub
-prod_vec = vec.dot
+# le_vec = vec.le
+# min_vec = vec.vmin
+# max_vec = vec.vmax
+# zero_vec = vec.iszero
+# eq_vec = vec.equal
+# scal_vec = vec.scal
+# add_vec = vec.add
+# add_vecs = vec.add
+# sub_vec = vec.sub
+# prod_vec = vec.dot
 
 
 ##### Information commands ##########
@@ -96,15 +110,23 @@ def timer(f, n=1000):
 #####################################
 
 
-@cache
+# @cache
 def phi(q, n):
+    r"""Return `(q)_n=\prod_{i=1}^n(1-q^i)`.
+    
+    If ``n`` is a list, apply :meth:`phi` to all entries and take the product.
+    """
     if isiterable(n):
         return prod(phi(q, i) for i in n)
     return prod((1-q**i) for i in range(1, n+1))
 
 
-@cache
+# @cache
 def poch(a, q, n):
+    r"""Return the Pochhammer symbol `(a;q)_n=\prod_{i=0}^{n-1}(1-aq^i)`.
+    
+    If ``n`` is a list, apply :meth:`poch` to all entries and take the product.
+        """
     if isiterable(n):
         return prod(poch(a, q, i) for i in n)
     return prod((1-a*q**i) for i in range(n))

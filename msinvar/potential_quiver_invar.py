@@ -7,37 +7,39 @@ quiver C_n with the potential consisting of one term (the cycle).
 2. Compute (total refined) invariants for the McKay quiver of C^3/Z_r with
 the induced potential (consisting of 3-cycles), where the action is given
 by (1, k, -k-1) for any 0<=k<r. This potential quiver can be obtained as a
-translation potential quiver of a cyclic quiver:
+translation potential quiver of a cyclic quiver, see :arxiv:`1911.01788`.
+Some of the results are presented in :arxiv:`2012.14358`. 
 
 EXAMPLES::
 
     sage: from msinvar.quivers import CyclicQuiver
-    ....: from msinvar.potential_quiver_invar import *
-    ....: r, k = 3, 1
-    ....: CQ = CyclicQuiver(r); CQ
+    sage: from msinvar.potential_quiver_invar import *
+    sage: r, k = 3, 1
+    sage: CQ = CyclicQuiver(r); CQ
     Quiver with 3 vertices and 3 arrows
     sage: W=CQ.wcs([2]*r); W
     Wall-crossing structure on a lattice of rank 3
     sage: W.intAtt().dict() #Attractor invar for a cyclic quiver without potential
-    {(1, 0, 0): 1, (0, 1, 0): 1, (0, 0, 1): 1, (1, 1, 1): -y}
+    {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -y}
 
-    sage: W.total=cyclic_potential_total(W) #Total invar for a cyclic quiver with po
-    ....: tential
-    ....: W.intAtt().dict() #Attractor invar for a cyclic quiver with potential 
-    {(1, 0, 0): 1, (0, 1, 0): 1, (0, 0, 1): 1}
+::
+    
+    sage: total=cyclic_potential_total(W) # Total invar for a cyclic quiver with potential
+    sage: W.intAtt(total).dict() #Attractor invar for a cyclic quiver with potential 
+    {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
 
-    sage: Q = CQ.translation_PQ(k); Q # translation quiver with potential
+::
+    
+    sage: Q = CQ.translation_PQ(1); Q # translation quiver with potential
     Quiver with 3 vertices, 9 arrows and potential with 6 terms
-    sage: W = Q.wcs([2]*r)
-    ....: W.total=cyclic_TPQ_total(W, k)
-    ....: W.intAtt().simp().dict() #Attractor invar for the translation quiver with
-    ....:  potential
-    {(1, 0, 0): 1,
+    sage: W = Q.wcs([2]*3)
+    sage: total=cyclic_TPQ_total(W, 1)
+    sage: W.intAtt(total).simp().dict() #Attractor invar for the translation quiver with potential
+    {(0, 0, 1): 1,
      (0, 1, 0): 1,
-     (0, 0, 1): 1,
+     (1, 0, 0): 1,
      (1, 1, 1): (-2*y^2 - 1)/y,
      (2, 2, 2): (-2*y^2 - 1)/y}
-
 """
 
 # *****************************************************************************
@@ -58,9 +60,9 @@ def interaction_invariant(S, si, dim, W):
     r"""
     Return expression of the form:
 
-    :math:`\sum_{m:S\to N}
-    (-y)^{-\sum_{i,j\in S} m_im_j\sigma(i,j)}/(1/y^2)_m\cdot
-    x^{\sum_{i\in S} m_i \dim(i)}`
+    .. math::
+        \sum_{m:S\to N} (-y)^{-\sum_{i,j\in S} m_im_j\sigma(i,j)}
+        /(1/y^2)_m\cdot x^{\sum_{i\in S} m_i \dim(i)}
 
     1. W is a WCS, y=W.y, r=W.rank.
     2. S is a list.

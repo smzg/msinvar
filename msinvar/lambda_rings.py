@@ -1,6 +1,8 @@
 r"""
 Category of Lambda Rings
-::
+
+EXAMPLE::
+
     sage: from msinvar.lambda_rings import LambdaRings
     sage: R=PolynomialRing(QQ, 'x')
     sage: LambdaRings.add_ring(R)
@@ -21,57 +23,77 @@ from sage.misc.misc_c import prod
 
 
 class LambdaRings(Category_singleton):
-    """
-    The category of lambda-rings
-    -- commutative rings with plethystic operations.
+    r"""
+    The category of lambda-rings -- commutative rings with plethystic
+    operations.
 
-    To add a parent to the category one needs to call::
+    To add a parent to the category one needs to call:
+    :meth:`LambdaRings.add_ring`.
 
-        LambdaRings.add_ring(R)
+    EXAMPLE::
 
-    This can be done with existing parent instances or in the init method
-    of a parent.
-    The default adams operation is **default_adams**.
-    To override it one should define a new method **adams** in the parent
+        sage: from msinvar.lambda_rings import LambdaRings
+        sage: R=PolynomialRing(QQ,2,'x,y')
+        sage: LambdaRings.add_ring(R)
+        sage: x,y=R.gens()
+        sage: (x+y).adams(2)
+        x^2 + y^2
+
+    We can add an existing parent to lambda-rings, or we can use the init 
+    method of a parent. For example, :class:`msinvar.tm_polynomials.TMPoly`
+    is automatically equipped with a lambda-ring structure.
+    
+    EXAMPLE::
+
+        sage: from msinvar import TMPoly
+        sage: R1=TMPoly(R,1,'z'); z=R1.gen()
+        sage: (x*z).adams(2)
+        x^2*z^2
+
+    The default adams operation is :meth:`default_adams`.
+    To override it one should define a new method :meth:`adams` in the parent
     or in the element class.
+
     For existing parent instances to override the default adams operation
-    one needs to call::
+    one can call::
 
         LambdaRings.add_ring(R, adams)
 
-    where **adams** is a new adams operation. It is stored in the attribute
-    _adams of a parent.
-
-    s a dictionary inside
-    the class **LambdaRings**.
-
+    where ``adams`` is the new adams operation.
     """
+
+    dct_adams = {}
 
     @staticmethod
     def add_ring(R, adams=None):
+        """Add ``R`` to the category of lambda-rings.
+
+        In particular, equip ``R`` and its elements with the adams operation.
+        """
         R._refine_category_(LambdaRings())
-        R._adams = adams
+        if adams is not None:
+            LambdaRings.dct_adams[R] = adams
 
     def super_categories(self):
+        """Return the immediate super categories of ``self``."""
         return [CommutativeRings()]
 
     class ParentMethods:
-
-        _adams = None
 
         def is_lambda_ring(self):
             return False
 
         def adams(self, a, n):
-            if self._adams is None:
-                return default_adams(a, n)
-            return self._adams(a, n)
+            dct = LambdaRings.dct_adams
+            if self in dct:
+                return dct[self](a, n)
+            return default_adams(a, n)
 
     class ElementMethods:
 
         def adams(self, n):
             r"""
-            Adams operation $\psi_n(self)$
+            Adams operation `\psi_n` applied to ``self``.
             """
             return self.parent().adams(self, n)
 
@@ -92,6 +114,11 @@ def is_LambdaRingElement(a):
 
 
 def default_adams(f, n):
+    """
+    Return the default adams operation.
+
+    It raises all variables in ``f`` to the ``n``-th power.
+    """
     try:
         d = {x: x**n for x in f.parent().gens()}
         return f.subs(d)

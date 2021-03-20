@@ -1,7 +1,8 @@
 r"""
-Some base rings where our invariants live
+Some base rings in which our invariants take values
 
 EXAMPLES::
+    
     sage: from msinvar.rings import RF
     sage: R=RF('u,v')
     sage: R.inject_variables(verbose=False)
@@ -25,27 +26,6 @@ from sage.categories.quotient_fields import QuotientFields
 from msinvar.lambda_rings import LambdaRings
 
 
-class SR1(SymbolicRing):
-    def __init__(self, vars):
-        super().__init__()
-        self.var(vars)
-        LambdaRings.add_ring(self)
-        # Parent.__init__(self, category=LambdaRings()) # wee add category explicitly now
-        # self.inject_variables() #does not work globally; need to invoke it later
-
-    def ngens(self):
-        return len(self.symbols)
-
-    def gen(self, i=0):  # needed for gens, inject_variables to work
-        return list(self.symbols.values())[i]
-
-    def variable_names(self):  # needed for inject_variables to work
-        return tuple(self.symbols.keys())
-
-    def _repr_(self):
-        return 'Symbolic ring with lambda-ring structure'
-
-
 class RationalFunctionField(FractionField_generic):
     """
     Field of rational functions in several variables, meaning fractions P/Q, where P, Q
@@ -55,7 +35,7 @@ class RationalFunctionField(FractionField_generic):
 
         sage: from msinvar.rings import RF
         sage: R=RF(); R
-        Fraction Field of Multivariate Polynomial Ring in y over Rational Field
+        Field of Rational Functions in y
         sage: y=R.gen()
         sage: f=(1-y)**3/(1+y)**2; f
         (-y^3 + 3*y^2 - 3*y + 1)/(y^2 + 2*y + 1)
@@ -65,7 +45,7 @@ class RationalFunctionField(FractionField_generic):
         (-y^6 + 3*y^4 - 3*y^2 + 1)/(y^4 + 2*y^2 + 1)
 
         sage: R=RF('x,y'); R
-        Fraction Field of Multivariate Polynomial Ring in x, y over Rational Field
+        Field of Rational Functions in x, y
         sage: R.inject_variables(verbose=False)
         sage: f=(1-y**2)**5/(1-y)**5*(x-y)
         sage: f.factor()
@@ -95,7 +75,9 @@ RF = RationalFunctionField
 
 
 class RationalFunction(FractionFieldElement):
+    """Element class for the parent class :class:`RationalFunctionField`."""
     def root_vars(self, k=2):
+        """See :meth:`root_vars`."""
         return root_vars(self, k)
 
 
@@ -110,3 +92,28 @@ def root_vars(f, k=2):
     def root(e): return tuple(i//k for i in e)
     dct = {root(e): c for e, c in f.dict().items()}
     return R(dct)
+
+class SR1(SymbolicRing):
+    def __init__(self, vars):
+        super().__init__()
+        self.var(vars)
+        LambdaRings.add_ring(self)
+        # Parent.__init__(self, category=LambdaRings()) # wee add category explicitly now
+        # self.inject_variables() #does not work globally; need to invoke it later
+
+    def ngens(self):
+        """Return the number of variables."""
+        return len(self.symbols)
+
+    def gen(self, i=0):  # needed for gens, inject_variables to work
+        """Return the i-th variable."""
+        return list(self.symbols.values())[i]
+
+    def variable_names(self):  # needed for inject_variables to work
+        """Return the tuple of all names of variables."""
+        return tuple(self.symbols.keys())
+
+    def _repr_(self):
+        return 'Symbolic ring with lambda-ring structure'
+
+

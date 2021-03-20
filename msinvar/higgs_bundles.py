@@ -1,13 +1,15 @@
 r"""
 Motivic classes of the moduli spaces of twisted Higgs bundles
 
+For more details see :arxiv:`1104.5698` and :arxiv:`1901.02439`.
+
 EXAMPLES::
     
-sage: from msinvar.higgs_bundles import CurveAlgebra
-sage: from msinvar.higgs_bundles import twisted_higgs_bundles_invariant as invar
-sage: C=CurveAlgebra(g=2)
-sage: invar(C,l=2,r=2).factor()
-(y - 1)^4 * y^10 * (y^2 + 1) * (y^4 - 4*y + 2)
+    sage: from msinvar.higgs_bundles import CurveAlgebra
+    sage: from msinvar.higgs_bundles import twisted_higgs_bundles_invariant as invar
+    sage: C=CurveAlgebra(g=2)
+    sage: invar(C,l=2,r=2).factor()
+    (y - 1)^4 * y^10 * (y^2 + 1) * (y^4 - 4*y + 2)
 """
 
 # *****************************************************************************
@@ -44,6 +46,8 @@ class CurveAlgebra(RationalFunctionField):
         self.q = self.u*self.v
 
     def zeta(self, **kw):
+        """Zeta function of a curve.
+        It has the form (1-y*t)^(2*g)/(1-t)/(1-y^2*t)."""
         u, v, t, g = self.u, self.v, self.t, self.g
         z = (1-u*t)**g * (1-v*t)**g / (1-t) / (1-u*v*t)
         if len(kw) == 0:
@@ -52,7 +56,7 @@ class CurveAlgebra(RationalFunctionField):
 
     def H(self, part, p):
         """
-        Compute the function H from https://arxiv.org/abs/1104.5698 (7)
+        Compute the function H from :arxiv:`1104.5698` (7).
         """
         t, g, Z = self.t, self.g, self.zeta
         q = self.u * self.v
@@ -69,12 +73,12 @@ class CurveAlgebra(RationalFunctionField):
 
 def twisted_higgs_bundles_invariant(C, l, r):
     """
-    Invariants of the moduli space of l-twisted rank r Higgs bundles
-    over a curve C.
+    Invariants of the moduli space of ``l``-twisted rank ``r`` Higgs bundles
+    over a curve ``C``.
 
     Expected dimension of the moduli space is 1+l*r^2.
-    For l=2g-2 it is 2+l*r^2
-    The final power twist is given by arxiv.org/pdf/1901.02439.pdf (6)
+    For l=2g-2 it is 2+l*r^2.
+    The final power twist is given by :arxiv:`1901.02439` (6).
     """
     u, v, t, g = C.u, C.v, C.t, C.g
     p = l-(2*g-2)

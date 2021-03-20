@@ -2,7 +2,8 @@ r"""
 Truncated Multivariate polynomials
 
 EXAMPLES::
-    sage: from msinvar.tm_polynomials import TMPoly
+    
+    sage: from msinvar import TMPoly
     sage: R=TMPoly(QQ,2,'x',prec=(2,2))
     sage: R.inject_variables(verbose=False)
     sage: (x0+x1).Exp()
@@ -19,22 +20,22 @@ EXAMPLES::
 from sage.rings.polynomial.multi_polynomial_element import MPolynomial_polydict
 from sage.rings.polynomial.multi_polynomial_ring import MPolynomialRing_polydict
 from sage.arith.misc import moebius
+from sage.rings.rational_field import QQ
 from msinvar.lambda_rings import LambdaRings, adams
 from msinvar.utils import isiterable
-
 
 class TMPolynomial(MPolynomial_polydict):
     """
     The element class for  truncated multivariate polynomials.
-    The parent class is **MPolynomialRing_trunc**.
+    The parent class is :class:`TMPolynomialRing`.
 
-    **Implementation details:**
+    Implementation details:
 
-    1. The parent should have a method **le_prec(v)** to test if degree v should be included.
-    2. Truncation takes place in the **__init__** method.
-    3. Arithmetic operations are inherited from **MPolynomial_polydict**.
-    4. We implement Adams operation **adams**, exp, log and plethystic Exp, Log.
-    5. Function for the twisted multilpication is given by self._parent._twist_prod
+    1. The parent should have a method :meth:`le_prec` to test if a given degree should be present.
+    2. Truncation is performed in the :meth:`__init__` method.
+    3. Arithmetic operations are inherited from :class:`MPolynomial_polydict`.
+    4. We implement Adams operation adams, exp, log and plethystic Exp, Log.
+    5. Function for the twisted multilpication is given by self.parent().prod_twist
     """
 
     def __init__(self, parent, x):
@@ -219,31 +220,36 @@ class TMPolynomial(MPolynomial_polydict):
 
 class TMPolynomialRing(MPolynomialRing_polydict):
     """
-    Truncated Multivariable polynomial ring.
+    Truncated Multivariate polynomial ring.
 
-    Multivariate polynomials up to degree prec,
-    where prec is a degree vector or an integer (total degree).
-    Monomials of degree prec are included.
-    Adams operations, plethystic Exp and Log are implemented
-    (without connection to the category of lambda rings in sage).
+    Multivariate polynomials up to degree ``prec``,
+    where ``prec`` is a degree vector or an integer (total degree).
+    Monomials of degree ``prec`` are included.
+    We implement Adams operations, plethystic Exp and Log
+    (we introduce the category of lambda rings 
+    :class:`msinvar.lambda_rings.LambdaRings` and embed our ring into it).
 
     This is the parent class for truncated multivariate polynomials.
-    It has an alias **TMPoly**.
-    The element class is **MPolynomial_trunc**.
+    It has an alias :class:`TMPoly`.
+    The element class is :class:`TMPolynomial`.
 
     PARAMETERS:
 
-        1. prec - precision vector (or integer, or infinity) for truncation
-        2. twist_prod - function that maps exponents (d,e) to the base_ring. The new product is x^d*x^e=twist_prod(d,e)*x^(d+e)
+        1. ``base_ring`` -- the base of our polynomial algebra.
+        2. ``n`` -- the number of vairables.
+        3. ``names`` -- names of variables; can be just 'x' or 'x,y,..'.
+        4. ``prec`` - precision vector (or integer, or None) for truncation
+        5. ``order`` -- the order of variables.
+        6. ``prod_twist`` - function that maps exponents (d,e) to the base_ring. The new product is x^d*x^e=prod_twist(d,e)*x^(d+e)
 
     EXAMPLES::
-
-        sage: from msinvar.tm_polynomials import TMPoly
+    
+        sage: from msinvar import TMPoly
         sage: R=TMPoly(QQ,2,prec=(2,2)); R
         Multivariate Polynomial Ring in x0, x1 over Rational Field truncated at degree (2, 2)
         sage: x=R.gens(); (x[0]+x[1])**3
         3*x0^2*x1 + 3*x0*x1^2
-
+    
         sage: QR=Frac(PolynomialRing(QQ,'y,t'))
         sage: S=TMPoly(QR,2,'x',prec=(2,2))
         sage: y,t=QR.gens(); x=S.gens()
@@ -251,26 +257,16 @@ class TMPolynomialRing(MPolynomialRing_polydict):
         y^2*x0^2 + x1^2
         sage: (y*x[0]).Exp()
         1 + y*x0 + y^2*x0^2
-
-        sage: R=TMPoly(QQ,1,prec=2, twist_prod=lambda a,b:2)
+    
+        sage: R=TMPoly(QQ,1,prec=2, prod_twist=lambda a,b:2)
         sage: x=R.gen(); x*x
         2*x^2
     """
 
     Element = TMPolynomial
 
-    def __init__(self, base_ring, n, names='x', order='negdegrevlex',
+    def __init__(self, base_ring=QQ, n=1, names='x', order='negdegrevlex',
                  prec=None, prod_twist=None):
-        """
-        PARAMETERS:
-
-        1. base_ring -- the base of our polynomial algebra.
-        2. n -- the number of vairables.
-        3. names -- names of variables; can be just 'x' or 'x,y,..'.
-        4. prec -- precision vector for the truncation.
-        5. order -- the order of variables.
-        6. twist_prod -- a function that maps exponents (u,v) to the base_ring
-        """
         # Parent.__init__(self, category=LambdaRings())#not needed anymore
         self._prec = prec
         self.prod_twist = prod_twist

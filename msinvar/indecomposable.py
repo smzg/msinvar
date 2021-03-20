@@ -15,20 +15,20 @@ def hua_formula(Q):
     Count the number of (absolutely) indecomposable representations of the
     quiver Q.
 
-    We apply the Hua formula as described in arXiv:math/0608321.
+    We apply the Hua formula as described in :arxiv:`math/0608321`.
 
     EXAMPLES::
 
         sage: from msinvar.quivers import Quiver
-        ....: from msinvar.indecomposable import hua_formula
-        ....: Q=Quiver('1-2') # quiver of type A2
-        ....: Q.prec([3,3])
-        ....: hua_formula(Q).dict()
-        {(1, 0): 1, (0, 1): 1, (1, 1): 1}
+        sage: from msinvar.indecomposable import hua_formula
+        sage: Q=Quiver('1-2') # quiver of type A2
+        sage: Q.prec([3,3])
+        sage: hua_formula(Q).dict()
+        {(0, 1): 1, (1, 0): 1, (1, 1): 1}
 
         sage: Q=Quiver('1-1') # Jordan quiver
-        ....: Q.prec([3])
-        ....: hua_formula(Q).dict() # we use q=y^2
+        sage: Q.prec([3])
+        sage: hua_formula(Q).dict() # we use q=y^2
         {(1,): y^2, (2,): y^2, (3,): y^2}
     """
     W = Q.wcs()
@@ -38,6 +38,7 @@ def hua_formula(Q):
 
 
 def hua_formula_dict(Q, q, bound):
+    """Auxiliary method."""
     z = tuple([0]*len(bound))
     dct = {z: 1}
     for l in MultiPartitionsLE_iterator(bound):

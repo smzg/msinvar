@@ -22,11 +22,11 @@ class SageTest(TestCommand):
 
 setup(
     name = 'msinvar',
-    version = '0.1.0',
+    version = '0.1',
     description='SageMath package for computing various moduli spaces invariants',
-    # long_description = readfile("README.rst"),
-    long_description = readfile("README.md"),
-    long_description_content_type="text/markdown",
+    long_description = readfile("README.rst"),
+    # long_description = readfile("README.md"),
+    # long_description_content_type="text/markdown",
     url='https://github.com/smzg/msinvar',
     author='Sergey Mozgovoy',
     author_email='mozhov@gmail.com',

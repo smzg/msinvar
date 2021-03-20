@@ -1,12 +1,18 @@
 r"""
-<Short one-line summary that ends with no period>
-
-<Paragraph description>
+Posets
 
 EXAMPLES::
 
-<Lots and lots of examples>
-
+    sage: from msinvar.posets import Poset
+    sage: P=Poset([[1,2],[1,3]]); P
+    Poset with vertices
+    {1, 2, 3}
+    and relations
+    [[1, 2], [1, 3]]
+    sage: list(P.succ(1))
+    [1, 2, 3]
+    sage: list(P.ideals())
+    [{1, 2, 3}, {1, 2}, {1, 3}, {1}, set()]
 """
 
 # *****************************************************************************
@@ -18,6 +24,22 @@ EXAMPLES::
 
 
 class Poset():
+    """
+    Poset class.
+    
+    EXAMPLES::
+    
+        sage: from msinvar.posets import Poset
+        sage: P=Poset([[1,2],[1,3]]); P
+        Poset with vertices
+        {1, 2, 3}
+        and relations
+        [[1, 2], [1, 3]]
+        sage: list(P.succ(1))
+        [1, 2, 3]
+        sage: list(P.ideals())
+        [{1, 2, 3}, {1, 2}, {1, 3}, {1}, set()]
+    """
     def __init__(self, rel, vert=None):
         if vert is None:
             vert = set()
@@ -49,7 +71,7 @@ class Poset():
 
     def ideals(self, size=100):
         """
-        List if ideals in a poset having <=size elements
+        List if ideals in a poset having <=``size`` elements.
         """
         if size<0:
             return

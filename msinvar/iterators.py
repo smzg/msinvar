@@ -1,11 +1,24 @@
 r"""
-<Short one-line summary that ends with no period>
-
-<Paragraph description>
+Collection of iterators.
 
 EXAMPLES::
 
-<Lots and lots of examples>
+    sage: from msinvar.iterators import *
+    sage: list(IntegerVectors_iterator([2,2]))
+    [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
+
+::
+    
+    sage: M=[[1,2,1],[3,1,1]]
+    sage: list(Multiplicities_iterator(M,[3,4]))
+    [[1, 0, 0],
+     [0, 1, 0],
+     [1, 1, 0],
+     [0, 0, 1],
+     [1, 0, 1],
+     [0, 1, 1],
+     [0, 0, 2],
+     [0, 0, 3]]
 
 """
 
@@ -17,21 +30,21 @@ EXAMPLES::
 # *****************************************************************************
 
 import numpy as np
-from msinvar.utils import sub_vec, zero_vec, min_vec, le_vec
+from msinvar.utils import vec
 
 
 def IntegerVectors_iterator(vect):
-    """
+    r"""
     Iterator over integer vectors 0 < a <= vect
 
     It is more efficient than
-    **sage.combinat.vector_partition.IntegerVectorsIterator**
+    :meth:`sage.combinat.vector_partition.IntegerVectorsIterator`.
 
-    Parameters
-    ----------
-    vect : A list of integers
+    ``vect`` -- a list of integers.
 
-    Examples::
+    EXAMPLES::
+
+        sage: from msinvar.iterators import *
         sage: list(IntegerVectors_iterator([2,2]))
         [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
     """
@@ -49,14 +62,12 @@ def IntegerVectors_iterator(vect):
 
 
 def Multiplicities_iterator(M, b):
-    """
+    r"""
     Iterator over integer vectors a>0 such that M*a<=b,
-    where M is a matrix and b is a vector.
+    where ``M`` is a matrix and ``b`` is a vector.
 
-    Parameters
-    ----------
-    M : Matrix of size m x n
-    b : Vector of size m
+    - ``M`` -- Matrix of size m x n
+    - ``b`` -- Vector of size m
 
     """
     M = np.array(M)
@@ -66,7 +77,7 @@ def Multiplicities_iterator(M, b):
     k = 0
     while k < n:
         a[k] += 1
-        if all(M[:, k:].dot(a[k:])<= b):
+        if all(M[:, k:].dot(a[k:]) <= b):
             a[:k] = 0
             yield list(a)
             k = -1
@@ -76,32 +87,32 @@ def Multiplicities_iterator(M, b):
 
 
 def OrderedMultiPartitionsLE_iterator(vect):
-    """
-    Iterator of collections of vectors
-    (a_1,..,a_k) such that a_1+..+a_k<=vect and a_i>0
+    r"""
+    Iterator over collections of vectors
+    (a_1,..,a_k) such that a_1+..+a_k <= ``vect`` and a_i>0.
     """
     for b in IntegerVectors_iterator(vect):
         yield [b]
-        for a in OrderedMultiPartitionsLE_iterator(sub_vec(vect, b)):
+        for a in OrderedMultiPartitionsLE_iterator(vec.sub(vect, b)):
             yield [b]+a
 
 
 def OrderedMultiPartitions_iterator(vect):
+    r"""
+    Iterator over collections of vectors
+    (a_1,...,a_k) such that a_1+...+a_k = ``vect`` and a_i>0.
     """
-    Iterator of collections of vectors
-    (a_1,..,a_k) such that a_1+..+a_k=vect and a_i>0
-    """
-    if not zero_vec(vect):
+    if not vec.zero(vect):
         yield [vect]
     for b in IntegerVectors_iterator(vect):
-        for a in OrderedMultiPartitions_iterator(sub_vec(vect, b)):
+        for a in OrderedMultiPartitions_iterator(vec.sub(vect, b)):
             yield [b]+a
 
 
 def OrderedPartitionsLE_iterator(n):
-    """
-    Iterator of collections of positive numbers
-    (a_1,..,a_k) such that a_1+..+a_k<=n
+    r"""
+    Iterator over collections of positive numbers
+    (a_1,..,a_k) such that a_1+..+a_k <= ``n``.
     """
     for b in range(1, n+1):
         yield [b]
@@ -110,9 +121,9 @@ def OrderedPartitionsLE_iterator(n):
 
 
 def OrderedPartitions_iterator(n):
-    """
-    Iterator of collections of positive numbers
-    (a_1,..,a_k) such that a_1+..+a_k=n
+    r"""
+    Iterator over collections of positive numbers
+    (a_1,...,a_k) such that a_1+...+a_k = ``n``.
     """
     if n != 0:
         yield [n]
@@ -122,38 +133,38 @@ def OrderedPartitions_iterator(n):
 
 
 def MultiPartitionsLE_iterator(vect, bound=None):
-    """
-    Iterator of collections of vectors
-    b>=a_1>=..>=a_k>0 such that a_1+..+a_k<=vect
+    r"""
+    Iterator over collections of vectors
+    ``bound``>=a_1 >=...>=a_k>0 such that a_1+...+a_k <= ``vect``.
     """
     if bound is None:
         bound = vect.copy()
     else:
-        bound = min_vec(vect, bound)
+        bound = vec.vmin(vect, bound)
     for b in IntegerVectors_iterator(bound):
         yield [b]
-        for a in MultiPartitionsLE_iterator(sub_vec(vect, b), b):
+        for a in MultiPartitionsLE_iterator(vec.sub(vect, b), b):
             yield [b]+a
 
 
 def MultiPartitions_iterator(vect, bound=None):
-    """
-    Iterator of collections of vectors
-    b>=a_1>=..>=a_k>0 such that a_1+..+a_k=vect
+    r"""
+    Iterator over collections of vectors
+    ``bound``>=a_1>=...>=a_k>0 such that a_1+...+a_k = ``vect``.
     """
     if bound is None:
         bound = vect
-    if not zero_vec(vect) and le_vec(vect, bound):
+    if not vec.zero(vect) and vec.le(vect, bound):
         yield [vect]
-    bound = min_vec(vect, bound)
+    bound = vec.vmin(vect, bound)
     for b in IntegerVectors_iterator(bound):
-        for a in MultiPartitions_iterator(sub_vec(vect, b), b):
+        for a in MultiPartitions_iterator(vec.sub(vect, b), b):
             yield [b]+a
 
 
 def Subsets_iterator(n):
-    """
-    Non-empty subsets of the set {0,..,n-1}
+    r"""
+    Iterator over non-empty subsets of the set {0,..,n-1}.
     """
     for i in range(n):  # the maximal element of the subset
         yield [i]
@@ -162,9 +173,9 @@ def Subsets_iterator(n):
 
 
 def ListPartitions_iterator(l):
-    """
-    Iterator over collections of nonempty lists (l1,..,lk)
-    such that l1+..+lk=l
+    r"""
+    Iterator over collections of nonempty disjoint lists (l1,..,lk)
+    such that l1+...+lk= ``l``.
     """
     for a in OrderedPartitions_iterator(len(l)):
         yield list(l[sum(a[:i]):sum(a[:i+1])] for i in range(len(a)))
