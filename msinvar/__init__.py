@@ -10,7 +10,8 @@ from .lambda_rings import LambdaRings
 from .tm_polynomials import TMPoly
 from .rings import RF
 
-from .quivers import Quiver, KroneckerQuiver, CyclicQuiver, JordanQuiver, ChainQuiver
+from .quivers import Quiver, ChainQuiver, CyclicQuiver,\
+    KroneckerQuiver, JordanQuiver, TranslationPQ
 from .wall_crossing import WCS
 from .invariants import Invariant
 from .stability import Stability

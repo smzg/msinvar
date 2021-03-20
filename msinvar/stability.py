@@ -7,7 +7,7 @@ EXAMPLES::
     sage: z=Stability([1,0]); z
     Stability function [[1, 0], [1, 1]]
     sage: z([1,2]) #slope
-    0.3333333333333333
+    0.3333333333
 """
 
 # *****************************************************************************
@@ -31,7 +31,7 @@ class Stability:
         sage: z=Stability([1,0]); z
         Stability function [[1, 0], [1, 1]]
         sage: z([1,2]) #slope
-        0.3333333333333333
+        0.3333333333
         sage: z([1,0],[0,1]) #difference of slopes
         1.0
         sage: z.less([1,0],[0,1])
@@ -59,12 +59,11 @@ class Stability:
 
     def slope(self, d):
         """Slope of the vector ``d``."""
-        return np.dot(self.a, d)/np.dot(self.b, d)
+        return round(np.dot(self.a, d)/np.dot(self.b, d),10)
 
     def compare(self, d, e):
         """Difference of slopes."""
-        c = self.slope(d)-self.slope(e)
-        return self._rnd(c)
+        return self.slope(d)-self.slope(e)
 
     def less(self, d, e):
         """Return True if slope(d)<slope(e)."""
@@ -90,7 +89,7 @@ class Stability:
     def normalize(self, d):
         """Return function f such that f(e)<0 iff slope(e)<slope(d)."""
         c = self.a-self.slope(d)*self.b
-        return lambda d: self._rnd(np.dot(c, d))
+        return lambda d: round(np.dot(c, d),10)
 
     def randomize(self):
         """Generic perturbation of self."""
@@ -121,8 +120,3 @@ class Stability:
         if isinstance(z, Stability):
             return z
         return Stability(z)
-
-    def _rnd(self, c):
-        if abs(c) < 1e-8:
-            return 0
-        return c
