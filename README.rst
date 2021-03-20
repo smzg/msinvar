@@ -4,4 +4,6 @@ msinvar
 SageMath package for computing various moduli space invariants
 --------------------------------------------------------------
 
-Jupyter notebooks with examples can be viewed directly at `jupyter.org <https://nbviewer.jupyter.org/github/smzg/msinvar/tree/main/notebooks/>`_
+- `Repository <https://github.com/smzg/msinvar>`_ on github.
+- `Reference manual <https://smzg.github.io/msinvar/>`_ on github pages.
+- `Jupyter notebooks <https://nbviewer.jupyter.org/github/smzg/msinvar/tree/main/notebooks/>`_ with examples on jupyter.org.
