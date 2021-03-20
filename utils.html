@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Utils &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Posets" href="posets.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="posets.html">Posets</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/utils.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msinvar.utils">
+<span id="utils"></span><h1>Utils<a class="headerlink" href="#module-msinvar.utils" title="Permalink to this headline">¶</a></h1>
+<p>Collection of utilities.</p>
+<dl class="py function">
+<dt id="msinvar.utils.isiterable">
+<code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">isiterable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#isiterable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.isiterable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.utils.cache">
+<code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">cache</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#cache"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.cache" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py class">
+<dt id="msinvar.utils.vec">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">vec</span></code><a class="reference internal" href="_modules/msinvar/utils.html#vec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt id="msinvar.utils.vec.le">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">le</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.le"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.le" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.iszero">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">iszero</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.iszero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.iszero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.zero">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">zero</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.utils.vec.zero" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.equal">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">equal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.equal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.equal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.vmin">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">vmin</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.vmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.vmin" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.vmax">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">vmax</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.vmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.vmax" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.scal">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">scal</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.scal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.scal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.dot">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">dot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.dot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.dot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.sub">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">sub</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.sub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.sub" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.add">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">add</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the sum of vectors a, b.
+If b=None, return the sum of vectors in the list a.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.utils.vec.basis">
+<em class="property"><span class="pre">static</span> </em><code class="sig-name descname"><span class="pre">basis</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#vec.basis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.vec.basis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the standard <code class="docutils literal notranslate"><span class="pre">i</span></code>-th basis vector of dimension <code class="docutils literal notranslate"><span class="pre">n</span></code>.
+Here 0&lt;=i&lt;n.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.utils.info">
+<code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">info</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.utils.disp">
+<code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">disp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">G</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#disp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.disp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.utils.timer">
+<code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">timer</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#timer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.timer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.utils.phi">
+<code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">phi</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#phi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.phi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return <span class="math notranslate nohighlight">\((q)_n=\prod_{i=1}^n(1-q^i)\)</span>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">n</span></code> is a list, apply <a class="reference internal" href="#msinvar.utils.phi" title="msinvar.utils.phi"><code class="xref py py-meth docutils literal notranslate"><span class="pre">phi()</span></code></a> to all entries and take the product.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.utils.poch">
+<code class="sig-prename descclassname"><span class="pre">msinvar.utils.</span></code><code class="sig-name descname"><span class="pre">poch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/utils.html#poch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.utils.poch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the Pochhammer symbol <span class="math notranslate nohighlight">\((a;q)_n=\prod_{i=0}^{n-1}(1-aq^i)\)</span>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">n</span></code> is a list, apply <a class="reference internal" href="#msinvar.utils.poch" title="msinvar.utils.poch"><code class="xref py py-meth docutils literal notranslate"><span class="pre">poch()</span></code></a> to all entries and take the product.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="posets.html" class="btn btn-neutral float-left" title="Posets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

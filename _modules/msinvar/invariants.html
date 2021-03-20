@@ -1,0 +1,792 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.invariants &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.invariants</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.invariants</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Invariant class that associates a value with every dimension vector</span>
+
+<span class="sd">An invariant can be constructed from a TMPolynomial, a dictionary, a function </span>
+<span class="sd">or another invariant. Every invariant can be transformed to a TMPolynomial</span>
+<span class="sd">or a dictionary. We cache the values of an invariant so that they don&#39;t have</span>
+<span class="sd">to be computed repeatedly.</span>
+
+<span class="sd">EXAMPLES::</span>
+
+<span class="sd">    sage: from msinvar import *</span>
+<span class="sd">    sage: R=TMPoly(prec=[3]); R</span>
+<span class="sd">    Multivariate Polynomial Ring in x over Rational Field truncated at degree [3]</span>
+<span class="sd">    sage: x=R.gen(); x.Exp()</span>
+<span class="sd">    1 + x + x^2 + x^3</span>
+<span class="sd">    sage: I=Invariant(x.Exp()); I</span>
+<span class="sd">    Invariant</span>
+<span class="sd">    sage: I.dict()</span>
+<span class="sd">    {(0,): 1, (1,): 1, (2,): 1, (3,): 1}</span>
+<span class="sd">    sage: I.Log().dict()</span>
+<span class="sd">    {(1,): 1}</span>
+<span class="sd">    sage: I.Log().poly()</span>
+<span class="sd">    x</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+
+<span class="kn">from</span> <span class="nn">numpy</span> <span class="kn">import</span> <span class="n">array</span>
+<span class="kn">from</span> <span class="nn">sage.misc.misc_c</span> <span class="kn">import</span> <span class="n">prod</span>
+<span class="kn">from</span> <span class="nn">sage.arith.misc</span> <span class="kn">import</span> <span class="n">divisors</span><span class="p">,</span> <span class="n">gcd</span><span class="p">,</span> <span class="n">moebius</span><span class="p">,</span> <span class="n">factor</span>
+<span class="kn">from</span> <span class="nn">sage.functions.other</span> <span class="kn">import</span> <span class="n">factorial</span>
+<span class="kn">from</span> <span class="nn">sage.rings.rational_field</span> <span class="kn">import</span> <span class="n">QQ</span>
+<span class="kn">from</span> <span class="nn">sage.calculus.functional</span> <span class="kn">import</span> <span class="n">expand</span>
+
+<span class="kn">from</span> <span class="nn">msinvar.tm_polynomials</span> <span class="kn">import</span> <span class="n">TMPolynomial</span><span class="p">,</span> <span class="n">TMPolynomialRing</span>
+<span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">cache</span><span class="p">,</span> <span class="n">vec</span>
+<span class="kn">from</span> <span class="nn">msinvar.iterators</span> <span class="kn">import</span> <span class="n">IntegerVectors_iterator</span><span class="p">,</span> <span class="n">ListPartitions_iterator</span>
+<span class="kn">from</span> <span class="nn">msinvar.iterators</span> <span class="kn">import</span> <span class="n">OrderedMultiPartitions_iterator</span><span class="p">,</span> <span class="n">OrderedMultiPartitionsLE_iterator</span>
+<span class="kn">from</span> <span class="nn">msinvar.stability</span> <span class="kn">import</span> <span class="n">Stability</span>
+
+
+<div class="viewcode-block" id="Invariant"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant">[docs]</a><span class="k">class</span> <span class="nc">Invariant</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Invariant class that associates an invariants I(d) with every dimension </span>
+<span class="sd">    vector d.</span>
+
+<span class="sd">    An argument can be a TMPolynomial, a dictionary, a function or another </span>
+<span class="sd">    invariant.</span>
+<span class="sd">    Objects have methods that return associated TMPolynomials and dictionaries.</span>
+<span class="sd">    If possible, we save the ring (TMPoly) in order to transform our invariant</span>
+<span class="sd">    to a polynomial.</span>
+<span class="sd">    </span>
+<span class="sd">    - ``f`` -- function, TMPolynomial, dictionary, Invariant.</span>
+<span class="sd">    - ``R`` -- a ring TMPolynomialRing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f</span> <span class="o">=</span> <span class="n">f</span>
+        <span class="k">if</span> <span class="n">R</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ring</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">TMPolynomial</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">Invariant</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Invariant&#39;</span>
+
+    <span class="nd">@cache</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The value of the invariant at ``d``.&quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">f</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">TMPolynomial</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">coeff</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="p">)]</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Invariant.get_ring"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.get_ring">[docs]</a>    <span class="k">def</span> <span class="nf">get_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The ring (TMPolynomialRing) saved by the invariant.&quot;&quot;&quot;</span> 
+        <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">R</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">TMPolynomialRing</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">I</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Need a ring&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.get_prec"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.get_prec">[docs]</a>    <span class="k">def</span> <span class="nf">get_prec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Precision vector of the ring.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">msinvar.wall_crossing</span> <span class="kn">import</span> <span class="n">WCS</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ring</span><span class="p">()</span><span class="o">.</span><span class="n">prec</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">WCS</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">TMPolynomialRing</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">prec</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="Invariant.dict"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.dict">[docs]</a>    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert invariant to a dictionary, with keys bounded by self.prec().</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">prec</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_prec</span><span class="p">(</span><span class="n">prec</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">dct</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="p">)]</span> <span class="o">=</span> <span class="n">c</span>
+
+        <span class="n">add</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">prec</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">stab</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">stab</span> <span class="o">=</span> <span class="n">Stability</span><span class="p">(</span><span class="n">stab</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">prec</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">stab</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">stab</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="n">slope</span><span class="p">:</span>
+                <span class="n">add</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dct</span></div>
+
+<div class="viewcode-block" id="Invariant.series"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.series">[docs]</a>    <span class="k">def</span> <span class="nf">series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert invariant to a TMPolynomial.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">R</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_ring</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+        <span class="n">prec</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">prec</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">R</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">prec</span><span class="p">,</span> <span class="n">stab</span><span class="p">,</span> <span class="n">slope</span><span class="p">))</span></div>
+
+    <span class="n">to_series</span> <span class="o">=</span> <span class="n">series</span>
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">series</span>
+
+<div class="viewcode-block" id="Invariant.term_twist"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.term_twist">[docs]</a>    <span class="k">def</span> <span class="nf">term_twist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Twist every term using the function ``f``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.restrict"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.restrict">[docs]</a>    <span class="k">def</span> <span class="nf">restrict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Restrict invariant to dimension vectors d such that z(d)=slope,</span>
+<span class="sd">        where ``z`` is a Stability (or the corresponding vector).&quot;&quot;&quot;</span>
+        
+        <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="ow">or</span> <span class="n">z</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="n">slope</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.subs"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.subs">[docs]</a>    <span class="k">def</span> <span class="nf">subs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply substitution to every term.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.root_vars"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.root_vars">[docs]</a>    <span class="k">def</span> <span class="nf">root_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Substitute y^k by y for every variable y.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">.</span><span class="n">root_vars</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.simp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.simp">[docs]</a>    <span class="k">def</span> <span class="nf">simp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Simplify every term.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">simp</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">simp</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Invariant.plog"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.plog">[docs]</a>    <span class="k">def</span> <span class="nf">plog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s2">&quot;fast&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Take log along every ray.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">algo</span> <span class="o">==</span> <span class="s2">&quot;fast&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">plog_fast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">plog_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.pexp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.pexp">[docs]</a>    <span class="k">def</span> <span class="nf">pexp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s2">&quot;fast&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Take exp along every ray.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">algo</span> <span class="o">==</span> <span class="s2">&quot;fast&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">pexp_fast</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pexp_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.exp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The usual exponential. This method can be quite slow.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">series</span><span class="p">()</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Invariant.log"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The usual logarithm. This method can be quite slow.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">series</span><span class="p">()</span><span class="o">.</span><span class="n">log</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Invariant.Psi"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.Psi">[docs]</a>    <span class="k">def</span> <span class="nf">Psi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plethystic map Psi.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Psi_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.IPsi"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.IPsi">[docs]</a>    <span class="k">def</span> <span class="nf">IPsi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plethystic map Psi inverse.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">IPsi_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Invariant.pLog"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.pLog">[docs]</a>    <span class="k">def</span> <span class="nf">pLog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Take plethystic Log along every ray.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plog</span><span class="p">()</span><span class="o">.</span><span class="n">IPsi</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Invariant.pExp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.pExp">[docs]</a>    <span class="k">def</span> <span class="nf">pExp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Take plethystic Exp along every ray.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Psi</span><span class="p">()</span><span class="o">.</span><span class="n">pexp</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Invariant.Exp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.Exp">[docs]</a>    <span class="k">def</span> <span class="nf">Exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Take plethystic Exp.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">series</span><span class="p">()</span><span class="o">.</span><span class="n">Exp</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="Invariant.Log"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.Log">[docs]</a>    <span class="k">def</span> <span class="nf">Log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Take plethystic Log.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">series</span><span class="p">()</span><span class="o">.</span><span class="n">Log</span><span class="p">())</span></div></div>
+
+
+<span class="c1"># Useful maps between invariants</span>
+
+
+<div class="viewcode-block" id="log_map"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.log_map">[docs]</a><span class="k">def</span> <span class="nf">log_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Usual log.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">log_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">l</span><span class="p">):</span> <span class="k">return</span> <span class="n">QQ</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">OrderedMultiPartitions_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">+=</span> <span class="n">F</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">*</span> <span class="n">prod</span><span class="p">(</span><span class="n">I</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="exp_map"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.exp_map">[docs]</a><span class="k">def</span> <span class="nf">exp_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Usual exp.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">exp_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">l</span><span class="p">):</span> <span class="k">return</span> <span class="n">QQ</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">factorial</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)))</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">OrderedMultiPartitions_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="n">val</span> <span class="o">+=</span> <span class="n">F</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">*</span> <span class="n">prod</span><span class="p">(</span><span class="n">I</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="plog_map"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.plog_map">[docs]</a><span class="k">def</span> <span class="nf">plog_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;log along every ray.&quot;&quot;&quot;</span>
+    <span class="c1"># Note that log_transform() gives the same map, but plog_map is faster</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">plog_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">d</span><span class="o">//</span><span class="n">n</span>
+    <span class="n">I1</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">d0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">log_map</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="p">[</span><span class="n">n</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="pexp_map"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.pexp_map">[docs]</a><span class="k">def</span> <span class="nf">pexp_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;exp along every ray.&quot;&quot;&quot;</span>
+    <span class="c1"># Note that exp_transform() gives the same map, but pexp_map is faster</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">pexp_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">d0</span> <span class="o">=</span> <span class="n">d</span><span class="o">//</span><span class="n">n</span>
+    <span class="n">I1</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">k</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">d0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">exp_map</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="p">[</span><span class="n">n</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="Psi_map"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Psi_map">[docs]</a><span class="k">def</span> <span class="nf">Psi_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plethystic Psi.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">Psi_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">k</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="IPsi_map"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.IPsi_map">[docs]</a><span class="k">def</span> <span class="nf">IPsi_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plethsytic Psi inverse.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">IPsi_map</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">d1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">moebius</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">k</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+
+<div class="viewcode-block" id="recursive_inversion"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.recursive_inversion">[docs]</a><span class="k">def</span> <span class="nf">recursive_inversion</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Invert the transformation (map on invariants) T, assuming that</span>
+<span class="sd">    T(I)(d) is a sum of I(d) and some expression that depends just on</span>
+<span class="sd">    I(e) with e&lt;d.</span>
+
+<span class="sd">    Note that exp and log are not of this form for d=0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">T1</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The inverse of T&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="sd">&quot;&quot;&quot;The required invariant J=T1(I) such that I=T(J)&quot;&quot;&quot;</span>
+            <span class="k">def</span> <span class="nf">f1</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>  <span class="c1"># the fake J</span>
+                <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="mi">0</span>
+                <span class="k">return</span> <span class="n">J</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="n">J1</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f1</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-</span><span class="n">T</span><span class="p">(</span><span class="n">J1</span><span class="p">)(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">J</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">J</span>
+    <span class="k">return</span> <span class="n">T1</span></div>
+
+
+<div class="viewcode-block" id="Transform"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Transform">[docs]</a><span class="k">class</span> <span class="nc">Transform</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to transform invariants. Based on :arxiv:`2101.07636`.</span>
+
+<span class="sd">    It is encoded by a map from the set of lists of vectors</span>
+<span class="sd">    to rational numbers.</span>
+
+<span class="sd">    We define actions of transforms on 1-collections (Invariant class),</span>
+<span class="sd">    plethysm between transforms, inverse transfroms.</span>
+
+<span class="sd">    INPUT:</span>
+<span class="sd">    </span>
+<span class="sd">    - ``F`` -- transformation map from lists of vectors to Q (or base ring).</span>
+<span class="sd">    - ``twist`` -- product twist, map from sequences of vectors to the base ring.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">twist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">F</span> <span class="o">=</span> <span class="n">F</span>
+        <span class="k">if</span> <span class="n">twist</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">twist</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">twist</span> <span class="o">=</span> <span class="n">twist</span>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">Invariant</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">Transform</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plethysm</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+
+    <span class="nd">@cache</span>
+    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">F</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Transform.action"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Transform.action">[docs]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Action of the transformation on an invariant ``I``.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">OrderedMultiPartitions_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">F</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">*</span> <span class="n">prod</span><span class="p">(</span><span class="n">I</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="Transform.plethysm"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Transform.plethysm">[docs]</a>    <span class="k">def</span> <span class="nf">plethysm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plethysm of self and T.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">plethysm</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">l</span><span class="p">))</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">ListPartitions_iterator</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">part</span><span class="p">]</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="bp">self</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span> <span class="o">*</span> <span class="n">prod</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">part</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+    <span class="nd">@cache</span>
+    <span class="k">def</span> <span class="nf">inverse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Inverse transformation.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">l</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="c1"># if not isinstance(l, np.ndarray):</span>
+        <span class="c1">#     l = array(l)</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">ListPartitions_iterator</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">part</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="n">l1</span> <span class="o">=</span> <span class="p">[</span><span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">part</span><span class="p">]</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inverse</span><span class="p">(</span><span class="n">l1</span><span class="p">)</span> <span class="o">*</span> <span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">part</span><span class="p">)</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">val</span>
+
+<div class="viewcode-block" id="Transform.dict"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Transform.dict">[docs]</a>    <span class="k">def</span> <span class="nf">dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dictionary of values for all lists of vectors with the sum &lt;=d.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">tpl</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">OrderedMultiPartitionsLE_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">dct</span><span class="p">[</span><span class="n">tpl</span><span class="p">(</span><span class="n">l</span><span class="p">)]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="k">return</span> <span class="n">dct</span></div></div>
+
+
+<span class="c1"># Useful transforms</span>
+<div class="viewcode-block" id="proportional"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.proportional">[docs]</a><span class="k">def</span> <span class="nf">proportional</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Check if vectors a,b are proportional.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">a</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">b</span><span class="o">*</span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+    <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">proportional</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)))</span></div>
+
+
+<div class="viewcode-block" id="exp_transform"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.exp_transform">[docs]</a><span class="k">def</span> <span class="nf">exp_transform</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">QQ</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">factorial</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)))</span> <span class="k">if</span> <span class="n">proportional</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">QQ</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">factorial</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)))</span> <span class="k">if</span> <span class="n">z</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="n">F</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="log_transform"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.log_transform">[docs]</a><span class="k">def</span> <span class="nf">log_transform</span><span class="p">(</span><span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">QQ</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="k">if</span> <span class="n">proportional</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+
+        <span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">QQ</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">))</span> <span class="k">if</span> <span class="n">z</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="n">F</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reineke_sign"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.reineke_sign">[docs]</a><span class="k">def</span> <span class="nf">reineke_sign</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">tot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Used in :meth:`reineke_transform`.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tot</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">te</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">tot</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">+=</span> <span class="n">te</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="reineke_transform"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.reineke_transform">[docs]</a><span class="k">def</span> <span class="nf">reineke_transform</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Based on :arxiv:`math/0204059` and :arxiv:`2101.07636`.&quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="n">reineke_sign</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">z</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="joyce_sign"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.joyce_sign">[docs]</a><span class="k">def</span> <span class="nf">joyce_sign</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">tot</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Used in :meth:`joyce_transform`.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">tot</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">tot</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">tot</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">z</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">c1</span> <span class="o">=</span> <span class="n">z1</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">tot</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c1</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="o">-</span><span class="n">s</span>
+        <span class="k">elif</span> <span class="n">c</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">c1</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="joyce_transform"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.joyce_transform">[docs]</a><span class="k">def</span> <span class="nf">joyce_transform</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">z1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Based on :arxiv:`math/0410268` and :arxiv:`2101.07636`.&quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="n">joyce_sign</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">z1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="HN_transform"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.HN_transform">[docs]</a><span class="k">def</span> <span class="nf">HN_transform</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;See :arxiv:`2101.07636`.&quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">z1</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">trivial</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">dim</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">joyce_transform</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">z1</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="simp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.simp">[docs]</a><span class="k">def</span> <span class="nf">simp</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Simplify an expression.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">f</span>
+    <span class="k">return</span> <span class="n">expand</span><span class="p">(</span><span class="n">factor</span><span class="p">(</span><span class="n">f</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="indivisible"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.indivisible">[docs]</a><span class="k">def</span> <span class="nf">indivisible</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return True if ``d`` is an indivisible vector.&quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">array</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">//</span><span class="n">n</span></div>
+
+
+<div class="viewcode-block" id="plog_fast"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.plog_fast">[docs]</a><span class="k">def</span> <span class="nf">plog_fast</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return the logarithm taken separately along each ray.</span>
+
+<span class="sd">    We construct a dictionary of such logarithms with keys parametrized</span>
+<span class="sd">    by indivisible vectors. The logarithm is taken in the ring of truncated</span>
+<span class="sd">    polynomials. Therefore I.R and its precision vector are required.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">d0</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">n</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d0</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dct</span><span class="p">[</span><span class="n">d0</span><span class="p">]</span><span class="o">.</span><span class="n">coeff</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">prec</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">get_prec</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">prec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">//</span><span class="n">d0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d0</span><span class="p">))</span> <span class="k">if</span> <span class="n">d0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">dct1</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">d1</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d0</span><span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">dct1</span><span class="p">[</span><span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">f1</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">R</span><span class="p">(</span><span class="n">dct1</span><span class="p">)</span><span class="o">.</span><span class="n">log</span><span class="p">()</span>
+        <span class="n">dct</span><span class="p">[</span><span class="n">d0</span><span class="p">]</span> <span class="o">=</span> <span class="n">f1</span>
+        <span class="k">return</span> <span class="n">f1</span><span class="o">.</span><span class="n">coeff</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="pexp_fast"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.pexp_fast">[docs]</a><span class="k">def</span> <span class="nf">pexp_fast</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;See :meth:`plog_fast`.&quot;&quot;&quot;</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">d0</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">n</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">d0</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">dct</span><span class="p">[</span><span class="n">d0</span><span class="p">]</span><span class="o">.</span><span class="n">coeff</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="n">prec</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">get_prec</span><span class="p">()</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">prec</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">//</span><span class="n">d0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">d0</span><span class="p">))</span> <span class="k">if</span> <span class="n">d0</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">dct1</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">d1</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d0</span><span class="p">)</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">dct1</span><span class="p">[</span><span class="n">d1</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="n">f1</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">R</span><span class="p">(</span><span class="n">dct1</span><span class="p">)</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span>
+        <span class="n">dct</span><span class="p">[</span><span class="n">d0</span><span class="p">]</span> <span class="o">=</span> <span class="n">f1</span>
+        <span class="k">return</span> <span class="n">f1</span><span class="o">.</span><span class="n">coeff</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

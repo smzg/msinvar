@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Truncated multivariate polynomials &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Indecomposable representations" href="indecomposable.html" />
+    <link rel="prev" title="Stability parameters" href="stability.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stability.html">Stability parameters</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Truncated multivariate polynomials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/tm_polynomials.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msinvar.tm_polynomials">
+<span id="truncated-multivariate-polynomials"></span><h1>Truncated multivariate polynomials<a class="headerlink" href="#module-msinvar.tm_polynomials" title="Permalink to this headline">¶</a></h1>
+<p>Truncated Multivariate polynomials</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="n">TMPoly</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">=</span><span class="n">TMPoly</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">prec</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.</span><span class="n">inject_variables</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="p">(</span><span class="n">x0</span><span class="o">+</span><span class="n">x1</span><span class="p">)</span><span class="o">.</span><span class="n">Exp</span><span class="p">()</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">x0</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x0</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x1</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="n">x0</span><span class="o">*</span><span class="n">x1</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">x1</span><span class="o">^</span><span class="mi">2</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="msinvar.tm_polynomials.TMPolynomial">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">msinvar.tm_polynomials.</span></code><code class="sig-name descname"><span class="pre">TMPolynomial</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parent</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sage.rings.polynomial.multi_polynomial_element.MPolynomial_polydict</span></code></p>
+<p>The element class for  truncated multivariate polynomials.
+The parent class is <a class="reference internal" href="#msinvar.tm_polynomials.TMPolynomialRing" title="msinvar.tm_polynomials.TMPolynomialRing"><code class="xref py py-class docutils literal notranslate"><span class="pre">TMPolynomialRing</span></code></a>.</p>
+<p>Implementation details:</p>
+<ol class="arabic simple">
+<li><p>The parent should have a method <a class="reference internal" href="#msinvar.tm_polynomials.TMPolynomial.le_prec" title="msinvar.tm_polynomials.TMPolynomial.le_prec"><code class="xref py py-meth docutils literal notranslate"><span class="pre">le_prec()</span></code></a> to test if a given degree should be present.</p></li>
+<li><p>Truncation is performed in the <code class="xref py py-meth docutils literal notranslate"><span class="pre">__init__()</span></code> method.</p></li>
+<li><p>Arithmetic operations are inherited from <code class="xref py py-class docutils literal notranslate"><span class="pre">MPolynomial_polydict</span></code>.</p></li>
+<li><p>We implement Adams operation adams, exp, log and plethystic Exp, Log.</p></li>
+<li><p>Function for the twisted multilpication is given by self.parent().prod_twist</p></li>
+</ol>
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.le_prec">
+<code class="sig-name descname"><span class="pre">le_prec</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.le_prec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.le_prec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.prec_num">
+<code class="sig-name descname"><span class="pre">prec_num</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.prec_num"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.prec_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.exp">
+<code class="sig-name descname"><span class="pre">exp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.log">
+<code class="sig-name descname"><span class="pre">log</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.invert">
+<code class="sig-name descname"><span class="pre">invert</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.invert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.invert" title="Permalink to this definition">¶</a></dt>
+<dd><p>For simplicity we invert only poly with constant coefficient 1</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.Psi">
+<code class="sig-name descname"><span class="pre">Psi</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.Psi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.Psi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.IPsi">
+<code class="sig-name descname"><span class="pre">IPsi</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.IPsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.IPsi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.Exp">
+<code class="sig-name descname"><span class="pre">Exp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.Exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.Exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.Log">
+<code class="sig-name descname"><span class="pre">Log</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.Log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.Log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.term_twist">
+<code class="sig-name descname"><span class="pre">term_twist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.term_twist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.term_twist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Multiply every term c*x^v by f(v)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.coeff">
+<code class="sig-name descname"><span class="pre">coeff</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.coeff"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.coeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the coefficient of degree e monomial as an element of
+the base_ring.</p>
+<p>Note that <strong>coefficient</strong> returns an element of the polynomial ring.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.subs_base">
+<code class="sig-name descname"><span class="pre">subs_base</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.subs_base"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.subs_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.subs">
+<code class="sig-name descname"><span class="pre">subs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.subs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.subs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fixes some given variables in a given multivariate polynomial and
+returns the changed multivariate polynomials. The polynomial itself
+is not affected. The variable,value pairs for fixing are to be
+provided as a dictionary of the form {variable:value}.</p>
+<p>This is a special case of evaluating the polynomial with some of
+the variables constants and the others the original variables.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">fixed</span></code> - (optional) dictionary of inputs</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">**kw</span></code> - named parameters</p></li>
+</ul>
+<p>OUTPUT: new MPolynomial</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">.&lt;</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="o">&gt;</span> <span class="o">=</span> <span class="n">QQbar</span><span class="p">[]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">5</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">f</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span><span class="n">y</span><span class="p">))</span>
+<span class="mi">25</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">30</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">subs</span><span class="p">({</span><span class="n">x</span><span class="p">:</span><span class="mi">5</span><span class="p">})</span>
+<span class="mi">25</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">+</span> <span class="mi">30</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.invar">
+<code class="sig-name descname"><span class="pre">invar</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.invar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.invar" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.pLog">
+<code class="sig-name descname"><span class="pre">pLog</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.pLog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.pLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plethystic logarithm along every ray.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomial.pExp">
+<code class="sig-name descname"><span class="pre">pExp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomial.pExp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomial.pExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plethystic logarithm along every ray.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt id="msinvar.tm_polynomials.TMPolynomialRing">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">msinvar.tm_polynomials.</span></code><code class="sig-name descname"><span class="pre">TMPolynomialRing</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="pre">base_ring=Rational</span> <span class="pre">Field</span></em>, <em class="sig-param"><span class="pre">n=1</span></em>, <em class="sig-param"><span class="pre">names='x'</span></em>, <em class="sig-param"><span class="pre">order='negdegrevlex'</span></em>, <em class="sig-param"><span class="pre">prec=None</span></em>, <em class="sig-param"><span class="pre">prod_twist=None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomialRing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomialRing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">sage.rings.polynomial.multi_polynomial_ring.MPolynomialRing_polydict</span></code></p>
+<p>Truncated Multivariate polynomial ring.</p>
+<p>Multivariate polynomials up to degree <code class="docutils literal notranslate"><span class="pre">prec</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">prec</span></code> is a degree vector or an integer (total degree).
+Monomials of degree <code class="docutils literal notranslate"><span class="pre">prec</span></code> are included.
+We implement Adams operations, plethystic Exp and Log
+(we introduce the category of lambda rings 
+<a class="reference internal" href="lambda_rings.html#msinvar.lambda_rings.LambdaRings" title="msinvar.lambda_rings.LambdaRings"><code class="xref py py-class docutils literal notranslate"><span class="pre">msinvar.lambda_rings.LambdaRings</span></code></a> and embed our ring into it).</p>
+<p>This is the parent class for truncated multivariate polynomials.
+It has an alias <a class="reference internal" href="#msinvar.tm_polynomials.TMPoly" title="msinvar.tm_polynomials.TMPoly"><code class="xref py py-class docutils literal notranslate"><span class="pre">TMPoly</span></code></a>.
+The element class is <a class="reference internal" href="#msinvar.tm_polynomials.TMPolynomial" title="msinvar.tm_polynomials.TMPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">TMPolynomial</span></code></a>.</p>
+<p>PARAMETERS:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">base_ring</span></code> – the base of our polynomial algebra.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">n</span></code> – the number of vairables.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">names</span></code> – names of variables; can be just ‘x’ or ‘x,y,..’.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prec</span></code> - precision vector (or integer, or None) for truncation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">order</span></code> – the order of variables.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prod_twist</span></code> - function that maps exponents (d,e) to the base_ring. The new product is x^d*x^e=prod_twist(d,e)*x^(d+e)</p></li>
+</ol>
+</div></blockquote>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="n">TMPoly</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">=</span><span class="n">TMPoly</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">prec</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span> <span class="n">R</span>
+<span class="n">Multivariate</span> <span class="n">Polynomial</span> <span class="n">Ring</span> <span class="ow">in</span> <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">truncated</span> <span class="n">at</span> <span class="n">degree</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">=</span><span class="n">R</span><span class="o">.</span><span class="n">gens</span><span class="p">();</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">**</span><span class="mi">3</span>
+<span class="mi">3</span><span class="o">*</span><span class="n">x0</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">x1</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x0</span><span class="o">*</span><span class="n">x1</span><span class="o">^</span><span class="mi">2</span>
+
+<span class="n">sage</span><span class="p">:</span> <span class="n">QR</span><span class="o">=</span><span class="n">Frac</span><span class="p">(</span><span class="n">PolynomialRing</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span><span class="s1">&#39;y,t&#39;</span><span class="p">))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">S</span><span class="o">=</span><span class="n">TMPoly</span><span class="p">(</span><span class="n">QR</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">,</span><span class="n">prec</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="n">QR</span><span class="o">.</span><span class="n">gens</span><span class="p">();</span> <span class="n">x</span><span class="o">=</span><span class="n">S</span><span class="o">.</span><span class="n">gens</span><span class="p">()</span>
+<span class="n">sage</span><span class="p">:</span> <span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">x0</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x1</span><span class="o">^</span><span class="mi">2</span>
+<span class="n">sage</span><span class="p">:</span> <span class="p">(</span><span class="n">y</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">Exp</span><span class="p">()</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="n">y</span><span class="o">*</span><span class="n">x0</span> <span class="o">+</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">*</span><span class="n">x0</span><span class="o">^</span><span class="mi">2</span>
+
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">=</span><span class="n">TMPoly</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">prec</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prod_twist</span><span class="o">=</span><span class="k">lambda</span> <span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">:</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">=</span><span class="n">R</span><span class="o">.</span><span class="n">gen</span><span class="p">();</span> <span class="n">x</span><span class="o">*</span><span class="n">x</span>
+<span class="mi">2</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt id="msinvar.tm_polynomials.TMPolynomialRing.Element">
+<code class="sig-name descname"><span class="pre">Element</span></code><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomialRing.Element" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#msinvar.tm_polynomials.TMPolynomial" title="msinvar.tm_polynomials.TMPolynomial"><code class="xref py py-class docutils literal notranslate"><span class="pre">msinvar.tm_polynomials.TMPolynomial</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomialRing.adams">
+<code class="sig-name descname"><span class="pre">adams</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomialRing.adams"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomialRing.adams" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomialRing.zero_tuple">
+<code class="sig-name descname"><span class="pre">zero_tuple</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomialRing.zero_tuple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomialRing.zero_tuple" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomialRing.prec">
+<code class="sig-name descname"><span class="pre">prec</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomialRing.prec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomialRing.prec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomialRing.prec_num">
+<code class="sig-name descname"><span class="pre">prec_num</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomialRing.prec_num"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomialRing.prec_num" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.tm_polynomials.TMPolynomialRing.le_prec">
+<code class="sig-name descname"><span class="pre">le_prec</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">v</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#TMPolynomialRing.le_prec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.TMPolynomialRing.le_prec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="msinvar.tm_polynomials.TMPoly">
+<code class="sig-prename descclassname"><span class="pre">msinvar.tm_polynomials.</span></code><code class="sig-name descname"><span class="pre">TMPoly</span></code><a class="headerlink" href="#msinvar.tm_polynomials.TMPoly" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#msinvar.tm_polynomials.TMPolynomialRing" title="msinvar.tm_polynomials.TMPolynomialRing"><code class="xref py py-class docutils literal notranslate"><span class="pre">msinvar.tm_polynomials.TMPolynomialRing</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.tm_polynomials.Exp">
+<code class="sig-prename descclassname"><span class="pre">msinvar.tm_polynomials.</span></code><code class="sig-name descname"><span class="pre">Exp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#Exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.Exp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.tm_polynomials.Log">
+<code class="sig-prename descclassname"><span class="pre">msinvar.tm_polynomials.</span></code><code class="sig-name descname"><span class="pre">Log</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#Log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.Log" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.tm_polynomials.Psi">
+<code class="sig-prename descclassname"><span class="pre">msinvar.tm_polynomials.</span></code><code class="sig-name descname"><span class="pre">Psi</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#Psi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.Psi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.tm_polynomials.IPsi">
+<code class="sig-prename descclassname"><span class="pre">msinvar.tm_polynomials.</span></code><code class="sig-name descname"><span class="pre">IPsi</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/tm_polynomials.html#IPsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.tm_polynomials.IPsi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="indecomposable.html" class="btn btn-neutral float-right" title="Indecomposable representations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="stability.html" class="btn btn-neutral float-left" title="Stability parameters" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

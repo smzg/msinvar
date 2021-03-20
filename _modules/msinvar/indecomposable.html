@@ -1,0 +1,272 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.indecomposable &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.indecomposable</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.indecomposable</h1><div class="highlight"><pre>
+<span></span><span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+<span class="kn">from</span> <span class="nn">sage.misc.misc_c</span> <span class="kn">import</span> <span class="n">prod</span>
+<span class="kn">from</span> <span class="nn">msinvar.iterators</span> <span class="kn">import</span> <span class="n">MultiPartitionsLE_iterator</span>
+<span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">vec</span><span class="p">,</span> <span class="n">phi</span>
+<span class="kn">from</span> <span class="nn">msinvar.invariants</span> <span class="kn">import</span> <span class="n">Invariant</span>
+
+
+<div class="viewcode-block" id="hua_formula"><a class="viewcode-back" href="../../indecomposable.html#msinvar.indecomposable.hua_formula">[docs]</a><span class="k">def</span> <span class="nf">hua_formula</span><span class="p">(</span><span class="n">Q</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Count the number of (absolutely) indecomposable representations of the</span>
+<span class="sd">    quiver Q.</span>
+
+<span class="sd">    We apply the Hua formula as described in :arxiv:`math/0608321`.</span>
+
+<span class="sd">    EXAMPLES::</span>
+
+<span class="sd">        sage: from msinvar.quivers import Quiver</span>
+<span class="sd">        sage: from msinvar.indecomposable import hua_formula</span>
+<span class="sd">        sage: Q=Quiver(&#39;1-2&#39;) # quiver of type A2</span>
+<span class="sd">        sage: Q.prec([3,3])</span>
+<span class="sd">        sage: hua_formula(Q).dict()</span>
+<span class="sd">        {(0, 1): 1, (1, 0): 1, (1, 1): 1}</span>
+
+<span class="sd">        sage: Q=Quiver(&#39;1-1&#39;) # Jordan quiver</span>
+<span class="sd">        sage: Q.prec([3])</span>
+<span class="sd">        sage: hua_formula(Q).dict() # we use q=y^2</span>
+<span class="sd">        {(1,): y^2, (2,): y^2, (3,): y^2}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">W</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">wcs</span><span class="p">()</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="n">hua_formula_dict</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">prec</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">R</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="hua_formula_dict"><a class="viewcode-back" href="../../indecomposable.html#msinvar.indecomposable.hua_formula_dict">[docs]</a><span class="k">def</span> <span class="nf">hua_formula_dict</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">bound</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Auxiliary method.&quot;&quot;&quot;</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">bound</span><span class="p">))</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="p">{</span><span class="n">z</span><span class="p">:</span> <span class="mi">1</span><span class="p">}</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">MultiPartitionsLE_iterator</span><span class="p">(</span><span class="n">bound</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">l</span><span class="p">))</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">l</span><span class="o">+</span><span class="p">[</span><span class="n">z</span><span class="p">]</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">q</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="n">p</span><span class="p">)</span><span class="o">/</span><span class="n">prod</span><span class="p">(</span><span class="n">phi</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">q</span><span class="p">,</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">k</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">k</span><span class="o">+</span><span class="mi">1</span><span class="p">]))</span>
+                         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dct</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">+=</span> <span class="n">s</span>
+    <span class="k">return</span> <span class="n">dct</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

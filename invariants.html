@@ -1,0 +1,561 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Invariants and transformations &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Stability parameters" href="stability.html" />
+    <link rel="prev" title="Wall-crossing" href="wall_crossing.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Invariants and transformations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/invariants.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msinvar.invariants">
+<span id="invariants-and-transformations"></span><h1>Invariants and transformations<a class="headerlink" href="#module-msinvar.invariants" title="Permalink to this headline">¶</a></h1>
+<p>Invariant class that associates a value with every dimension vector</p>
+<p>An invariant can be constructed from a TMPolynomial, a dictionary, a function 
+or another invariant. Every invariant can be transformed to a TMPolynomial
+or a dictionary. We cache the values of an invariant so that they don’t have
+to be computed repeatedly.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">R</span><span class="o">=</span><span class="n">TMPoly</span><span class="p">(</span><span class="n">prec</span><span class="o">=</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span> <span class="n">R</span>
+<span class="n">Multivariate</span> <span class="n">Polynomial</span> <span class="n">Ring</span> <span class="ow">in</span> <span class="n">x</span> <span class="n">over</span> <span class="n">Rational</span> <span class="n">Field</span> <span class="n">truncated</span> <span class="n">at</span> <span class="n">degree</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">x</span><span class="o">=</span><span class="n">R</span><span class="o">.</span><span class="n">gen</span><span class="p">();</span> <span class="n">x</span><span class="o">.</span><span class="n">Exp</span><span class="p">()</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="n">x</span><span class="o">^</span><span class="mi">3</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">=</span><span class="n">Invariant</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">Exp</span><span class="p">());</span> <span class="n">I</span>
+<span class="n">Invariant</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">1</span><span class="p">,):</span> <span class="mi">1</span><span class="p">}</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span>
+<span class="n">x</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="msinvar.invariants.Invariant">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">Invariant</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Invariant class that associates an invariants I(d) with every dimension 
+vector d.</p>
+<p>An argument can be a TMPolynomial, a dictionary, a function or another 
+invariant.
+Objects have methods that return associated TMPolynomials and dictionaries.
+If possible, we save the ring (TMPoly) in order to transform our invariant
+to a polynomial.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">f</span></code> – function, TMPolynomial, dictionary, Invariant.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">R</span></code> – a ring TMPolynomialRing.</p></li>
+</ul>
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.value">
+<code class="sig-name descname"><span class="pre">value</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.invariants.Invariant.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.get_ring">
+<code class="sig-name descname"><span class="pre">get_ring</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.get_ring"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.get_ring" title="Permalink to this definition">¶</a></dt>
+<dd><p>The ring (TMPolynomialRing) saved by the invariant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.get_prec">
+<code class="sig-name descname"><span class="pre">get_prec</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.get_prec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.get_prec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Precision vector of the ring.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.dict">
+<code class="sig-name descname"><span class="pre">dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert invariant to a dictionary, with keys bounded by self.prec().</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.series">
+<code class="sig-name descname"><span class="pre">series</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert invariant to a TMPolynomial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.to_series">
+<code class="sig-name descname"><span class="pre">to_series</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.invariants.Invariant.to_series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert invariant to a TMPolynomial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.poly">
+<code class="sig-name descname"><span class="pre">poly</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.invariants.Invariant.poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert invariant to a TMPolynomial.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.term_twist">
+<code class="sig-name descname"><span class="pre">term_twist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.term_twist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.term_twist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Twist every term using the function <code class="docutils literal notranslate"><span class="pre">f</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.restrict">
+<code class="sig-name descname"><span class="pre">restrict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.restrict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.restrict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Restrict invariant to dimension vectors d such that z(d)=slope,
+where <code class="docutils literal notranslate"><span class="pre">z</span></code> is a Stability (or the corresponding vector).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.subs">
+<code class="sig-name descname"><span class="pre">subs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.subs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.subs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply substitution to every term.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.root_vars">
+<code class="sig-name descname"><span class="pre">root_vars</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.root_vars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.root_vars" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitute y^k by y for every variable y.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.simp">
+<code class="sig-name descname"><span class="pre">simp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.simp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.simp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplify every term.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.plog">
+<code class="sig-name descname"><span class="pre">plog</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.plog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.plog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take log along every ray.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.pexp">
+<code class="sig-name descname"><span class="pre">pexp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.pexp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.pexp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take exp along every ray.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.exp">
+<code class="sig-name descname"><span class="pre">exp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>The usual exponential. This method can be quite slow.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.log">
+<code class="sig-name descname"><span class="pre">log</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.log" title="Permalink to this definition">¶</a></dt>
+<dd><p>The usual logarithm. This method can be quite slow.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.Psi">
+<code class="sig-name descname"><span class="pre">Psi</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.Psi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.Psi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plethystic map Psi.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.IPsi">
+<code class="sig-name descname"><span class="pre">IPsi</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.IPsi"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.IPsi" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plethystic map Psi inverse.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.pLog">
+<code class="sig-name descname"><span class="pre">pLog</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.pLog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.pLog" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take plethystic Log along every ray.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.pExp">
+<code class="sig-name descname"><span class="pre">pExp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.pExp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.pExp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take plethystic Exp along every ray.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.Exp">
+<code class="sig-name descname"><span class="pre">Exp</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.Exp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.Exp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take plethystic Exp.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Invariant.Log">
+<code class="sig-name descname"><span class="pre">Log</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Invariant.Log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Invariant.Log" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take plethystic Log.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.log_map">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">log_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#log_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.log_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Usual log.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.exp_map">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">exp_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#exp_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.exp_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Usual exp.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.plog_map">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">plog_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#plog_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.plog_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>log along every ray.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.pexp_map">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">pexp_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#pexp_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.pexp_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>exp along every ray.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.Psi_map">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">Psi_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Psi_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Psi_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plethystic Psi.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.IPsi_map">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">IPsi_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#IPsi_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.IPsi_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plethsytic Psi inverse.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.recursive_inversion">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">recursive_inversion</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#recursive_inversion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.recursive_inversion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert the transformation (map on invariants) T, assuming that
+T(I)(d) is a sum of I(d) and some expression that depends just on
+I(e) with e&lt;d.</p>
+<p>Note that exp and log are not of this form for d=0.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt id="msinvar.invariants.Transform">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">Transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">F</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">twist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A class to transform invariants. Based on <a class="reference external" href="https://arxiv.org/abs/2101.07636">arXiv:2101.07636</a>.</p>
+<p>It is encoded by a map from the set of lists of vectors
+to rational numbers.</p>
+<p>We define actions of transforms on 1-collections (Invariant class),
+plethysm between transforms, inverse transfroms.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">F</span></code> – transformation map from lists of vectors to Q (or base ring).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">twist</span></code> – product twist, map from sequences of vectors to the base ring.</p></li>
+</ul>
+<dl class="py method">
+<dt id="msinvar.invariants.Transform.value">
+<code class="sig-name descname"><span class="pre">value</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.invariants.Transform.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Transform.action">
+<code class="sig-name descname"><span class="pre">action</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Transform.action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Transform.action" title="Permalink to this definition">¶</a></dt>
+<dd><p>Action of the transformation on an invariant <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Transform.plethysm">
+<code class="sig-name descname"><span class="pre">plethysm</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">T</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">l</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Transform.plethysm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Transform.plethysm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plethysm of self and T.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Transform.inverse">
+<code class="sig-name descname"><span class="pre">inverse</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.invariants.Transform.inverse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.invariants.Transform.dict">
+<code class="sig-name descname"><span class="pre">dict</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#Transform.dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.Transform.dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dictionary of values for all lists of vectors with the sum &lt;=d.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.proportional">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">proportional</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#proportional"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.proportional" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if vectors a,b are proportional.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.exp_transform">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">exp_transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#exp_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.exp_transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.log_transform">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">log_transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#log_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.log_transform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.reineke_sign">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">reineke_sign</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#reineke_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.reineke_sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in <a class="reference internal" href="#msinvar.invariants.reineke_transform" title="msinvar.invariants.reineke_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">reineke_transform()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.reineke_transform">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">reineke_transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#reineke_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.reineke_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Based on <a class="reference external" href="https://arxiv.org/abs/math/0204059">arXiv:math/0204059</a> and <a class="reference external" href="https://arxiv.org/abs/2101.07636">arXiv:2101.07636</a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.joyce_sign">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">joyce_sign</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">l</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tot</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#joyce_sign"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.joyce_sign" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used in <a class="reference internal" href="#msinvar.invariants.joyce_transform" title="msinvar.invariants.joyce_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">joyce_transform()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.joyce_transform">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">joyce_transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#joyce_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.joyce_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Based on <a class="reference external" href="https://arxiv.org/abs/math/0410268">arXiv:math/0410268</a> and <a class="reference external" href="https://arxiv.org/abs/2101.07636">arXiv:2101.07636</a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.HN_transform">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">HN_transform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#HN_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.HN_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference external" href="https://arxiv.org/abs/2101.07636">arXiv:2101.07636</a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.simp">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">simp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#simp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.simp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simplify an expression.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.indivisible">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">indivisible</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#indivisible"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.indivisible" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return True if <code class="docutils literal notranslate"><span class="pre">d</span></code> is an indivisible vector.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.plog_fast">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">plog_fast</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#plog_fast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.plog_fast" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the logarithm taken separately along each ray.</p>
+<p>We construct a dictionary of such logarithms with keys parametrized
+by indivisible vectors. The logarithm is taken in the ring of truncated
+polynomials. Therefore I.R and its precision vector are required.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.invariants.pexp_fast">
+<code class="sig-prename descclassname"><span class="pre">msinvar.invariants.</span></code><code class="sig-name descname"><span class="pre">pexp_fast</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/invariants.html#pexp_fast"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.invariants.pexp_fast" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#msinvar.invariants.plog_fast" title="msinvar.invariants.plog_fast"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plog_fast()</span></code></a>.</p>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="stability.html" class="btn btn-neutral float-right" title="Stability parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="wall_crossing.html" class="btn btn-neutral float-left" title="Wall-crossing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

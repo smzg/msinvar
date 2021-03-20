@@ -1,0 +1,551 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.tm_polynomials &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.tm_polynomials</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.tm_polynomials</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Truncated Multivariate polynomials</span>
+
+<span class="sd">EXAMPLES::</span>
+<span class="sd">    </span>
+<span class="sd">    sage: from msinvar import TMPoly</span>
+<span class="sd">    sage: R=TMPoly(QQ,2,&#39;x&#39;,prec=(2,2))</span>
+<span class="sd">    sage: R.inject_variables(verbose=False)</span>
+<span class="sd">    sage: (x0+x1).Exp()</span>
+<span class="sd">    1 + x0 + x1 + x0^2 + x0*x1 + x1^2 + x0^2*x1 + x0*x1^2 + x0^2*x1^2</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+
+<span class="kn">from</span> <span class="nn">sage.rings.polynomial.multi_polynomial_element</span> <span class="kn">import</span> <span class="n">MPolynomial_polydict</span>
+<span class="kn">from</span> <span class="nn">sage.rings.polynomial.multi_polynomial_ring</span> <span class="kn">import</span> <span class="n">MPolynomialRing_polydict</span>
+<span class="kn">from</span> <span class="nn">sage.arith.misc</span> <span class="kn">import</span> <span class="n">moebius</span>
+<span class="kn">from</span> <span class="nn">sage.rings.rational_field</span> <span class="kn">import</span> <span class="n">QQ</span>
+<span class="kn">from</span> <span class="nn">msinvar.lambda_rings</span> <span class="kn">import</span> <span class="n">LambdaRings</span><span class="p">,</span> <span class="n">adams</span>
+<span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">isiterable</span>
+
+<div class="viewcode-block" id="TMPolynomial"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial">[docs]</a><span class="k">class</span> <span class="nc">TMPolynomial</span><span class="p">(</span><span class="n">MPolynomial_polydict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The element class for  truncated multivariate polynomials.</span>
+<span class="sd">    The parent class is :class:`TMPolynomialRing`.</span>
+
+<span class="sd">    Implementation details:</span>
+
+<span class="sd">    1. The parent should have a method :meth:`le_prec` to test if a given degree should be present.</span>
+<span class="sd">    2. Truncation is performed in the :meth:`__init__` method.</span>
+<span class="sd">    3. Arithmetic operations are inherited from :class:`MPolynomial_polydict`.</span>
+<span class="sd">    4. We implement Adams operation adams, exp, log and plethystic Exp, Log.</span>
+<span class="sd">    5. Function for the twisted multilpication is given by self.parent().prod_twist</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="p">:</span> <span class="n">c</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">parent</span><span class="o">.</span><span class="n">le_prec</span><span class="p">(</span><span class="n">e</span><span class="p">)}</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_new_element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Construct new poly from a dictionary d&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">(),</span> <span class="n">d</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_new_constant_poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">P</span><span class="p">):</span>
+        <span class="c1"># overriden; needed to make 1-x[0] of type MPT</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_element</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">zero_tuple</span><span class="p">():</span> <span class="n">x</span><span class="p">})</span>
+
+<div class="viewcode-block" id="TMPolynomial.le_prec"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.le_prec">[docs]</a>    <span class="k">def</span> <span class="nf">le_prec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>  <span class="c1"># &lt;= precision</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">le_prec</span><span class="p">(</span><span class="n">v</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.prec_num"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.prec_num">[docs]</a>    <span class="k">def</span> <span class="nf">prec_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">prec_num</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.exp"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.exp">[docs]</a>    <span class="k">def</span> <span class="nf">exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec_num</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Series is untruncated&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constant_coefficient</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The constant coefficient should be 0&quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="bp">self</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">f</span><span class="o">/</span><span class="n">i</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">+</span><span class="n">f</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.log"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.log">[docs]</a>    <span class="k">def</span> <span class="nf">log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec_num</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Series is untruncated&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constant_coefficient</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The constant coefficient should be 1&quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">zero</span><span class="p">()</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="bp">self</span>  <span class="c1"># need _new_constasnt_poly to have 1-self of type MPT!</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">f</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">-</span><span class="n">f</span><span class="o">/</span><span class="n">i</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.invert"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.invert">[docs]</a>    <span class="k">def</span> <span class="nf">invert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        For simplicity we invert only poly with constant coefficient 1</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec_num</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Series is untruncated&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constant_coefficient</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The constant coefficient should be 1&quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">one</span><span class="p">()</span>
+        <span class="n">f</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="o">-</span><span class="bp">self</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">*</span><span class="n">f</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span> <span class="n">f</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+    <span class="k">def</span> <span class="nf">_div_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">*</span><span class="n">right</span><span class="o">.</span><span class="n">invert</span><span class="p">()</span>
+
+<div class="viewcode-block" id="TMPolynomial.Psi"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.Psi">[docs]</a>    <span class="k">def</span> <span class="nf">Psi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec_num</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error: series is untruncated&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constant_coefficient</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The constant coefficient should be 0&quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">zero</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">+</span><span class="n">f</span><span class="o">/</span><span class="n">i</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.IPsi"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.IPsi">[docs]</a>    <span class="k">def</span> <span class="nf">IPsi</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">N</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec_num</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">N</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Error: series is untruncated&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">constant_coefficient</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The constant coefficient should be 0&quot;</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">zero</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">+</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">+</span><span class="n">f</span><span class="o">*</span><span class="n">moebius</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">/</span><span class="n">i</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.Exp"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.Exp">[docs]</a>    <span class="k">def</span> <span class="nf">Exp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Psi</span><span class="p">()</span><span class="o">.</span><span class="n">exp</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.Log"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.Log">[docs]</a>    <span class="k">def</span> <span class="nf">Log</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">log</span><span class="p">()</span><span class="o">.</span><span class="n">IPsi</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.term_twist"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.term_twist">[docs]</a>    <span class="k">def</span> <span class="nf">term_twist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiply every term c*x^v by f(v)&quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="p">:</span> <span class="n">c</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_element</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_mul_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">right</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">prod_twist</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_mul_</span><span class="p">(</span><span class="n">right</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>   <span class="c1"># product is zero anyways</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">if</span> <span class="n">right</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span><span class="o">.</span><span class="n">base_ring</span><span class="p">():</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_new_constant_poly</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">())</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">e0</span><span class="p">,</span> <span class="n">c0</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">e1</span><span class="p">,</span> <span class="n">c1</span> <span class="ow">in</span> <span class="n">right</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">e</span> <span class="o">=</span> <span class="n">e0</span><span class="o">.</span><span class="n">eadd</span><span class="p">(</span><span class="n">e1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_prec</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+                    <span class="k">continue</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">c0</span><span class="o">*</span><span class="n">c1</span><span class="o">*</span><span class="n">f</span><span class="p">(</span><span class="n">e0</span><span class="p">,</span> <span class="n">e1</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">d</span><span class="p">[</span><span class="n">e</span><span class="p">]</span><span class="o">+</span><span class="n">c</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">d</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_element</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TMPolynomial.coeff"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.coeff">[docs]</a>    <span class="k">def</span> <span class="nf">coeff</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the coefficient of degree e monomial as an element of</span>
+<span class="sd">        the base_ring.</span>
+
+<span class="sd">        Note that **coefficient** returns an element of the polynomial ring.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">element</span><span class="p">()[</span><span class="nb">list</span><span class="p">(</span><span class="n">e</span><span class="p">)]</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.subs_base"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.subs_base">[docs]</a>    <span class="k">def</span> <span class="nf">subs_base</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">pass</span>
+            <span class="n">dct</span><span class="p">[</span><span class="n">e</span><span class="p">]</span> <span class="o">=</span> <span class="n">c</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_new_element</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.subs"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.subs">[docs]</a>    <span class="k">def</span> <span class="nf">subs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">f</span> <span class="o">!=</span> <span class="bp">self</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">f</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subs_base</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.invar"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.invar">[docs]</a>    <span class="k">def</span> <span class="nf">invar</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">from</span> <span class="nn">msinvar.invariants</span> <span class="kn">import</span> <span class="n">Invariant</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.pLog"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.pLog">[docs]</a>    <span class="k">def</span> <span class="nf">pLog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plethystic logarithm along every ray.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">invar</span><span class="p">()</span><span class="o">.</span><span class="n">pLog</span><span class="p">()</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="TMPolynomial.pExp"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomial.pExp">[docs]</a>    <span class="k">def</span> <span class="nf">pExp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Plethystic logarithm along every ray.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">invar</span><span class="p">()</span><span class="o">.</span><span class="n">pExp</span><span class="p">()</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="TMPolynomialRing"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomialRing">[docs]</a><span class="k">class</span> <span class="nc">TMPolynomialRing</span><span class="p">(</span><span class="n">MPolynomialRing_polydict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Truncated Multivariate polynomial ring.</span>
+
+<span class="sd">    Multivariate polynomials up to degree ``prec``,</span>
+<span class="sd">    where ``prec`` is a degree vector or an integer (total degree).</span>
+<span class="sd">    Monomials of degree ``prec`` are included.</span>
+<span class="sd">    We implement Adams operations, plethystic Exp and Log</span>
+<span class="sd">    (we introduce the category of lambda rings </span>
+<span class="sd">    :class:`msinvar.lambda_rings.LambdaRings` and embed our ring into it).</span>
+
+<span class="sd">    This is the parent class for truncated multivariate polynomials.</span>
+<span class="sd">    It has an alias :class:`TMPoly`.</span>
+<span class="sd">    The element class is :class:`TMPolynomial`.</span>
+
+<span class="sd">    PARAMETERS:</span>
+
+<span class="sd">        1. ``base_ring`` -- the base of our polynomial algebra.</span>
+<span class="sd">        2. ``n`` -- the number of vairables.</span>
+<span class="sd">        3. ``names`` -- names of variables; can be just &#39;x&#39; or &#39;x,y,..&#39;.</span>
+<span class="sd">        4. ``prec`` - precision vector (or integer, or None) for truncation</span>
+<span class="sd">        5. ``order`` -- the order of variables.</span>
+<span class="sd">        6. ``prod_twist`` - function that maps exponents (d,e) to the base_ring. The new product is x^d*x^e=prod_twist(d,e)*x^(d+e)</span>
+
+<span class="sd">    EXAMPLES::</span>
+<span class="sd">    </span>
+<span class="sd">        sage: from msinvar import TMPoly</span>
+<span class="sd">        sage: R=TMPoly(QQ,2,prec=(2,2)); R</span>
+<span class="sd">        Multivariate Polynomial Ring in x0, x1 over Rational Field truncated at degree (2, 2)</span>
+<span class="sd">        sage: x=R.gens(); (x[0]+x[1])**3</span>
+<span class="sd">        3*x0^2*x1 + 3*x0*x1^2</span>
+<span class="sd">    </span>
+<span class="sd">        sage: QR=Frac(PolynomialRing(QQ,&#39;y,t&#39;))</span>
+<span class="sd">        sage: S=TMPoly(QR,2,&#39;x&#39;,prec=(2,2))</span>
+<span class="sd">        sage: y,t=QR.gens(); x=S.gens()</span>
+<span class="sd">        sage: (y*x[0]+x[1]).adams(2)</span>
+<span class="sd">        y^2*x0^2 + x1^2</span>
+<span class="sd">        sage: (y*x[0]).Exp()</span>
+<span class="sd">        1 + y*x0 + y^2*x0^2</span>
+<span class="sd">    </span>
+<span class="sd">        sage: R=TMPoly(QQ,1,prec=2, prod_twist=lambda a,b:2)</span>
+<span class="sd">        sage: x=R.gen(); x*x</span>
+<span class="sd">        2*x^2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">Element</span> <span class="o">=</span> <span class="n">TMPolynomial</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">base_ring</span><span class="o">=</span><span class="n">QQ</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;negdegrevlex&#39;</span><span class="p">,</span>
+                 <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prod_twist</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># Parent.__init__(self, category=LambdaRings())#not needed anymore</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="o">=</span> <span class="n">prec</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">prod_twist</span> <span class="o">=</span> <span class="n">prod_twist</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">base_ring</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">names</span><span class="p">,</span> <span class="n">order</span><span class="p">)</span>
+        <span class="n">LambdaRings</span><span class="o">.</span><span class="n">add_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TMPolynomialRing.adams"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomialRing.adams">[docs]</a>    <span class="k">def</span> <span class="nf">adams</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">e</span><span class="o">.</span><span class="n">emul</span><span class="p">(</span><span class="n">n</span><span class="p">):</span> <span class="n">adams</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">a</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">le_prec</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">emul</span><span class="p">(</span><span class="n">n</span><span class="p">))}</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>  <span class="c1"># needed so that the result is MPT</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="mi">1</span><span class="p">})</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Element</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">dict</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">_poly_class</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># needed so that gens() are of type MPT</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Element</span>
+
+    <span class="k">def</span> <span class="nf">_repr_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;total degree &#39;</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;degree &#39;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">_repr_</span><span class="p">()</span><span class="o">+</span><span class="s1">&#39; truncated at &#39;</span><span class="o">+</span><span class="n">s</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_prec</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TMPolynomialRing.zero_tuple"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomialRing.zero_tuple">[docs]</a>    <span class="k">def</span> <span class="nf">zero_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_zero_tuple</span></div>
+
+<div class="viewcode-block" id="TMPolynomialRing.prec"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomialRing.prec">[docs]</a>    <span class="k">def</span> <span class="nf">prec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span> <span class="o">=</span> <span class="n">d</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span></div>
+
+<div class="viewcode-block" id="TMPolynomialRing.prec_num"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomialRing.prec_num">[docs]</a>    <span class="k">def</span> <span class="nf">prec_num</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">isiterable</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="TMPolynomialRing.le_prec"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.TMPolynomialRing.le_prec">[docs]</a>    <span class="k">def</span> <span class="nf">le_prec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_prec</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">isiterable</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">j</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">d</span></div></div>
+
+
+<span class="n">TMPoly</span> <span class="o">=</span> <span class="n">TMPolynomialRing</span>
+
+<div class="viewcode-block" id="Exp"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.Exp">[docs]</a><span class="k">def</span> <span class="nf">Exp</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">Exp</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Log"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.Log">[docs]</a><span class="k">def</span> <span class="nf">Log</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Psi"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.Psi">[docs]</a><span class="k">def</span> <span class="nf">Psi</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">Psi</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="IPsi"><a class="viewcode-back" href="../../tm_polynomials.html#msinvar.tm_polynomials.IPsi">[docs]</a><span class="k">def</span> <span class="nf">IPsi</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">IPsi</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

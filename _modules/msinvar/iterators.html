@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.iterators &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.iterators</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.iterators</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Collection of iterators.</span>
+
+<span class="sd">EXAMPLES::</span>
+
+<span class="sd">    sage: from msinvar.iterators import *</span>
+<span class="sd">    sage: list(IntegerVectors_iterator([2,2]))</span>
+<span class="sd">    [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]</span>
+
+<span class="sd">::</span>
+<span class="sd">    </span>
+<span class="sd">    sage: M=[[1,2,1],[3,1,1]]</span>
+<span class="sd">    sage: list(Multiplicities_iterator(M,[3,4]))</span>
+<span class="sd">    [[1, 0, 0],</span>
+<span class="sd">     [0, 1, 0],</span>
+<span class="sd">     [1, 1, 0],</span>
+<span class="sd">     [0, 0, 1],</span>
+<span class="sd">     [1, 0, 1],</span>
+<span class="sd">     [0, 1, 1],</span>
+<span class="sd">     [0, 0, 2],</span>
+<span class="sd">     [0, 0, 3]]</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">vec</span>
+
+
+<div class="viewcode-block" id="IntegerVectors_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.IntegerVectors_iterator">[docs]</a><span class="k">def</span> <span class="nf">IntegerVectors_iterator</span><span class="p">(</span><span class="n">vect</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over integer vectors 0 &lt; a &lt;= vect</span>
+
+<span class="sd">    It is more efficient than</span>
+<span class="sd">    :meth:`sage.combinat.vector_partition.IntegerVectorsIterator`.</span>
+
+<span class="sd">    ``vect`` -- a list of integers.</span>
+
+<span class="sd">    EXAMPLES::</span>
+
+<span class="sd">        sage: from msinvar.iterators import *</span>
+<span class="sd">        sage: list(IntegerVectors_iterator([2,2]))</span>
+<span class="sd">        [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">vect</span><span class="p">)</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">))</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">vect</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+                <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">yield</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="Multiplicities_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.Multiplicities_iterator">[docs]</a><span class="k">def</span> <span class="nf">Multiplicities_iterator</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over integer vectors a&gt;0 such that M*a&lt;=b,</span>
+<span class="sd">    where ``M`` is a matrix and ``b`` is a vector.</span>
+
+<span class="sd">    - ``M`` -- Matrix of size m x n</span>
+<span class="sd">    - ``b`` -- Vector of size m</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="n">M</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">:</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">M</span><span class="p">[:,</span> <span class="n">k</span><span class="p">:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">:])</span> <span class="o">&lt;=</span> <span class="n">b</span><span class="p">):</span>
+            <span class="n">a</span><span class="p">[:</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">yield</span> <span class="nb">list</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="OrderedMultiPartitionsLE_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.OrderedMultiPartitionsLE_iterator">[docs]</a><span class="k">def</span> <span class="nf">OrderedMultiPartitionsLE_iterator</span><span class="p">(</span><span class="n">vect</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over collections of vectors</span>
+<span class="sd">    (a_1,..,a_k) such that a_1+..+a_k &lt;= ``vect`` and a_i&gt;0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">vect</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">OrderedMultiPartitionsLE_iterator</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">b</span><span class="p">)):</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">+</span><span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="OrderedMultiPartitions_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.OrderedMultiPartitions_iterator">[docs]</a><span class="k">def</span> <span class="nf">OrderedMultiPartitions_iterator</span><span class="p">(</span><span class="n">vect</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over collections of vectors</span>
+<span class="sd">    (a_1,...,a_k) such that a_1+...+a_k = ``vect`` and a_i&gt;0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">vec</span><span class="o">.</span><span class="n">zero</span><span class="p">(</span><span class="n">vect</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">vect</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">vect</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">OrderedMultiPartitions_iterator</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">b</span><span class="p">)):</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">+</span><span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="OrderedPartitionsLE_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.OrderedPartitionsLE_iterator">[docs]</a><span class="k">def</span> <span class="nf">OrderedPartitionsLE_iterator</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over collections of positive numbers</span>
+<span class="sd">    (a_1,..,a_k) such that a_1+..+a_k &lt;= ``n``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">OrderedPartitionsLE_iterator</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">b</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">+</span><span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="OrderedPartitions_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.OrderedPartitions_iterator">[docs]</a><span class="k">def</span> <span class="nf">OrderedPartitions_iterator</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over collections of positive numbers</span>
+<span class="sd">    (a_1,...,a_k) such that a_1+...+a_k = ``n``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">OrderedPartitions_iterator</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="n">b</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">+</span><span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="MultiPartitionsLE_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.MultiPartitionsLE_iterator">[docs]</a><span class="k">def</span> <span class="nf">MultiPartitionsLE_iterator</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over collections of vectors</span>
+<span class="sd">    ``bound``&gt;=a_1 &gt;=...&gt;=a_k&gt;0 such that a_1+...+a_k &lt;= ``vect``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">bound</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="n">vect</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">vmin</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">bound</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">bound</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">MultiPartitionsLE_iterator</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">b</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">+</span><span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="MultiPartitions_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.MultiPartitions_iterator">[docs]</a><span class="k">def</span> <span class="nf">MultiPartitions_iterator</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">bound</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over collections of vectors</span>
+<span class="sd">    ``bound``&gt;=a_1&gt;=...&gt;=a_k&gt;0 such that a_1+...+a_k = ``vect``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">bound</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bound</span> <span class="o">=</span> <span class="n">vect</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">vec</span><span class="o">.</span><span class="n">zero</span><span class="p">(</span><span class="n">vect</span><span class="p">)</span> <span class="ow">and</span> <span class="n">vec</span><span class="o">.</span><span class="n">le</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">bound</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">vect</span><span class="p">]</span>
+    <span class="n">bound</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">vmin</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">bound</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">bound</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">MultiPartitions_iterator</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">vect</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">b</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="p">[</span><span class="n">b</span><span class="p">]</span><span class="o">+</span><span class="n">a</span></div>
+
+
+<div class="viewcode-block" id="Subsets_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.Subsets_iterator">[docs]</a><span class="k">def</span> <span class="nf">Subsets_iterator</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over non-empty subsets of the set {0,..,n-1}.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>  <span class="c1"># the maximal element of the subset</span>
+        <span class="k">yield</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">Subsets_iterator</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="k">yield</span> <span class="n">s</span><span class="o">+</span><span class="p">[</span><span class="n">i</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="ListPartitions_iterator"><a class="viewcode-back" href="../../iterators.html#msinvar.iterators.ListPartitions_iterator">[docs]</a><span class="k">def</span> <span class="nf">ListPartitions_iterator</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Iterator over collections of nonempty disjoint lists (l1,..,lk)</span>
+<span class="sd">    such that l1+...+lk= ``l``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">OrderedPartitions_iterator</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)):</span>
+        <span class="k">yield</span> <span class="nb">list</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="n">i</span><span class="p">]):</span><span class="nb">sum</span><span class="p">(</span><span class="n">a</span><span class="p">[:</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">])]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)))</span></div>
+
+
+<span class="c1"># def Multiplicities_iterator1(M,b):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Iterator over integer vectors a&gt;0 such that M*a&lt;=b,</span>
+<span class="c1">#     where M is an integer matrix and b is an integer vector.</span>
+
+<span class="c1">#     Parameters</span>
+<span class="c1">#     ----------</span>
+<span class="c1">#     M : Integer matrix of size m x n</span>
+<span class="c1">#     b : Integer vector of size m</span>
+
+<span class="c1">#     Yields</span>
+<span class="c1">#     -------</span>
+<span class="c1">#     Integer vector a of size n such that M*a&lt;=b</span>
+
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     import numpy as np</span>
+<span class="c1">#     M=matrix(M)</span>
+<span class="c1">#     b=matrix(b)</span>
+<span class="c1">#     n=M.ncols()</span>
+<span class="c1">#     a=matrix(n,1)</span>
+<span class="c1">#     k=0</span>
+<span class="c1">#     while k&lt;n:</span>
+<span class="c1">#         a[k,0]+=1</span>
+<span class="c1">#         if M[:,k:]*a[k:]&lt;=b:</span>
+<span class="c1">#             a[:k]=0</span>
+<span class="c1">#             yield a</span>
+<span class="c1">#             k=-1</span>
+<span class="c1">#         else:</span>
+<span class="c1">#             a[k,0]-=1</span>
+<span class="c1">#         k+=1</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

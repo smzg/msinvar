@@ -1,0 +1,644 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Wall-crossing &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Invariants and transformations" href="invariants.html" />
+    <link rel="prev" title="Quivers" href="quivers.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="quivers.html">Quivers</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Wall-crossing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/wall_crossing.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-msinvar.wall_crossing">
+<span id="wall-crossing"></span><h1>Wall-crossing<a class="headerlink" href="#module-msinvar.wall_crossing" title="Permalink to this headline">¶</a></h1>
+<p>This module contains algorithms related to wall-crossing.</p>
+<p>We define the class <a class="reference internal" href="#msinvar.wall_crossing.WCS" title="msinvar.wall_crossing.WCS"><code class="xref py py-class docutils literal notranslate"><span class="pre">WCS</span></code></a> associated to a lattice with a skew-symmetric
+form (or to a quiver). This class contains the quantum affine plane where all
+invariants live and where wall-crossing takes place. It also contains
+algorithms to jump between various types of invariants:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Stacky, Rational, Integer invariants associated to a stability parameter.</p></li>
+<li><p>Total invariant (stacky invariant associated to the trivial stability parameter).</p></li>
+<li><p>Stacky, Rational, Integer invariants associated to the attractor stability.</p></li>
+<li><p>Invariant counting stable representations of a quiver for a given stability parameter.</p></li>
+</ol>
+</div></blockquote>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">KroneckerQuiver</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span> <span class="n">Q</span>
+<span class="n">Quiver</span> <span class="k">with</span> <span class="mi">2</span> <span class="n">vertices</span> <span class="ow">and</span> <span class="mi">2</span> <span class="n">arrows</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">wcs</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">]);</span> <span class="n">W</span> <span class="c1">#fix precision vector</span>
+<span class="n">Wall</span><span class="o">-</span><span class="n">crossing</span> <span class="n">structure</span> <span class="n">on</span> <span class="n">a</span> <span class="n">lattice</span> <span class="n">of</span> <span class="n">rank</span> <span class="mi">2</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">.</span><span class="n">total</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">7</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">7</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">12</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">12</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">10</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">8</span> <span class="o">+</span> <span class="mi">4</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">stacky</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]);</span> <span class="n">I</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">+</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I1</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="n">I</span><span class="p">);</span> <span class="n">I1</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">stacky</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]);</span> <span class="n">I</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span>
+ <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="n">y</span><span class="o">/</span><span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+ <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)}</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I1</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="n">I</span><span class="p">);</span> <span class="n">I1</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">.</span><span class="n">intAtt</span><span class="p">()</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span> <span class="c1">#integer attractor invariants</span>
+<span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">.</span><span class="n">stable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span> <span class="n">slope</span><span class="o">=</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span> <span class="c1">#invariants of stable moduli spaces</span>
+<span class="p">{(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">}</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt id="msinvar.wall_crossing.WallCrossingStructure">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">WallCrossingStructure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">quiver</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prec</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Wall-crossing structure.</p>
+<p>Contains the quantum affine algebra and methods to compute and transform
+different types of invariants (stacky, rational, integer DT invariants 
+corresponding to different stability parameters).</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">quiver</span></code> – Quiver (if None, <code class="docutils literal notranslate"><span class="pre">rank</span></code> and <code class="docutils literal notranslate"><span class="pre">sform</span></code> should be present).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rank</span></code> – Rank of the lattice.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">sform</span></code> – Skew-symmetric form on the lattice (a function).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">prec</span></code> – precision vector for the quantum affine plane.</p></li>
+</ul>
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.total">
+<code class="sig-name descname"><span class="pre">total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total invariant, meaning the stacky invariant for the trivial stability.</p>
+<p>EXAMPLE:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">JordanQuiver</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span> <span class="n">Q</span>
+<span class="n">Quiver</span> <span class="k">with</span> <span class="mi">1</span> <span class="n">vertices</span> <span class="ow">and</span> <span class="mi">1</span> <span class="n">arrows</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">wcs</span><span class="p">([</span><span class="mi">2</span><span class="p">]);</span> <span class="n">W</span>
+<span class="n">Wall</span><span class="o">-</span><span class="n">crossing</span> <span class="n">structure</span> <span class="n">on</span> <span class="n">a</span> <span class="n">lattice</span> <span class="n">of</span> <span class="n">rank</span> <span class="mi">1</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">total</span><span class="p">();</span> <span class="n">I</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span>
+<span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">x</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">6</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">4</span> <span class="o">-</span> <span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span>
+<span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">x</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.twist">
+<code class="sig-name descname"><span class="pre">twist</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Product twist for a pair of vectors or a list of vectors.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.twist_product">
+<code class="sig-name descname"><span class="pre">twist_product</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Twist the product in the quantum affine plane (self.R) using
+self.twist.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.untwist_product">
+<code class="sig-name descname"><span class="pre">untwist_product</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.untwist_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.untwist_product" title="Permalink to this definition">¶</a></dt>
+<dd><p>Untwist the product in the quantum affine plane 
+(make it commutative).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.prec">
+<code class="sig-name descname"><span class="pre">prec</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.prec"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.prec" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set or return precision vector for the quantum affine plane.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stacky_from_total">
+<code class="sig-name descname"><span class="pre">stacky_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stacky_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stacky_from_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.
+The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’, ‘fast2’, ‘slow’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stacky">
+<code class="sig-name descname"><span class="pre">stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stacky" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.
+The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’, ‘fast2’, ‘slow’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.Omh">
+<code class="sig-name descname"><span class="pre">Omh</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Omh" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.
+The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’, ‘fast2’, ‘slow’.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.rat_from_total">
+<code class="sig-name descname"><span class="pre">rat_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat_from_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return rational invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.int_from_total">
+<code class="sig-name descname"><span class="pre">int_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int_from_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return integer invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.Omb">
+<code class="sig-name descname"><span class="pre">Omb</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Omb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return rational invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.Om">
+<code class="sig-name descname"><span class="pre">Om</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Om" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return integer invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.total_from_stacky">
+<code class="sig-name descname"><span class="pre">total_from_stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.total_from_stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.total_from_stacky" title="Permalink to this definition">¶</a></dt>
+<dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.stacky2total_algo1" title="msinvar.wall_crossing.stacky2total_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky2total_algo1()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stk2stk">
+<code class="sig-name descname"><span class="pre">stk2stk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stk2stk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stk2stk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z1</span></code> assuming that
+stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z</span></code> is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stk2rat">
+<code class="sig-name descname"><span class="pre">stk2rat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stk2rat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stk2rat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform stacky invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the rational invariant.
+By default we assume that <code class="docutils literal notranslate"><span class="pre">z</span></code> is a generic stability.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.rat2int">
+<code class="sig-name descname"><span class="pre">rat2int</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat2int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat2int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform rational invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the integer invariant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stk2int">
+<code class="sig-name descname"><span class="pre">stk2int</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stk2int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stk2int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform stacky invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the integer invariant.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.int2rat">
+<code class="sig-name descname"><span class="pre">int2rat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int2rat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int2rat" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.rat2stk">
+<code class="sig-name descname"><span class="pre">rat2stk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat2stk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat2stk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.int2stk">
+<code class="sig-name descname"><span class="pre">int2stk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int2stk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int2stk" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.series">
+<code class="sig-name descname"><span class="pre">series</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.series" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.poly">
+<code class="sig-name descname"><span class="pre">poly</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.poly" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.eform">
+<code class="sig-name descname"><span class="pre">eform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.eform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.eform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.qform">
+<code class="sig-name descname"><span class="pre">qform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.qform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.qform" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.total_default">
+<code class="sig-name descname"><span class="pre">total_default</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.total_default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.total_default" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invariants of a quiver corresponding to the trivial stability</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.twist_T">
+<code class="sig-name descname"><span class="pre">twist_T</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_T"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_T" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.twist_TI">
+<code class="sig-name descname"><span class="pre">twist_TI</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_TI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_TI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">
+<code class="sig-name descname"><span class="pre">stable_from_stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable_from_stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count z-stable objects having given slope, assuming that stacky count
+of z-semistable objects is known.</p>
+<p>INPUT:</p>
+<p>I : Invariant counting z-semistable objects.</p>
+<p>z : Stability parameter.</p>
+<p>slope : The slope.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stable_from_total">
+<code class="sig-name descname"><span class="pre">stable_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_total" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stable">
+<code class="sig-name descname"><span class="pre">stable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.simple">
+<code class="sig-name descname"><span class="pre">simple</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.simple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.simple" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.self_stab">
+<code class="sig-name descname"><span class="pre">self_stab</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.self_stab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.self_stab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.attr_stab">
+<code class="sig-name descname"><span class="pre">attr_stab</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.attr_stab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.attr_stab" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stkAtt">
+<code class="sig-name descname"><span class="pre">stkAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stkAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stkAtt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.intAtt">
+<code class="sig-name descname"><span class="pre">intAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.intAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.intAtt" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">
+<code class="sig-name descname"><span class="pre">stkAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stkAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt id="msinvar.wall_crossing.WCS">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">WCS</span></code><a class="headerlink" href="#msinvar.wall_crossing.WCS" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure" title="msinvar.wall_crossing.WallCrossingStructure"><code class="xref py py-class docutils literal notranslate"><span class="pre">msinvar.wall_crossing.WallCrossingStructure</span></code></a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.total2stacky_algo1">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2stacky_algo1</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2stacky_algo1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2stacky_algo1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z</span></code>, assuming that the total 
+invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
+</ul>
+<p>Has the same speed as <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo2" title="msinvar.wall_crossing.total2stacky_algo2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo2()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.total2stacky_algo2">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2stacky_algo2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2stacky_algo2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2stacky_algo2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z</span></code>, assuming that the total 
+invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
+</ul>
+<p>Has the same speed as <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.stacky2total_algo1">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">stacky2total_algo1</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#stacky2total_algo1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.stacky2total_algo1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate total invariant, assuming that the stacky invariant for 
+stability <code class="docutils literal notranslate"><span class="pre">z</span></code> is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>This algorithm is faster than <a class="reference internal" href="#msinvar.wall_crossing.stacky2total_algo2" title="msinvar.wall_crossing.stacky2total_algo2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky2total_algo2()</span></code></a>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.stacky2total_algo2">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">stacky2total_algo2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#stacky2total_algo2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.stacky2total_algo2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate total invariant, assuming that the stacky invariant for 
+stability <code class="docutils literal notranslate"><span class="pre">z</span></code> is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>This is a recursive inversion of total2stacky. It is slower than 
+<a class="reference internal" href="#msinvar.wall_crossing.stacky2total_algo1" title="msinvar.wall_crossing.stacky2total_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky2total_algo1()</span></code></a>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.total2stkAtt">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2stkAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2stkAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2stkAtt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate stacky attractor invariant, assuming that the total invariant
+is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.total2intAtt">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2intAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2intAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2intAtt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate integer attractor invariant, assuming that the total invariant
+is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.stkAtt2total">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">stkAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#stkAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.stkAtt2total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate total invariant, assuming that the stacky attractor invariant
+is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>This is a recursive inversion of <a class="reference internal" href="#msinvar.wall_crossing.total2stkAtt" title="msinvar.wall_crossing.total2stkAtt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stkAtt()</span></code></a>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.wall_crossing.intAtt2total">
+<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">intAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#intAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.intAtt2total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate total invariant, assuming that the integer attractor invariant
+is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<p>INPUT:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
+</ul>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="invariants.html" class="btn btn-neutral float-right" title="Invariants and transformations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="quivers.html" class="btn btn-neutral float-left" title="Quivers" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

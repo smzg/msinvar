@@ -1,0 +1,338 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.rings &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.rings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.rings</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Some base rings in which our invariants take values</span>
+
+<span class="sd">EXAMPLES::</span>
+<span class="sd">    </span>
+<span class="sd">    sage: from msinvar.rings import RF</span>
+<span class="sd">    sage: R=RF(&#39;u,v&#39;)</span>
+<span class="sd">    sage: R.inject_variables(verbose=False)</span>
+<span class="sd">    sage: (u-v).adams(2)/(u+v)</span>
+<span class="sd">    u - v</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+
+<span class="kn">from</span> <span class="nn">sage.symbolic.ring</span> <span class="kn">import</span> <span class="n">SymbolicRing</span><span class="p">,</span> <span class="n">SR</span>
+<span class="kn">from</span> <span class="nn">sage.rings.fraction_field</span> <span class="kn">import</span> <span class="n">FractionField_generic</span>
+<span class="kn">from</span> <span class="nn">sage.rings.fraction_field_element</span> <span class="kn">import</span> <span class="n">FractionFieldElement</span>
+<span class="kn">from</span> <span class="nn">sage.rings.polynomial.multi_polynomial_libsingular</span> <span class="kn">import</span> <span class="n">MPolynomialRing_libsingular</span>
+<span class="kn">from</span> <span class="nn">sage.rings.rational_field</span> <span class="kn">import</span> <span class="n">QQ</span>
+<span class="kn">from</span> <span class="nn">sage.categories.quotient_fields</span> <span class="kn">import</span> <span class="n">QuotientFields</span>
+<span class="kn">from</span> <span class="nn">msinvar.lambda_rings</span> <span class="kn">import</span> <span class="n">LambdaRings</span>
+
+
+<div class="viewcode-block" id="RationalFunctionField"><a class="viewcode-back" href="../../rings.html#msinvar.rings.RationalFunctionField">[docs]</a><span class="k">class</span> <span class="nc">RationalFunctionField</span><span class="p">(</span><span class="n">FractionField_generic</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Field of rational functions in several variables, meaning fractions P/Q, where P, Q</span>
+<span class="sd">    are polynomials in several variables.</span>
+
+<span class="sd">    EXAMPLES::</span>
+
+<span class="sd">        sage: from msinvar.rings import RF</span>
+<span class="sd">        sage: R=RF(); R</span>
+<span class="sd">        Field of Rational Functions in y</span>
+<span class="sd">        sage: y=R.gen()</span>
+<span class="sd">        sage: f=(1-y)**3/(1+y)**2; f</span>
+<span class="sd">        (-y^3 + 3*y^2 - 3*y + 1)/(y^2 + 2*y + 1)</span>
+<span class="sd">        sage: factor(f)</span>
+<span class="sd">        (-1) * (y + 1)^-2 * (y - 1)^3</span>
+<span class="sd">        sage: f.adams(2)</span>
+<span class="sd">        (-y^6 + 3*y^4 - 3*y^2 + 1)/(y^4 + 2*y^2 + 1)</span>
+
+<span class="sd">        sage: R=RF(&#39;x,y&#39;); R</span>
+<span class="sd">        Field of Rational Functions in x, y</span>
+<span class="sd">        sage: R.inject_variables(verbose=False)</span>
+<span class="sd">        sage: f=(1-y**2)**5/(1-y)**5*(x-y)</span>
+<span class="sd">        sage: f.factor()</span>
+<span class="sd">        (-1) * (-x + y) * (y + 1)^5</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">base</span><span class="o">=</span><span class="n">QQ</span><span class="p">):</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="nb">vars</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)</span>
+        <span class="n">R</span> <span class="o">=</span> <span class="n">MPolynomialRing_libsingular</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="nb">vars</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="nb">vars</span><span class="p">)</span>
+        <span class="c1"># cat=Category.join([QuotientFields(),LambdaRings()])</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">element_class</span><span class="o">=</span><span class="n">RationalFunction</span><span class="p">)</span>  <span class="c1"># , category=cat)</span>
+        <span class="n">LambdaRings</span><span class="o">.</span><span class="n">add_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+<div class="viewcode-block" id="RationalFunctionField.symbolic"><a class="viewcode-back" href="../../rings.html#msinvar.rings.RationalFunctionField.symbolic">[docs]</a>    <span class="k">def</span> <span class="nf">symbolic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Symbolic expression of a given rational function f.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">v</span><span class="p">:</span> <span class="n">SR</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">gens</span><span class="p">())}</span>
+        <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">subs</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">_repr_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variable_names</span><span class="p">())</span>
+        <span class="k">return</span> <span class="s1">&#39;Field of Rational Functions in &#39;</span><span class="o">+</span><span class="nb">vars</span></div>
+
+
+<span class="n">RF</span> <span class="o">=</span> <span class="n">RationalFunctionField</span>
+
+
+<div class="viewcode-block" id="RationalFunction"><a class="viewcode-back" href="../../rings.html#msinvar.rings.RationalFunction">[docs]</a><span class="k">class</span> <span class="nc">RationalFunction</span><span class="p">(</span><span class="n">FractionFieldElement</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Element class for the parent class :class:`RationalFunctionField`.&quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RationalFunction.root_vars"><a class="viewcode-back" href="../../rings.html#msinvar.rings.RationalFunction.root_vars">[docs]</a>    <span class="k">def</span> <span class="nf">root_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See :meth:`root_vars`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">root_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="root_vars"><a class="viewcode-back" href="../../rings.html#msinvar.rings.root_vars">[docs]</a><span class="k">def</span> <span class="nf">root_vars</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Substitute every variable x in a fraction f by x^(1/k).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">parent</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">R</span> <span class="ow">in</span> <span class="n">QuotientFields</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">R</span><span class="p">(</span><span class="n">root_vars</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">numerator</span><span class="p">(),</span> <span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">root_vars</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">denominator</span><span class="p">(),</span> <span class="n">k</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="n">e</span><span class="p">):</span> <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">e</span><span class="p">)</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="p">{</span><span class="n">root</span><span class="p">(</span><span class="n">e</span><span class="p">):</span> <span class="n">c</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">R</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SR1"><a class="viewcode-back" href="../../rings.html#msinvar.rings.SR1">[docs]</a><span class="k">class</span> <span class="nc">SR1</span><span class="p">(</span><span class="n">SymbolicRing</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">vars</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">var</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span>
+        <span class="n">LambdaRings</span><span class="o">.</span><span class="n">add_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Parent.__init__(self, category=LambdaRings()) # wee add category explicitly now</span>
+        <span class="c1"># self.inject_variables() #does not work globally; need to invoke it later</span>
+
+<div class="viewcode-block" id="SR1.ngens"><a class="viewcode-back" href="../../rings.html#msinvar.rings.SR1.ngens">[docs]</a>    <span class="k">def</span> <span class="nf">ngens</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the number of variables.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SR1.gen"><a class="viewcode-back" href="../../rings.html#msinvar.rings.SR1.gen">[docs]</a>    <span class="k">def</span> <span class="nf">gen</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>  <span class="c1"># needed for gens, inject_variables to work</span>
+        <span class="sd">&quot;&quot;&quot;Return the i-th variable.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="n">i</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SR1.variable_names"><a class="viewcode-back" href="../../rings.html#msinvar.rings.SR1.variable_names">[docs]</a>    <span class="k">def</span> <span class="nf">variable_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># needed for inject_variables to work</span>
+        <span class="sd">&quot;&quot;&quot;Return the tuple of all names of variables.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">symbols</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span></div>
+
+    <span class="k">def</span> <span class="nf">_repr_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;Symbolic ring with lambda-ring structure&#39;</span></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

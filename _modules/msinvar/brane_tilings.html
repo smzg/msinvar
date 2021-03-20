@@ -1,0 +1,452 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.brane_tilings &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.brane_tilings</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.brane_tilings</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Brane tilings and molten crystal counting</span>
+
+<span class="sd">This code is based on :arxiv:`0809.0117`.</span>
+<span class="sd">See also :arXiv:`2012.14358`</span>
+
+<span class="sd">Given a brane tiling (a bipartite graph embedded in a torus) we associate with</span>
+<span class="sd">it a quiver with potential (Q,W).</span>
+<span class="sd">For any vertex `i\in Q_0`, we consider the set `\Delta_i` of paths starting</span>
+<span class="sd">at i up to an equivalence relation induced by the potential W.</span>
+<span class="sd">This set has a poset structure and can be interpreted as a crystal embedded</span>
+<span class="sd">in `\mathbb R^3`.</span>
+<span class="sd">For example, a brane tiling for `\mathbb C^3` corresponds to a quiver with one</span>
+<span class="sd">vertex 0, three loops x,y,z and potential W=x[y,z].</span>
+<span class="sd">The corresponding Jacobian algebra is `\mathbb C[x,y,z]` which has a basis </span>
+<span class="sd">parametrized by `\Delta_0=\mathbb N^3`, our crystal.</span>
+
+<span class="sd">We define molten crystals as complements of finite ideals </span>
+<span class="sd">`I\subset \Delta_i`, meaning a subset I such that `u\le v` and `v\in I`</span>
+<span class="sd">implies `u\in I`.</span>
+<span class="sd">For any path `u\in\Delta_i`, let `t(u)\in Q_0` be the target vertex of u.</span>
+<span class="sd">Define the dimension vector of I to be </span>
+<span class="sd">`\dim I=\sum_{u\in I}e_{t(u)}\in\mathbb N^{Q_0}`.</span>
+<span class="sd">We compute the partition function</span>
+<span class="sd">`Z_{\Delta_i}(x)=\sum_{I\subset\Delta_i}x^{\dim I}`</span>
+<span class="sd">which is closely related to numerical DT invariants of (Q,W).</span>
+
+<span class="sd">EXAMPLES::</span>
+
+<span class="sd">    sage: from msinvar import *</span>
+<span class="sd">    sage: from msinvar.brane_tilings import *</span>
+<span class="sd">    sage: CQ=CyclicQuiver(1)</span>
+<span class="sd">    sage: PQ=CQ.translation_PQ(); PQ</span>
+<span class="sd">    Quiver with 1 vertices, 3 arrows and potential with 2 terms</span>
+<span class="sd">    sage: Q=BTQuiver(potential=PQ._potential)</span>
+<span class="sd">    sage: Z=partition_func(Q, 0, 8); Z</span>
+<span class="sd">    1 + x + 3*x^2 + 6*x^3 + 13*x^4 + 24*x^5 + 48*x^6 + 86*x^7 + 160*x^8</span>
+<span class="sd">    sage: Z.Log()</span>
+<span class="sd">    x + 2*x^2 + 3*x^3 + 4*x^4 + 5*x^5 + 6*x^6 + 7*x^7 + 8*x^8</span>
+
+<span class="sd">::</span>
+<span class="sd">    </span>
+<span class="sd">    sage: BTD[1]</span>
+<span class="sd">    [&#39;Conifold=Y10&#39;,</span>
+<span class="sd">     &#39;Phi[1,2,1]*Phi[2,1,1]*Phi[1,2,2]*Phi[2,1,2]-Phi[1,2,1]*Phi[2,1,2]*Phi[1,2,2]*Phi[2,1,1]&#39;]</span>
+<span class="sd">    sage: Q=BTQuiver(potential=BTD[1][1]); Q</span>
+<span class="sd">    Quiver with 2 vertices, 4 arrows and potential with 2 terms</span>
+<span class="sd">    sage: Z=partition_func(Q, 1, 5); Z</span>
+<span class="sd">    1 + x0 + 2*x0*x1 + 4*x0^2*x1 + x0*x1^2 + 2*x0^3*x1 + 8*x0^2*x1^2 + 14*x0^3*x1^2 + 4*x0^2*x1^3</span>
+<span class="sd">    sage: Z.Log()</span>
+<span class="sd">    x0 - x0^2 + 2*x0*x1 + 2*x0^2*x1 + x0*x1^2 + 4*x0^2*x1^2 + 3*x0^3*x1^2 + 2*x0^2*x1^3</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+
+<span class="kn">from</span> <span class="nn">sage.matrix.constructor</span> <span class="kn">import</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">vector</span>
+<span class="kn">from</span> <span class="nn">msinvar.quivers</span> <span class="kn">import</span> <span class="n">Quiver</span>
+<span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">vec</span>
+<span class="kn">from</span> <span class="nn">msinvar.posets</span> <span class="kn">import</span> <span class="n">Poset</span>
+<span class="kn">from</span> <span class="nn">msinvar.tm_polynomials</span> <span class="kn">import</span> <span class="n">TMPoly</span>
+<span class="kn">from</span> <span class="nn">sage.rings.rational_field</span> <span class="kn">import</span> <span class="n">QQ</span>
+
+
+<div class="viewcode-block" id="BTQuiver"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver">[docs]</a><span class="k">class</span> <span class="nc">BTQuiver</span><span class="p">(</span><span class="n">Quiver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Quiver with potential associated with a brane tiling.</span>
+<span class="sd">    </span>
+<span class="sd">    Contains the method :meth:`wt` such that two paths are equivalent (equal</span>
+<span class="sd">    in the Jacobian algebra if and only if their weights are equal).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
+        <span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">path2vec</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="p">])</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="p">)</span>
+        <span class="n">A1</span> <span class="o">=</span> <span class="n">A</span><span class="o">.</span><span class="n">augment</span><span class="p">(</span><span class="n">vector</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">m</span><span class="p">))</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">A1</span><span class="o">.</span><span class="n">right_kernel</span><span class="p">()</span><span class="o">.</span><span class="n">basis</span><span class="p">())</span><span class="o">.</span><span class="n">columns</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wzero</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_wt</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="n">l</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">(</span><span class="n">a</span><span class="p">)]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="p">()}</span>
+
+    
+<div class="viewcode-block" id="BTQuiver.wt"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.wt">[docs]</a>    <span class="k">def</span> <span class="nf">wt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Weight of an arrow or a path.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span> <span class="c1">#a is an arrow</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wt</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wt</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">a</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BTQuiver.path2vec"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.path2vec">[docs]</a>    <span class="k">def</span> <span class="nf">path2vec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Multiplicities of all arrows in a path.&quot;&quot;&quot;</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">p</span><span class="p">:</span>
+            <span class="n">v</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">(</span><span class="n">a</span><span class="p">)]</span> <span class="o">=</span> <span class="o">+</span><span class="mi">1</span>
+        <span class="k">return</span> <span class="n">v</span></div>
+
+<div class="viewcode-block" id="BTQuiver.ideal_dim"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.ideal_dim">[docs]</a>    <span class="k">def</span> <span class="nf">ideal_dim</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Dimension vector of an ideal I that consists of atoms (paths).&quot;&quot;&quot;</span>
+        <span class="n">vert</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vertices</span><span class="p">()</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">vert</span><span class="p">}</span>
+        <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="n">I</span><span class="p">:</span>
+            <span class="n">d</span><span class="p">[</span><span class="n">u</span><span class="o">.</span><span class="n">t</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">d</span><span class="p">[</span><span class="n">vert</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vert</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="BTQuiver.add_new_arrows"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.add_new_arrows">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_arrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add new arrows to the atoms in the poset ``P``. </span>
+<span class="sd">        </span>
+<span class="sd">        - ``Q`` -- quiver with potential,</span>
+<span class="sd">        - ``P`` -- poset of atoms,</span>
+<span class="sd">        - ``n`` -- index in ``P``, where atoms that require new arrows start.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">n1</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n1</span><span class="p">):</span>
+            <span class="n">u</span> <span class="o">=</span> <span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">u</span><span class="o">.</span><span class="n">t</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">(</span><span class="n">a</span><span class="p">):</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">add_arrow</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">v1</span> <span class="ow">in</span> <span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">v1</span><span class="p">):</span>
+                            <span class="n">v</span> <span class="o">=</span> <span class="n">v1</span>
+                            <span class="k">break</span>
+                    <span class="k">if</span> <span class="n">v</span> <span class="o">!=</span> <span class="n">v1</span><span class="p">:</span>
+                        <span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                    <span class="n">P</span><span class="o">.</span><span class="n">rel</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">n1</span></div>
+    
+    
+<div class="viewcode-block" id="BTQuiver.create_path_poset"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.create_path_poset">[docs]</a>    <span class="k">def</span> <span class="nf">create_path_poset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creat the poset of atoms (paths) that start at the vertex ``i``</span>
+<span class="sd">        and have length &lt;= ``N``.&quot;&quot;&quot;</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">Atom</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+        <span class="n">P</span> <span class="o">=</span> <span class="n">Poset</span><span class="p">(</span><span class="n">rel</span><span class="o">=</span><span class="p">[],</span> <span class="n">vert</span><span class="o">=</span><span class="p">[</span><span class="n">u</span><span class="p">])</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_arrows</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">P</span><span class="o">.</span><span class="n">vert</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">P</span></div></div>
+    
+
+
+
+
+<div class="viewcode-block" id="Atom"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.Atom">[docs]</a><span class="k">class</span> <span class="nc">Atom</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Atom -- equivalence class of a path in the Jacobian algebra.</span>
+
+<span class="sd">    - ``Q`` -- a BTQuiver,</span>
+<span class="sd">    - ``t`` -- a target,</span>
+<span class="sd">    - ``wt`` -- a weight.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">wt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span>
+        <span class="k">if</span> <span class="n">wt</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wt</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">wzero</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wt</span> <span class="o">=</span> <span class="n">wt</span>
+
+<div class="viewcode-block" id="Atom.add_arrow"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.Atom.add_arrow">[docs]</a>    <span class="k">def</span> <span class="nf">add_arrow</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
+        <span class="n">wt</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">wt</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">t</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Atom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">wt</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Atom.equal"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.Atom.equal">[docs]</a>    <span class="k">def</span> <span class="nf">equal</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">==</span> <span class="n">u</span><span class="o">.</span><span class="n">t</span> <span class="ow">and</span> <span class="n">vec</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">,</span> <span class="n">u</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Atom &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;-&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="partition_func"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.partition_func">[docs]</a><span class="k">def</span> <span class="nf">partition_func</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Partition function of ideals (molten crystals) in the crystal of atoms</span>
+<span class="sd">    that start at the vertex ``i`` and have length &lt;= ``N``.</span>
+<span class="sd">    </span>
+<span class="sd">    We keep track of the dimension vectors of ideals.&quot;&quot;&quot;</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">(),</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">create_path_poset</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">I</span> <span class="ow">in</span> <span class="n">P</span><span class="o">.</span><span class="n">ideals</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">ideal_dim</span><span class="p">(</span><span class="n">I</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dct</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">R</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="partition_func1"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.partition_func1">[docs]</a><span class="k">def</span> <span class="nf">partition_func1</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Partition function of ideals (molten crystals) in the crystal of atoms</span>
+<span class="sd">    that start at the vertex ``i`` and have length &lt;= ``N``.</span>
+<span class="sd">    </span>
+<span class="sd">    We keep track only of the sizes of ideals.&quot;&quot;&quot;</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">create_path_poset</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">I</span> <span class="ow">in</span> <span class="n">P</span><span class="o">.</span><span class="n">ideals</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">),)</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">dct</span><span class="p">:</span>
+            <span class="n">dct</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">dct</span><span class="p">[</span><span class="n">d</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">R</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span></div>
+
+
+<span class="c1"># data base of some brane tilings from https://www.lpthe.jussieu.fr/~pioline/computing.html</span>
+<span class="n">BTD</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="p">[</span><span class="s2">&quot;C^3&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,1,1]*Phi[1,1,2]*Phi[1,1,3]-Phi[1,1,1]*Phi[1,1,3]*Phi[1,1,2]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Conifold=Y10&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,1,1]*Phi[1,2,2]*Phi[2,1,2]-Phi[1,2,1]*Phi[2,1,2]*Phi[1,2,2]*Phi[2,1,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;C^2xC/2&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,1,1]*Phi[1,2,2]*Phi[2,1,1]+Phi[1,1,1]*Phi[1,2,1]*Phi[2,1,2]-Phi[1,2,2]*Phi[2,1,1]*Phi[2,2,1]+Phi[1,2,1]*Phi[2,1,2]*Phi[2,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;C^2xC/3&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,1,1]*Phi[1,2,1]*Phi[2,1,1]+Phi[2,2,1]*Phi[2,3,1]*Phi[3,2,1]+Phi[1,3,1]*Phi[3,1,1]*Phi[3,3,1]-Phi[1,2,1]*Phi[2,1,1]*Phi[2,2,1]+Phi[1,1,1]*Phi[1,3,1]*Phi[3,1,1]+Phi[2,3,1]*Phi[3,2,1]*Phi[3,3,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;PdP6=C^3/2x2&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,3,1]*Phi[2,1,1]*Phi[3,2,1]+Phi[1,2,1]*Phi[2,4,1]*Phi[4,1,1]+Phi[2,3,1]*Phi[3,4,1]*Phi[4,2,1]+Phi[1,4,1]*Phi[3,1,1]*Phi[4,3,1]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,1,1]+Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,4,1]*Phi[2,1,1]*Phi[4,2,1]+Phi[2,4,1]*Phi[3,2,1]*Phi[4,3,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;SPP=L121&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,1,1]*Phi[1,3,1]*Phi[3,1,1]+Phi[1,2,1]*Phi[2,1,1]*Phi[2,3,1]*Phi[3,2,1]-Phi[1,1,1]*Phi[1,2,1]*Phi[2,1,1]+Phi[1,3,1]*Phi[2,3,1]*Phi[3,1,1]*Phi[3,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;P2=C^3/(1,1,1)&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,3,3]*Phi[3,1,1]+Phi[1,2,3]*Phi[2,3,1]*Phi[3,1,2]+Phi[1,2,1]*Phi[2,3,2]*Phi[3,1,3]-Phi[1,2,3]*Phi[2,3,2]*Phi[3,1,1]+Phi[1,2,1]*Phi[2,3,3]*Phi[3,1,2]+Phi[1,2,2]*Phi[2,3,1]*Phi[3,1,3]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;F0.1=P1xP1&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,4,2]*Phi[4,1,1]+Phi[1,3,1]*Phi[3,4,2]*Phi[4,1,2]+Phi[1,3,2]*Phi[3,4,1]*Phi[4,1,3]+Phi[1,2,1]*Phi[2,4,1]*Phi[4,1,4]-Phi[1,3,2]*Phi[3,4,2]*Phi[4,1,1]+Phi[1,2,2]*Phi[2,4,1]*Phi[4,1,2]+Phi[1,2,1]*Phi[2,4,2]*Phi[4,1,3]+Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,4]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;F0.2=P1xP1&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,3,2]*Phi[3,4,2]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,2]-Phi[1,2,2]*Phi[2,3,2]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,2]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,1,2]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;F1=dP1=Y21=L312&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,3,2]*Phi[3,4,2]*Phi[4,1,1]+Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,2]+Phi[2,3,1]*Phi[3,4,3]*Phi[4,2,1]-Phi[1,3,1]*Phi[3,4,3]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,2]+Phi[2,3,2]*Phi[3,4,1]*Phi[4,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;F2=C^3/(1,1,2)&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,3,2]*Phi[3,1,1]+Phi[1,2,2]*Phi[2,4,1]*Phi[4,1,1]+Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,2]+Phi[2,3,1]*Phi[3,4,2]*Phi[4,2,1]-Phi[1,2,2]*Phi[2,3,1]*Phi[3,1,1]+Phi[1,3,1]*Phi[3,4,2]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,4,1]*Phi[4,1,2]+Phi[2,3,2]*Phi[3,4,1]*Phi[4,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dP2.1&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,4,2]*Phi[4,5,2]*Phi[5,1,1]+Phi[2,4,1]*Phi[4,5,1]*Phi[5,2,1]+Phi[3,4,2]*Phi[4,5,3]*Phi[5,3,1]-Phi[1,2,1]*Phi[2,4,1]*Phi[4,1,1]+Phi[1,3,1]*Phi[3,4,2]*Phi[4,5,1]*Phi[5,1,1]+Phi[2,4,2]*Phi[4,5,3]*Phi[5,2,1]+Phi[3,4,1]*Phi[4,5,2]*Phi[5,3,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dP2.2&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,3,2]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,2]*Phi[2,3,1]*Phi[3,5,1]*Phi[5,1,1]+Phi[2,4,1]*Phi[4,5,1]*Phi[5,2,1]-Phi[1,2,2]*Phi[2,4,1]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,5,1]*Phi[5,1,1]+Phi[2,3,2]*Phi[3,5,1]*Phi[5,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;PdP2&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,3,1]*Phi[3,1,1]+Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,3,1]*Phi[3,5,1]*Phi[5,1,1]+Phi[2,3,1]*Phi[3,4,1]*Phi[4,5,1]*Phi[5,2,1]-Phi[1,2,1]*Phi[2,3,2]*Phi[3,1,1]+Phi[1,2,2]*Phi[2,4,1]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,4,1]*Phi[4,5,1]*Phi[5,1,1]+Phi[2,3,2]*Phi[3,5,1]*Phi[5,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dP3.1&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,3,1]*Phi[3,5,1]*Phi[5,1,1]+Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,5,1]*Phi[5,6,1]*Phi[6,1,1]+Phi[2,4,1]*Phi[4,6,1]*Phi[6,2,1]-Phi[1,2,1]*Phi[2,4,1]*Phi[4,5,1]*Phi[5,1,1]+Phi[1,3,1]*Phi[3,4,1]*Phi[4,6,1]*Phi[6,1,1]+Phi[2,3,1]*Phi[3,5,1]*Phi[5,6,1]*Phi[6,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dP3.2&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,4,1]*Phi[4,1,1]+Phi[1,3,1]*Phi[3,5,1]*Phi[5,1,1]+Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,6,1]*Phi[6,1,1]+Phi[2,5,1]*Phi[5,6,1]*Phi[6,2,1]-Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,5,1]*Phi[5,1,1]+Phi[1,2,2]*Phi[2,3,1]*Phi[3,5,1]*Phi[5,6,1]*Phi[6,1,1]+Phi[2,4,1]*Phi[4,6,1]*Phi[6,2,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dP3.3&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,3,1]*Phi[3,5,1]*Phi[5,1,1]+Phi[1,2,2]*Phi[2,4,1]*Phi[4,5,1]*Phi[5,1,1]+Phi[1,2,2]*Phi[2,3,1]*Phi[3,6,1]*Phi[6,1,2]+Phi[1,4,1]*Phi[4,6,1]*Phi[6,1,2]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,5,1]*Phi[5,1,2]+Phi[1,4,1]*Phi[4,5,1]*Phi[5,1,2]+Phi[1,3,1]*Phi[3,6,1]*Phi[6,1,1]+Phi[1,2,1]*Phi[2,4,1]*Phi[4,6,1]*Phi[6,1,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;dP3.4&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,4,1]*Phi[4,1,1]+Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,2]+Phi[1,2,3]*Phi[2,5,1]*Phi[5,1,1]+Phi[1,3,3]*Phi[3,5,1]*Phi[5,1,2]+Phi[1,2,2]*Phi[2,6,1]*Phi[6,1,1]+Phi[1,3,2]*Phi[3,6,1]*Phi[6,1,2]-Phi[1,3,2]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,2]*Phi[2,4,1]*Phi[4,1,2]+Phi[1,3,1]*Phi[3,5,1]*Phi[5,1,1]+Phi[1,2,1]*Phi[2,5,1]*Phi[5,1,2]+Phi[1,3,3]*Phi[3,6,1]*Phi[6,1,1]+Phi[1,2,3]*Phi[2,6,1]*Phi[6,1,2]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;L131&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,1,1]*Phi[1,2,1]*Phi[2,1,1]+Phi[2,2,1]*Phi[2,3,1]*Phi[3,2,1]+Phi[1,4,1]*Phi[3,4,1]*Phi[4,1,1]*Phi[4,3,1]-Phi[1,2,1]*Phi[2,1,1]*Phi[2,2,1]+Phi[1,1,1]*Phi[1,4,1]*Phi[4,1,1]+Phi[2,3,1]*Phi[3,2,1]*Phi[3,4,1]*Phi[4,3,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;L152&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,3,1]*Phi[3,1,1]+Phi[2,3,2]*Phi[3,4,1]*Phi[4,2,1]+Phi[1,4,1]*Phi[4,5,1]*Phi[5,1,1]+Phi[1,2,2]*Phi[2,6,1]*Phi[6,1,1]+Phi[3,4,2]*Phi[4,6,1]*Phi[5,3,1]*Phi[6,5,1]-Phi[1,2,2]*Phi[2,3,2]*Phi[3,1,1]+Phi[2,3,1]*Phi[3,4,2]*Phi[4,2,1]+Phi[3,4,1]*Phi[4,5,1]*Phi[5,3,1]+Phi[1,4,1]*Phi[4,6,1]*Phi[6,1,1]+Phi[1,2,1]*Phi[2,6,1]*Phi[5,1,1]*Phi[6,5,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;C^3/(1,1,3)&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,3,2]*Phi[3,1,1]+Phi[2,3,1]*Phi[3,4,2]*Phi[4,2,1]+Phi[1,2,2]*Phi[2,5,1]*Phi[5,1,1]+Phi[1,4,1]*Phi[4,5,1]*Phi[5,1,2]+Phi[3,4,1]*Phi[4,5,2]*Phi[5,3,1]-Phi[1,2,2]*Phi[2,3,1]*Phi[3,1,1]+Phi[2,3,2]*Phi[3,4,1]*Phi[4,2,1]+Phi[1,4,1]*Phi[4,5,2]*Phi[5,1,1]+Phi[1,2,1]*Phi[2,5,1]*Phi[5,1,2]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,3,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Y23=L153&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,4,1]*Phi[2,1,2]*Phi[3,2,1]*Phi[4,3,1]+Phi[3,5,1]*Phi[4,3,2]*Phi[5,4,1]+Phi[1,6,2]*Phi[2,1,1]*Phi[6,2,1]+Phi[4,6,1]*Phi[5,4,2]*Phi[6,5,1]+Phi[1,6,1]*Phi[5,1,1]*Phi[6,5,2]-Phi[1,4,1]*Phi[2,1,1]*Phi[3,2,1]*Phi[4,3,2]+Phi[3,5,1]*Phi[4,3,1]*Phi[5,4,2]+Phi[1,6,1]*Phi[2,1,2]*Phi[6,2,1]+Phi[1,6,2]*Phi[5,1,1]*Phi[6,5,1]+Phi[4,6,1]*Phi[5,4,1]*Phi[6,5,2]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;C^3/(1,1,4)&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,3,2]*Phi[3,1,1]+Phi[2,3,1]*Phi[3,4,2]*Phi[4,2,1]+Phi[3,4,1]*Phi[4,5,2]*Phi[5,3,1]+Phi[1,2,2]*Phi[2,6,1]*Phi[6,1,1]+Phi[1,5,1]*Phi[5,6,1]*Phi[6,1,2]+Phi[4,5,1]*Phi[5,6,2]*Phi[6,4,1]-Phi[1,2,2]*Phi[2,3,1]*Phi[3,1,1]+Phi[2,3,2]*Phi[3,4,1]*Phi[4,2,1]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,3,1]+Phi[1,5,1]*Phi[5,6,2]*Phi[6,1,1]+Phi[1,2,1]*Phi[2,6,1]*Phi[6,1,2]+Phi[4,5,2]*Phi[5,6,1]*Phi[6,4,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;PdP3a=C^3/(1,2,3)&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,1]*Phi[2,4,1]*Phi[4,1,1]+Phi[1,4,1]*Phi[4,5,1]*Phi[5,1,1]+Phi[2,3,1]*Phi[3,5,1]*Phi[5,2,1]+Phi[1,3,1]*Phi[3,6,1]*Phi[6,1,1]+Phi[2,5,1]*Phi[5,6,1]*Phi[6,2,1]+Phi[3,4,1]*Phi[4,6,1]*Phi[6,3,1]-Phi[1,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,5,1]*Phi[5,1,1]+Phi[2,4,1]*Phi[4,5,1]*Phi[5,2,1]+Phi[1,4,1]*Phi[4,6,1]*Phi[6,1,1]+Phi[2,3,1]*Phi[3,6,1]*Phi[6,2,1]+Phi[3,5,1]*Phi[5,6,1]*Phi[6,3,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Y30&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,2]*Phi[2,5,1]*Phi[5,6,1]*Phi[6,1,1]+Phi[3,4,1]*Phi[4,5,1]*Phi[5,6,2]*Phi[6,3,1]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,5,1]*Phi[5,6,2]*Phi[6,1,1]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,6,1]*Phi[6,3,1]&#39;</span><span class="p">],</span>
+    <span class="p">[</span><span class="s2">&quot;Y31&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,6,1]*Phi[6,3,1]+Phi[5,6,2]*Phi[6,1,1]*Phi[1,5,1]+Phi[6,1,2]*Phi[1,2,1]*Phi[2,6,1]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,1]+Phi[3,4,1]*Phi[4,5,1]*Phi[5,6,2]*Phi[6,3,1]+Phi[5,6,1]*Phi[6,1,2]*Phi[1,5,1]+Phi[6,1,1]*Phi[1,2,2]*Phi[2,6,1]&#39;</span><span class="p">]</span>
+<span class="p">]</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,314 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.higgs_bundles &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.higgs_bundles</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.higgs_bundles</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Motivic classes of the moduli spaces of twisted Higgs bundles</span>
+
+<span class="sd">For more details see :arxiv:`1104.5698` and :arxiv:`1901.02439`.</span>
+
+<span class="sd">EXAMPLES::</span>
+<span class="sd">    </span>
+<span class="sd">    sage: from msinvar.higgs_bundles import CurveAlgebra</span>
+<span class="sd">    sage: from msinvar.higgs_bundles import twisted_higgs_bundles_invariant as invar</span>
+<span class="sd">    sage: C=CurveAlgebra(g=2)</span>
+<span class="sd">    sage: invar(C,l=2,r=2).factor()</span>
+<span class="sd">    (y - 1)^4 * y^10 * (y^2 + 1) * (y^4 - 4*y + 2)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+
+<span class="kn">from</span> <span class="nn">sage.combinat.partition</span> <span class="kn">import</span> <span class="n">Partitions</span>
+<span class="kn">from</span> <span class="nn">msinvar.tm_polynomials</span> <span class="kn">import</span> <span class="n">TMPoly</span>
+<span class="kn">from</span> <span class="nn">msinvar.rings</span> <span class="kn">import</span> <span class="n">RationalFunctionField</span>
+
+
+<div class="viewcode-block" id="CurveAlgebra"><a class="viewcode-back" href="../../higgs_bundles.html#msinvar.higgs_bundles.CurveAlgebra">[docs]</a><span class="k">class</span> <span class="nc">CurveAlgebra</span><span class="p">(</span><span class="n">RationalFunctionField</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The algebra where zeta function of a curve lives.</span>
+
+<span class="sd">    For simplicity we define the algebra to be Q(y,t) or Q(u,v,t).</span>
+<span class="sd">    In the first case the zeta function is</span>
+<span class="sd">    (1-y*t)^(2*g)/(1-t)/(1-y^2*t)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>  <span class="c1"># genus</span>
+        <span class="nb">vars</span> <span class="o">=</span> <span class="nb">vars</span><span class="o">+</span><span class="s1">&#39;,t&#39;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">vars</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngens</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">3</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngens</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Wrong number of variables&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ngens</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">v</span>
+
+<div class="viewcode-block" id="CurveAlgebra.zeta"><a class="viewcode-back" href="../../higgs_bundles.html#msinvar.higgs_bundles.CurveAlgebra.zeta">[docs]</a>    <span class="k">def</span> <span class="nf">zeta</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Zeta function of a curve.</span>
+<span class="sd">        It has the form (1-y*t)^(2*g)/(1-t)/(1-y^2*t).&quot;&quot;&quot;</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="n">g</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">v</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="n">g</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="o">*</span><span class="n">v</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z</span>
+        <span class="k">return</span> <span class="n">z</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CurveAlgebra.H"><a class="viewcode-back" href="../../higgs_bundles.html#msinvar.higgs_bundles.CurveAlgebra.H">[docs]</a>    <span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">part</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compute the function H from :arxiv:`1104.5698` (7).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">t</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">Z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">zeta</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">u</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">v</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">part</span><span class="o">.</span><span class="n">cells</span><span class="p">():</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">arm_length</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">l</span> <span class="o">=</span> <span class="n">part</span><span class="o">.</span><span class="n">leg_length</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+            <span class="n">h</span> <span class="o">=</span> <span class="n">a</span><span class="o">+</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="n">t</span><span class="o">**</span><span class="p">(</span><span class="n">a</span><span class="o">-</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="n">q</span><span class="o">**</span><span class="n">a</span><span class="p">)</span><span class="o">**</span><span class="n">p</span><span class="o">*</span><span class="n">t</span><span class="o">**</span><span class="p">((</span><span class="mi">1</span><span class="o">-</span><span class="n">g</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">l</span><span class="o">+</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="n">Z</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">t</span><span class="o">**</span><span class="n">h</span><span class="o">*</span><span class="n">q</span><span class="o">**</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span></div></div>
+
+
+<span class="c1">################################</span>
+
+<div class="viewcode-block" id="twisted_higgs_bundles_invariant"><a class="viewcode-back" href="../../higgs_bundles.html#msinvar.higgs_bundles.twisted_higgs_bundles_invariant">[docs]</a><span class="k">def</span> <span class="nf">twisted_higgs_bundles_invariant</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="n">l</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Invariants of the moduli space of ``l``-twisted rank ``r`` Higgs bundles</span>
+<span class="sd">    over a curve ``C``.</span>
+
+<span class="sd">    Expected dimension of the moduli space is 1+l*r^2.</span>
+<span class="sd">    For l=2g-2 it is 2+l*r^2.</span>
+<span class="sd">    The final power twist is given by :arxiv:`1901.02439` (6).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">u</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">v</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="n">C</span><span class="o">.</span><span class="n">g</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">l</span><span class="o">-</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">g</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="n">C</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;T&#39;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">r</span><span class="p">)</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">gen</span><span class="p">()</span>
+    <span class="n">F</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">Partitions</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+            <span class="n">F</span> <span class="o">+=</span> <span class="n">C</span><span class="o">.</span><span class="n">H</span><span class="p">(</span><span class="n">part</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span><span class="o">*</span><span class="n">T</span><span class="o">**</span><span class="n">i</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span><span class="o">.</span><span class="n">coeff</span><span class="p">([</span><span class="n">r</span><span class="p">])</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="o">*</span><span class="n">v</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">p</span><span class="o">*</span><span class="n">r</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">u</span><span class="o">*</span><span class="n">v</span><span class="p">)</span><span class="o">**</span><span class="p">((</span><span class="n">g</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">r</span><span class="o">**</span><span class="mi">2</span><span class="o">+</span><span class="n">p</span><span class="o">*</span><span class="n">r</span><span class="o">*</span><span class="p">(</span><span class="n">r</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">M</span><span class="o">*</span><span class="n">u</span><span class="o">*</span><span class="n">v</span>  <span class="c1"># the dimension of the moduli space increases by 1 for p=0</span>
+    <span class="k">return</span> <span class="n">M</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
