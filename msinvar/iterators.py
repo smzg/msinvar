@@ -181,6 +181,47 @@ def ListPartitions_iterator(l):
         yield list(l[sum(a[:i]):sum(a[:i+1])] for i in range(len(a)))
 
 
+def UnorderedMultiPartitions_iterator(vect, bound=None):
+    r"""
+    Iterator over sets of vectors
+    (a_1,...,a_k) such that a_1+...+a_k = ``vect`` and a_i>0.
+    We order vectors lexicographically.
+    """
+    def lex(a, b=None):
+        if b is None:
+            return True
+        for i in range(len(a)):
+            if a[i] < b[i]:
+                return True
+            if a[i] > b[i]:
+                return False
+        return True
+
+    if not vec.zero(vect) and lex(vect, bound):
+        yield [vect]
+    for b in IntegerVectors_iterator(vect):
+        if lex(b, bound):
+            for a in UnorderedMultiPartitions_iterator(vec.sub(vect, b), b):
+                yield [b]+a
+
+
+# def UnorderedPartitions_iterator(d):
+#     l=list(IntegerVectors_iterator(d))
+#     M=np.array(l).T
+
+
+# def mult2list(m, l):
+#     """
+#     Return a list that contains entry l[i] with multiplicity m[i]
+
+#     ``m``, ``l`` are lists of the same length and ``m`` contains integers.
+#     """
+#     L = []
+#     for i in range(len(l)):
+#         L += [l[i]]*m[i]
+#     return L
+
+
 # def Multiplicities_iterator1(M,b):
 #     """
 #     Iterator over integer vectors a>0 such that M*a<=b,

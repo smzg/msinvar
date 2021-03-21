@@ -16,5 +16,6 @@ from .wall_crossing import WCS
 from .invariants import Invariant
 from .stability import Stability
 from .brane_tilings import BTQuiver, BTD
+from .flow_trees import attr_tree_formula, flow_tree_formula
 
 del absolute_import, print_function

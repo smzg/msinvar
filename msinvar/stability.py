@@ -20,20 +20,22 @@ EXAMPLES::
 import numpy as np
 from sage.arith.misc import gcd
 from msinvar.iterators import IntegerVectors_iterator
+from msinvar.utils import vec
+from sage.misc.prandom import random
 
 
 class Stability:
     """Stability function corresponding to the vectors ``a``, ``b``.
-    
+
     EXAMPLES::
-    
+
         sage: from msinvar import Stability
         sage: z=Stability([1,0]); z
         Stability function [[1, 0], [1, 1]]
         sage: z([1,2]) #slope
         0.3333333333
         sage: z([1,0],[0,1]) #difference of slopes
-        1.0
+        1
         sage: z.less([1,0],[0,1])
         False
     """
@@ -43,11 +45,11 @@ class Stability:
             self.a = a.a
             self.b = a.b
             return
-        self.a = np.array(a)
+        self.a = a  # np.array(a)
         if b is None:
-            self.b = np.ones(len(a), int)
+            self.b = [1]*len(a)  # np.ones(len(a), int)
         else:
-            self.b = np.array(b)
+            self.b = b  # np.array(b)
 
     def __repr__(self):
         return "Stability function "+str([list(self.a), list(self.b)])
@@ -59,7 +61,7 @@ class Stability:
 
     def slope(self, d):
         """Slope of the vector ``d``."""
-        return round(np.dot(self.a, d)/np.dot(self.b, d),10)
+        return np.round(vec.dot(self.a, d)/vec.dot(self.b, d), 10)
 
     def compare(self, d, e):
         """Difference of slopes."""
@@ -88,32 +90,32 @@ class Stability:
 
     def normalize(self, d):
         """Return function f such that f(e)<0 iff slope(e)<slope(d)."""
-        c = self.a-self.slope(d)*self.b
-        return lambda d: round(np.dot(c, d),10)
+        c = vec.sub(self.a, vec.scal(self(d), self.b))
+        return lambda d: np.round(vec.dot(c, d), 10)
 
     def randomize(self):
         """Generic perturbation of self."""
-        a, b = self.a, self.b
-        return Stability(a+np.random.rand(len(a))*1e-5, b)
+        a, b=self.a, self.b
+        return Stability([i+random()*1e-5 for i in a], b)
 
     def is_generic(self, prec):
-        """Return True if slope(d)=slope(e) for d,e<=prec implies that 
+        """Return True if slope(d)=slope(e) for d,e<=prec implies that
         d, e are proportional."""
-        s = set()
+        s=set()
         for d in IntegerVectors_iterator(prec):
             if gcd(d) == 1:
-                c = self.slope(d)
+                c=self.slope(d)
                 if c in s:
                     return False
                 s.add(c)
         return True
 
-    @staticmethod
+    @ staticmethod
     def trivial(n):
         """Return trivial stability of dimension ``n``."""
-        return Stability(np.zeros(n, int))
+        return Stability([0]*n)
 
-    @staticmethod
+    @ staticmethod
     def check(z):
         """Check if ``z`` is a stability.
         If it is a vector, convert it to a stability."""

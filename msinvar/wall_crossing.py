@@ -115,11 +115,14 @@ class WallCrossingStructure:
         self.R = TMPoly(self.base, self.rank, prec=prec)
         self._total = None
 
+    def __repr__(self):
+        return "Wall-crossing structure on a lattice of rank "+str(self.rank)
+
     def total(self, I=None):
         """Total invariant, meaning the stacky invariant for the trivial stability.
-        
+
         EXAMPLE::
-            
+
             sage: from msinvar import *
             sage: Q=JordanQuiver(1); Q
             Quiver with 1 vertices and 1 arrows
@@ -134,11 +137,8 @@ class WallCrossingStructure:
             self._total = I
             return
         if self._total is None:
-            self._total = Invariant(self.total_default, self)
+            self._total = self.total_default()
         return self._total
-
-    def __repr__(self):
-        return "Wall-crossing structure on a lattice of rank "+str(self.rank)
 
     def twist(self, a, b=None):
         """
@@ -250,14 +250,14 @@ class WallCrossingStructure:
         return T(I1)
 
     def int2stk(self, I):
-        I1 = I.term_twist(lambda d: 1/self.gm)
+        I1 = Invariant(lambda d: I(d)/self.gm, self)
         return I1.pExp()
 
     def series(self, I, stab=None, slope=None):
         return I.poly(self, stab,  slope)
 
-    poly=series
-        
+    poly = series
+
     # quiver related methods (requires Euler form)
     def eform(self, a, b):
         return self.quiver.eform(a, b)
@@ -265,12 +265,12 @@ class WallCrossingStructure:
     def qform(self, d):
         return self.eform(d, d)
 
-    def total_default(self, d):
+    def total_default(self):
         """
         Invariants of a quiver corresponding to the trivial stability
         """
         y = self.y
-        return (-y)**(-self.qform(d))/phi(1/y**2, d)
+        return Invariant(lambda d: (-y)**(-self.qform(d))/phi(1/y**2, d), self)
 
     def twist_T(self, d):
         return (-self.y)**(self.qform(d))
@@ -330,12 +330,29 @@ class WallCrossingStructure:
             return self.stacky(z, I)(d)
         return Invariant(f, self)
 
+    def ratAtt(self, I=None):
+        I = self.stkAtt(I).plog()
+        return Invariant(lambda d: I(d)*self.gm, self)
+
     def intAtt(self, I=None):
         I = self.stkAtt(I).pLog()
         return Invariant(lambda d: I(d)*self.gm, self)
 
     def stkAtt2total(self, I):
         return stkAtt2total(self, I)
+
+    def intAtt_default(self):
+        def f(d):
+            if sum(d) == 1:
+                return 1
+            return 0
+        return Invariant(f, self)
+
+    def ratAtt_default(self):
+        return self.int2rat(self.intAtt_default())
+
+    def stkAtt_default(self):
+        return self.int2stk(self.intAtt_default())
 
 
 WCS = WallCrossingStructure
