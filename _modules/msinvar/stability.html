@@ -94,10 +94,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
@@ -261,10 +262,14 @@
         <span class="sd">&quot;&quot;&quot;Rank of the lattice.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Stability.weight"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.weight">[docs]</a>    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return vector w such that w*e&lt;0 iff slope(e)&lt;slope(d).&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">vec</span><span class="o">.</span><span class="n">scal</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="Stability.normalize"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return function f such that f(e)&lt;0 iff slope(e)&lt;slope(d).&quot;&quot;&quot;</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">vec</span><span class="o">.</span><span class="n">scal</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">))</span>
-        <span class="k">return</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span></div>
+        <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stability.randomize"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.randomize">[docs]</a>    <span class="k">def</span> <span class="nf">randomize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generic perturbation of self.&quot;&quot;&quot;</span>

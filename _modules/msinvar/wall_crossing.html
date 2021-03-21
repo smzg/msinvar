@@ -94,10 +94,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
@@ -308,7 +309,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="n">I</span>
-            <span class="k">return</span>
+            <span class="k">return</span> <span class="n">I</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_default</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span></div>
@@ -500,7 +501,8 @@
 <div class="viewcode-block" id="WallCrossingStructure.stkAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr_stab</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">I1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">I1</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.ratAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt">[docs]</a>    <span class="k">def</span> <span class="nf">ratAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -594,7 +596,7 @@
     <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">1</span>
-        <span class="n">te</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">z</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
 
         <span class="nd">@cache</span>
         <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -603,7 +605,7 @@
                 <span class="n">d1</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d1</span><span class="p">):</span>
                     <span class="n">s</span> <span class="o">+=</span> <span class="n">I</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">te</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">z</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
                     <span class="n">s</span> <span class="o">-=</span> <span class="n">tail</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">*</span><span class="n">I</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">s</span>
         <span class="k">return</span> <span class="n">tail</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
@@ -658,7 +660,7 @@
     <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">1</span>
-        <span class="n">te</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">z</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
 
         <span class="nd">@cache</span>
         <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -667,7 +669,7 @@
                 <span class="n">d1</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d1</span><span class="p">):</span>
                     <span class="n">s</span> <span class="o">+=</span> <span class="n">total</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">te</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">z</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
                     <span class="n">s</span> <span class="o">-=</span> <span class="n">tail</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">*</span><span class="n">total</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">s</span>
         <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
@@ -675,7 +677,7 @@
             <span class="n">d1</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d1</span><span class="p">):</span>
                 <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">te</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">z</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
                 <span class="n">s</span> <span class="o">-=</span> <span class="n">tail</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">*</span><span class="n">total</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span><span class="o">-</span><span class="n">s</span>
     <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>

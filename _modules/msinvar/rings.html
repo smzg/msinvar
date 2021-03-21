@@ -94,10 +94,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
@@ -249,9 +250,15 @@
 
 <div class="viewcode-block" id="RationalFunction"><a class="viewcode-back" href="../../rings.html#msinvar.rings.RationalFunction">[docs]</a><span class="k">class</span> <span class="nc">RationalFunction</span><span class="p">(</span><span class="n">FractionFieldElement</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Element class for the parent class :class:`RationalFunctionField`.&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="RationalFunction.root_vars"><a class="viewcode-back" href="../../rings.html#msinvar.rings.RationalFunction.root_vars">[docs]</a>    <span class="k">def</span> <span class="nf">root_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;See :meth:`root_vars`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">root_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">root_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="RationalFunction.simp"><a class="viewcode-back" href="../../rings.html#msinvar.rings.RationalFunction.simp">[docs]</a>    <span class="k">def</span> <span class="nf">simp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">factor</span><span class="p">()</span><span class="o">.</span><span class="n">expand</span><span class="p">())</span></div></div>
 
 
 <div class="viewcode-block" id="root_vars"><a class="viewcode-back" href="../../rings.html#msinvar.rings.root_vars">[docs]</a><span class="k">def</span> <span class="nf">root_vars</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">):</span>
@@ -265,6 +272,7 @@
     <span class="k">def</span> <span class="nf">root</span><span class="p">(</span><span class="n">e</span><span class="p">):</span> <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">e</span><span class="p">)</span>
     <span class="n">dct</span> <span class="o">=</span> <span class="p">{</span><span class="n">root</span><span class="p">(</span><span class="n">e</span><span class="p">):</span> <span class="n">c</span> <span class="k">for</span> <span class="n">e</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
     <span class="k">return</span> <span class="n">R</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="SR1"><a class="viewcode-back" href="../../rings.html#msinvar.rings.SR1">[docs]</a><span class="k">class</span> <span class="nc">SR1</span><span class="p">(</span><span class="n">SymbolicRing</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">vars</span><span class="p">):</span>
@@ -288,8 +296,6 @@
 
     <span class="k">def</span> <span class="nf">_repr_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;Symbolic ring with lambda-ring structure&#39;</span></div>
-
-
 </pre></div>
 
            </div>

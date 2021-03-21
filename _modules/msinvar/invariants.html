@@ -94,10 +94,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
@@ -227,7 +228,7 @@
 <span class="sd">    Objects have methods that return associated TMPolynomials and dictionaries.</span>
 <span class="sd">    If possible, we save the ring (TMPoly) in order to transform our invariant</span>
 <span class="sd">    to a polynomial.</span>
-<span class="sd">    </span>
+
 <span class="sd">    - ``f`` -- function, TMPolynomial, dictionary, Invariant.</span>
 <span class="sd">    - ``R`` -- a ring TMPolynomialRing.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -263,7 +264,7 @@
         <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Invariant.get_ring"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.get_ring">[docs]</a>    <span class="k">def</span> <span class="nf">get_ring</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The ring (TMPolynomialRing) saved by the invariant.&quot;&quot;&quot;</span> 
+        <span class="sd">&quot;&quot;&quot;The ring (TMPolynomialRing) saved by the invariant.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="s1">&#39;R&#39;</span><span class="p">):</span>
                 <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">R</span>
@@ -322,7 +323,7 @@
 <div class="viewcode-block" id="Invariant.restrict"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.restrict">[docs]</a>    <span class="k">def</span> <span class="nf">restrict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Restrict invariant to dimension vectors d such that z(d)=slope,</span>
 <span class="sd">        where ``z`` is a Stability (or the corresponding vector).&quot;&quot;&quot;</span>
-        
+
         <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -351,6 +352,11 @@
 
 <div class="viewcode-block" id="Invariant.simp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.simp">[docs]</a>    <span class="k">def</span> <span class="nf">simp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Simplify every term.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">simp</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">simp</span><span class="p">()</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">f</span>
         <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">simp</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">)),</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">simp</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
@@ -518,7 +524,7 @@
 <span class="sd">    plethysm between transforms, inverse transfroms.</span>
 
 <span class="sd">    INPUT:</span>
-<span class="sd">    </span>
+
 <span class="sd">    - ``F`` -- transformation map from lists of vectors to Q (or base ring).</span>
 <span class="sd">    - ``twist`` -- product twist, map from sequences of vectors to the base ring.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -674,13 +680,6 @@
     <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="n">z1</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">trivial</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">dim</span><span class="p">())</span>
     <span class="k">return</span> <span class="n">joyce_transform</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">z1</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="simp"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.simp">[docs]</a><span class="k">def</span> <span class="nf">simp</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Simplify an expression.&quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">f</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">f</span>
-    <span class="k">return</span> <span class="n">expand</span><span class="p">(</span><span class="n">factor</span><span class="p">(</span><span class="n">f</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="indivisible"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.indivisible">[docs]</a><span class="k">def</span> <span class="nf">indivisible</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>

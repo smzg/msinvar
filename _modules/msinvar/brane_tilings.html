@@ -94,10 +94,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
@@ -241,10 +242,11 @@
 
 <div class="viewcode-block" id="BTQuiver"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver">[docs]</a><span class="k">class</span> <span class="nc">BTQuiver</span><span class="p">(</span><span class="n">Quiver</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Quiver with potential associated with a brane tiling.</span>
-<span class="sd">    </span>
+
 <span class="sd">    Contains the method :meth:`wt` such that two paths are equivalent (equal</span>
 <span class="sd">    in the Jacobian algebra if and only if their weights are equal).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="n">A</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">path2vec</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_potential</span><span class="p">])</span>
@@ -254,10 +256,9 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">wzero</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_wt</span> <span class="o">=</span> <span class="p">{</span><span class="n">a</span><span class="p">:</span> <span class="n">l</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">arrow_num</span><span class="p">(</span><span class="n">a</span><span class="p">)]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">arrows</span><span class="p">()}</span>
 
-    
 <div class="viewcode-block" id="BTQuiver.wt"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.wt">[docs]</a>    <span class="k">def</span> <span class="nf">wt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Weight of an arrow or a path.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span> <span class="c1">#a is an arrow</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>  <span class="c1"># a is an arrow</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_wt</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
         <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_wt</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">a</span><span class="p">)</span></div>
 
@@ -279,8 +280,7 @@
 <div class="viewcode-block" id="BTQuiver.add_new_arrows"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.add_new_arrows">[docs]</a>    <span class="k">def</span> <span class="nf">add_new_arrows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Add new arrows to the atoms in the poset ``P``. </span>
-<span class="sd">        </span>
-<span class="sd">        - ``Q`` -- quiver with potential,</span>
+
 <span class="sd">        - ``P`` -- poset of atoms,</span>
 <span class="sd">        - ``n`` -- index in ``P``, where atoms that require new arrows start.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -298,8 +298,7 @@
                         <span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
                     <span class="n">P</span><span class="o">.</span><span class="n">rel</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])</span>
         <span class="k">return</span> <span class="n">n1</span></div>
-    
-    
+
 <div class="viewcode-block" id="BTQuiver.create_path_poset"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.create_path_poset">[docs]</a>    <span class="k">def</span> <span class="nf">create_path_poset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Creat the poset of atoms (paths) that start at the vertex ``i``</span>
 <span class="sd">        and have length &lt;= ``N``.&quot;&quot;&quot;</span>
@@ -310,9 +309,6 @@
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_arrows</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">P</span><span class="o">.</span><span class="n">vert</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">P</span></div></div>
-    
-
-
 
 
 <div class="viewcode-block" id="Atom"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.Atom">[docs]</a><span class="k">class</span> <span class="nc">Atom</span><span class="p">:</span>
@@ -323,6 +319,7 @@
 <span class="sd">    - ``t`` -- a target,</span>
 <span class="sd">    - ``wt`` -- a weight.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">wt</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">Q</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="n">t</span>
@@ -342,11 +339,10 @@
         <span class="k">return</span> <span class="s2">&quot;Atom &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;-&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wt</span><span class="p">)</span></div>
 
 
-
 <div class="viewcode-block" id="partition_func"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.partition_func">[docs]</a><span class="k">def</span> <span class="nf">partition_func</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Partition function of ideals (molten crystals) in the crystal of atoms</span>
 <span class="sd">    that start at the vertex ``i`` and have length &lt;= ``N``.</span>
-<span class="sd">    </span>
+
 <span class="sd">    We keep track of the dimension vectors of ideals.&quot;&quot;&quot;</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">(),</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
     <span class="n">P</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">create_path_poset</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
@@ -362,7 +358,7 @@
 <div class="viewcode-block" id="partition_func1"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.partition_func1">[docs]</a><span class="k">def</span> <span class="nf">partition_func1</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Partition function of ideals (molten crystals) in the crystal of atoms</span>
 <span class="sd">    that start at the vertex ``i`` and have length &lt;= ``N``.</span>
-<span class="sd">    </span>
+
 <span class="sd">    We keep track only of the sizes of ideals.&quot;&quot;&quot;</span>
     <span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="n">QQ</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">N</span><span class="p">)</span>
     <span class="n">P</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">create_path_poset</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
