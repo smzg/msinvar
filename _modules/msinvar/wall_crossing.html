@@ -288,11 +288,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="kc">None</span>
 
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Wall-crossing structure on a lattice of rank &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+
 <div class="viewcode-block" id="WallCrossingStructure.total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total">[docs]</a>    <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Total invariant, meaning the stacky invariant for the trivial stability.</span>
-<span class="sd">        </span>
+
 <span class="sd">        EXAMPLE::</span>
-<span class="sd">            </span>
+
 <span class="sd">            sage: from msinvar import *</span>
 <span class="sd">            sage: Q=JordanQuiver(1); Q</span>
 <span class="sd">            Quiver with 1 vertices and 1 arrows</span>
@@ -307,11 +310,8 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="n">I</span>
             <span class="k">return</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">total_default</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_default</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span></div>
-
-    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Wall-crossing structure on a lattice of rank &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist">[docs]</a>    <span class="k">def</span> <span class="nf">twist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -423,14 +423,14 @@
         <span class="k">return</span> <span class="n">T</span><span class="p">(</span><span class="n">I1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.int2stk"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int2stk">[docs]</a>    <span class="k">def</span> <span class="nf">int2stk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-        <span class="n">I1</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">term_twist</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">)</span>
+        <span class="n">I1</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">I1</span><span class="o">.</span><span class="n">pExp</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.series"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.series">[docs]</a>    <span class="k">def</span> <span class="nf">series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">stab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stab</span><span class="p">,</span>  <span class="n">slope</span><span class="p">)</span></div>
 
-    <span class="n">poly</span><span class="o">=</span><span class="n">series</span>
-        
+    <span class="n">poly</span> <span class="o">=</span> <span class="n">series</span>
+
     <span class="c1"># quiver related methods (requires Euler form)</span>
 <div class="viewcode-block" id="WallCrossingStructure.eform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.eform">[docs]</a>    <span class="k">def</span> <span class="nf">eform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quiver</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
@@ -438,12 +438,12 @@
 <div class="viewcode-block" id="WallCrossingStructure.qform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.qform">[docs]</a>    <span class="k">def</span> <span class="nf">qform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.total_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_default">[docs]</a>    <span class="k">def</span> <span class="nf">total_default</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<div class="viewcode-block" id="WallCrossingStructure.total_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_default">[docs]</a>    <span class="k">def</span> <span class="nf">total_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Invariants of a quiver corresponding to the trivial stability</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span><span class="o">/</span><span class="n">phi</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span><span class="o">/</span><span class="n">phi</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_T"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_T">[docs]</a>    <span class="k">def</span> <span class="nf">twist_T</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
@@ -503,12 +503,29 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="WallCrossingStructure.ratAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt">[docs]</a>    <span class="k">def</span> <span class="nf">ratAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">plog</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="WallCrossingStructure.intAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt">[docs]</a>    <span class="k">def</span> <span class="nf">intAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">pLog</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.stkAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div></div>
+        <span class="k">return</span> <span class="n">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.intAtt_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt_default">[docs]</a>    <span class="k">def</span> <span class="nf">intAtt_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">sum</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.ratAtt_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt_default">[docs]</a>    <span class="k">def</span> <span class="nf">ratAtt_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">int2rat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intAtt_default</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.stkAtt_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt_default">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">int2stk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intAtt_default</span><span class="p">())</span></div></div>
 
 
 <span class="n">WCS</span> <span class="o">=</span> <span class="n">WallCrossingStructure</span>

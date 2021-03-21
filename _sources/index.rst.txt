@@ -18,10 +18,11 @@ Applications:
 .. toctree::
     :maxdepth: 1
 
-    indecomposable
     potential_quiver_invar
     brane_tilings
+    flow_trees
     higgs_bundles
+    indecomposable
 
 Auxiliary modules:
 ------------------

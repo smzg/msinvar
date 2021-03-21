@@ -94,10 +94,11 @@
 <li class="toctree-l1"><a class="reference internal" href="tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="rings.html">Special rings</a></li>
@@ -179,6 +180,7 @@
  | <a href="#C"><strong>C</strong></a>
  | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
@@ -212,10 +214,10 @@
 </li>
       <li><a href="brane_tilings.html#msinvar.brane_tilings.BTQuiver.add_new_arrows">add_new_arrows() (msinvar.brane_tilings.BTQuiver method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="lambda_rings.html#msinvar.lambda_rings.LambdaRings.add_ring">add_ring() (msinvar.lambda_rings.LambdaRings static method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="quivers.html#msinvar.quivers.Quiver.arrow_num">arrow_num() (msinvar.quivers.Quiver method)</a>
 </li>
       <li><a href="quivers.html#msinvar.quivers.Quiver.arrows">arrows() (msinvar.quivers.Quiver method)</a>
@@ -223,6 +225,10 @@
       <li><a href="brane_tilings.html#msinvar.brane_tilings.Atom">Atom (class in msinvar.brane_tilings)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.attr_stab">attr_stab() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
+      <li><a href="flow_trees.html#msinvar.flow_trees.attr_tree_formula">attr_tree_formula() (in module msinvar.flow_trees)</a>
+</li>
+      <li><a href="flow_trees.html#msinvar.flow_trees.attr_tree_transform">attr_tree_transform() (in module msinvar.flow_trees)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -329,6 +335,14 @@
   </ul></td>
 </tr></table>
 
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="flow_trees.html#msinvar.flow_trees.flow_tree_formula">flow_tree_formula() (in module msinvar.flow_trees)</a>
+</li>
+  </ul></td>
+</tr></table>
+
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -421,6 +435,8 @@
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt">intAtt() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.intAtt2total">intAtt2total() (in module msinvar.wall_crossing)</a>
+</li>
+      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt_default">intAtt_default() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       <li><a href="iterators.html#msinvar.iterators.IntegerVectors_iterator">IntegerVectors_iterator() (in module msinvar.iterators)</a>
 </li>
@@ -526,6 +542,8 @@
       <ul>
         <li><a href="brane_tilings.html#module-msinvar.brane_tilings">msinvar.brane_tilings</a>
 </li>
+        <li><a href="flow_trees.html#module-msinvar.flow_trees">msinvar.flow_trees</a>
+</li>
         <li><a href="higgs_bundles.html#module-msinvar.higgs_bundles">msinvar.higgs_bundles</a>
 </li>
         <li><a href="indecomposable.html#module-msinvar.indecomposable">msinvar.indecomposable</a>
@@ -561,6 +579,13 @@
 </li>
       </ul></li>
       <li>
+    msinvar.flow_trees
+
+      <ul>
+        <li><a href="flow_trees.html#module-msinvar.flow_trees">module</a>
+</li>
+      </ul></li>
+      <li>
     msinvar.higgs_bundles
 
       <ul>
@@ -574,6 +599,8 @@
         <li><a href="indecomposable.html#module-msinvar.indecomposable">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     msinvar.invariants
 
@@ -581,8 +608,6 @@
         <li><a href="invariants.html#module-msinvar.invariants">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     msinvar.iterators
 
@@ -705,6 +730,8 @@
 </li>
       <li><a href="brane_tilings.html#msinvar.brane_tilings.BTQuiver.path2vec">path2vec() (msinvar.brane_tilings.BTQuiver method)</a>
 </li>
+      <li><a href="flow_trees.html#msinvar.flow_trees.permIndex">permIndex() (in module msinvar.flow_trees)</a>
+</li>
       <li><a href="invariants.html#msinvar.invariants.Invariant.pExp">pExp() (msinvar.invariants.Invariant method)</a>
 </li>
       <li><a href="invariants.html#msinvar.invariants.Invariant.pexp">pexp() (msinvar.invariants.Invariant method)</a>
@@ -799,14 +826,18 @@
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.rat_from_total">rat_from_total() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
+      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt">ratAtt() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
+      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt_default">ratAtt_default() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
       <li><a href="rings.html#msinvar.rings.RationalFunction">RationalFunction (class in msinvar.rings)</a>
 </li>
       <li><a href="rings.html#msinvar.rings.RationalFunctionField">RationalFunctionField (class in msinvar.rings)</a>
 </li>
-      <li><a href="invariants.html#msinvar.invariants.recursive_inversion">recursive_inversion() (in module msinvar.invariants)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="invariants.html#msinvar.invariants.recursive_inversion">recursive_inversion() (in module msinvar.invariants)</a>
+</li>
       <li><a href="invariants.html#msinvar.invariants.reineke_sign">reineke_sign() (in module msinvar.invariants)</a>
 </li>
       <li><a href="invariants.html#msinvar.invariants.reineke_transform">reineke_transform() (in module msinvar.invariants)</a>
@@ -889,6 +920,8 @@
         <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">(msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       </ul></li>
+      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt_default">stkAtt_default() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
       <li><a href="utils.html#msinvar.utils.vec.sub">sub() (msinvar.utils.vec static method)</a>
 </li>
       <li><a href="invariants.html#msinvar.invariants.Invariant.subs">subs() (msinvar.invariants.Invariant method)</a>
@@ -943,13 +976,15 @@
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.total2stkAtt">total2stkAtt() (in module msinvar.wall_crossing)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_default">total_default() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_from_stacky">total_from_stacky() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       <li><a href="invariants.html#msinvar.invariants.Transform">Transform (class in msinvar.invariants)</a>
+</li>
+      <li><a href="flow_trees.html#msinvar.flow_trees.transform_g">transform_g() (in module msinvar.flow_trees)</a>
 </li>
       <li><a href="potential_quiver_invar.html#msinvar.potential_quiver_invar.QuiverExample1.translation_PQ">translation_PQ() (msinvar.potential_quiver_invar.QuiverExample1 method)</a>
 
@@ -985,10 +1020,12 @@
 <h2 id="U">U</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.untwist_product">untwist_product() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+      <li><a href="iterators.html#msinvar.iterators.UnorderedMultiPartitions_iterator">UnorderedMultiPartitions_iterator() (in module msinvar.iterators)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.untwist_product">untwist_product() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
       <li><a href="posets.html#msinvar.posets.Poset.upper_closure">upper_closure() (msinvar.posets.Poset method)</a>
 </li>
   </ul></td>
