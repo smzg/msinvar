@@ -76,9 +76,15 @@ RF = RationalFunctionField
 
 class RationalFunction(FractionFieldElement):
     """Element class for the parent class :class:`RationalFunctionField`."""
+
     def root_vars(self, k=2):
         """See :meth:`root_vars`."""
         return root_vars(self, k)
+
+    def simp(self):
+        if self == 0:
+            return self
+        return self.parent(self.factor().expand())
 
 
 def root_vars(f, k=2):
@@ -92,6 +98,7 @@ def root_vars(f, k=2):
     def root(e): return tuple(i//k for i in e)
     dct = {root(e): c for e, c in f.dict().items()}
     return R(dct)
+
 
 class SR1(SymbolicRing):
     def __init__(self, vars):
@@ -115,5 +122,3 @@ class SR1(SymbolicRing):
 
     def _repr_(self):
         return 'Symbolic ring with lambda-ring structure'
-
-

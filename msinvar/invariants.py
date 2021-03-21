@@ -54,7 +54,7 @@ class Invariant:
     Objects have methods that return associated TMPolynomials and dictionaries.
     If possible, we save the ring (TMPoly) in order to transform our invariant
     to a polynomial.
-    
+
     - ``f`` -- function, TMPolynomial, dictionary, Invariant.
     - ``R`` -- a ring TMPolynomialRing.
     """
@@ -90,7 +90,7 @@ class Invariant:
         return f(d)
 
     def get_ring(self, I=None):
-        """The ring (TMPolynomialRing) saved by the invariant.""" 
+        """The ring (TMPolynomialRing) saved by the invariant."""
         if I is not None:
             if hasattr(I, 'R'):
                 return I.R
@@ -149,7 +149,7 @@ class Invariant:
     def restrict(self, z, slope=0):
         """Restrict invariant to dimension vectors d such that z(d)=slope,
         where ``z`` is a Stability (or the corresponding vector)."""
-        
+
         z = Stability.check(z)
 
         def f(d):
@@ -178,6 +178,11 @@ class Invariant:
 
     def simp(self, d=None):
         """Simplify every term."""
+        def simp(f):
+            try:
+                return f.simp()
+            except:
+                return f
         if d is None:
             return Invariant(lambda d: simp(self(d)), self)
         return simp(self(d))
@@ -345,7 +350,7 @@ class Transform:
     plethysm between transforms, inverse transfroms.
 
     INPUT:
-    
+
     - ``F`` -- transformation map from lists of vectors to Q (or base ring).
     - ``twist`` -- product twist, map from sequences of vectors to the base ring.
     """
@@ -501,13 +506,6 @@ def HN_transform(z):
     z = Stability.check(z)
     z1 = Stability.trivial(z.dim())
     return joyce_transform(z, z1)
-
-
-def simp(f):
-    """Simplify an expression."""
-    if f == 0:
-        return f
-    return expand(factor(f))
 
 
 def indivisible(d):

@@ -68,10 +68,11 @@ from sage.rings.rational_field import QQ
 
 class BTQuiver(Quiver):
     """Quiver with potential associated with a brane tiling.
-    
+
     Contains the method :meth:`wt` such that two paths are equivalent (equal
     in the Jacobian algebra if and only if their weights are equal).
     """
+
     def __init__(self, **kw):
         super().__init__(**kw)
         A = matrix([self.path2vec(p) for p in self._potential])
@@ -81,10 +82,9 @@ class BTQuiver(Quiver):
         self.wzero = [0]*len(l[0])
         self._wt = {a: l[self.arrow_num(a)] for a in self.arrows()}
 
-    
     def wt(self, a):
         """Weight of an arrow or a path."""
-        if isinstance(a, tuple): #a is an arrow
+        if isinstance(a, tuple):  # a is an arrow
             return self._wt[a]
         return vec.add(self._wt[x] for x in a)
 
@@ -106,8 +106,7 @@ class BTQuiver(Quiver):
     def add_new_arrows(self, P, n):
         """
         Add new arrows to the atoms in the poset ``P``. 
-        
-        - ``Q`` -- quiver with potential,
+
         - ``P`` -- poset of atoms,
         - ``n`` -- index in ``P``, where atoms that require new arrows start.
         """
@@ -125,8 +124,7 @@ class BTQuiver(Quiver):
                         P.vert.append(v)
                     P.rel.append([u, v])
         return n1
-    
-    
+
     def create_path_poset(self, i, N=10):
         """Creat the poset of atoms (paths) that start at the vertex ``i``
         and have length <= ``N``."""
@@ -137,9 +135,6 @@ class BTQuiver(Quiver):
             n = self.add_new_arrows(P, n)
         P.vert = set(P.vert)
         return P
-    
-
-
 
 
 class Atom:
@@ -150,6 +145,7 @@ class Atom:
     - ``t`` -- a target,
     - ``wt`` -- a weight.
     """
+
     def __init__(self, Q, t, wt=None):
         self.Q = Q
         self.t = t
@@ -169,11 +165,10 @@ class Atom:
         return "Atom "+str(self.t)+"-"+str(self.wt)
 
 
-
 def partition_func(Q, i, N=5):
     """Partition function of ideals (molten crystals) in the crystal of atoms
     that start at the vertex ``i`` and have length <= ``N``.
-    
+
     We keep track of the dimension vectors of ideals."""
     R = TMPoly(QQ, Q.vertex_num(), 'x', prec=N)
     P = Q.create_path_poset(i, N)
@@ -189,7 +184,7 @@ def partition_func(Q, i, N=5):
 def partition_func1(Q, i, N=5):
     """Partition function of ideals (molten crystals) in the crystal of atoms
     that start at the vertex ``i`` and have length <= ``N``.
-    
+
     We keep track only of the sizes of ideals."""
     R = TMPoly(QQ, 1, 'x', prec=N)
     P = Q.create_path_poset(i, N)

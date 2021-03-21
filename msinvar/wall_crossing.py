@@ -135,7 +135,7 @@ class WallCrossingStructure:
         """
         if I is not None:
             self._total = I
-            return
+            return I
         if self._total is None:
             self._total = self.total_default()
         return self._total
@@ -327,7 +327,8 @@ class WallCrossingStructure:
     def stkAtt(self, I=None):
         def f(d):
             z = self.attr_stab(d)
-            return self.stacky(z, I)(d)
+            I1=self.stacky(z, I)
+            return I1(d)
         return Invariant(f, self)
 
     def ratAtt(self, I=None):
@@ -421,7 +422,7 @@ def total2stacky_algo2(W, I, z):
     def stacky(d0):
         if vec.iszero(d0):
             return 1
-        te = z.normalize(d0)
+        c = z(d0)
 
         @cache
         def tail(d):
@@ -430,7 +431,7 @@ def total2stacky_algo2(W, I, z):
                 d1 = vec.sub(d, e)
                 if vec.iszero(d1):
                     s += I(e)
-                elif te(d1) < 0:
+                elif z(d1) < c:
                     s -= tail(d1)*I(e)*W.twist(e, d1)
             return s
         return tail(d0)
@@ -485,7 +486,7 @@ def stacky2total_algo2(W, I, z):
     def total(d0):
         if vec.iszero(d0):
             return 1
-        te = z.normalize(d0)
+        c = z(d0)
 
         @cache
         def tail(d):
@@ -494,7 +495,7 @@ def stacky2total_algo2(W, I, z):
                 d1 = vec.sub(d, e)
                 if vec.iszero(d1):
                     s += total(e)
-                elif te(d1) < 0:
+                elif z(d1) < c:
                     s -= tail(d1)*total(e)*W.twist(e, d1)
             return s
         s = 0
@@ -502,7 +503,7 @@ def stacky2total_algo2(W, I, z):
             d1 = vec.sub(d0, e)
             if vec.iszero(d1):
                 pass
-            elif te(d1) < 0:
+            elif z(d1) < c:
                 s -= tail(d1)*total(e)*W.twist(e, d1)
         return I(d0)-s
     return Invariant(total, W)

@@ -62,6 +62,7 @@ from the total invariant (stacky invariant for the trivial stability)::
 #                  http://www.gnu.org/licenses/
 # *****************************************************************************
 
+import numpy as np
 from sage.misc.misc_c import prod
 from sage.functions.other import factorial
 from sage.combinat.permutation import Permutations
@@ -87,7 +88,7 @@ def attr_tree_formula(W, z, I, t=0):
     T.twist = W.twist
     I1 = Invariant(lambda d: I(d)/W.gm, W)
     I2 = T(I1)
-    return Invariant(lambda d: I2(d)*W.gm, W)
+    return Invariant(lambda d: simp(I2(d)*W.gm), W)
 
 
 def attr_tree_transform(W, z, t=0):
@@ -131,13 +132,17 @@ def flow_tree_formula(W, z, I, d=None):
     - ``I`` -- rational attractor invariant `\bar\Omega_*`.
     """
     z = Stability.check(z)
+    if max(abs(i) for i in z.a) < 1e-3:
+        raise ValueError("Stability coordinates are too small")
+
     if d is None:
         return Invariant(lambda d: flow_tree_formula(W, z, I, d), W)
     if vec.zero(d):
         return 0
+
     def kp(m):
         y = W.y
-        return (1/y**m-y**m)/(1/y-y)*(-1)**(m-1)
+        return QQ((-1)**(m-1))*(1/y**m-y**m)/(1/y-y)
 
     def mult_factorial(l):
         m = {}
@@ -148,35 +153,51 @@ def flow_tree_formula(W, z, I, d=None):
             m[i] += 1
         return prod(factorial(i) for i in m.values())
 
+    def rand1(c): return random()*1e-3 if c == 0 else c*(1+random()*1e-3)
+
     te = z.normalize(d)
     A = 0
     for l in UnorderedMultiPartitions_iterator(d):
         M = [[W.sform(i, j) for j in l] for i in l]
-        te1 = [te(i)+random()*1e-5 for i in l]
+
+        te1 = [rand1(te(i)) for i in l]
         te1[0] -= sum(te1)
         s = 0
         for p in Permutations(len(l)):
             p1 = [i-1 for i in p]
             s += permIndex(p1, te1, M, kp)
         A += s*prod(I(e) for e in l)/mult_factorial(l)
-    return A
+    return simp(A)
 
 
 def permIndex(l, te, M, kp):
     """Permutation index used in the flow tree formula."""
-    def prod1(M, l1, l2):
+    def sform1(M, l1, l2):
         return sum(M[i][j] for i in l1 for j in l2)
+
+    def slope1(te, l):
+        return np.round(sum(te[i] for i in l), 10)
+
     if len(l) == 1:
         return 1
     F = 0
     for i in range(1, len(l)):
         l1 = l[:i]
         l2 = l[i:]
-        m = prod1(M, l1, l2)
-        c = sum(te[i] for i in l1)
+        m = sform1(M, l1, l2)
+        c = slope1(te, l1)
         c = round(c, 10)
         if m <= 0 or c >= 0:
             continue
-        te1 = [te[j]-c/m*prod1(M, [j], l) for j in range(len(te))]
+        te1 = [te[j]-c/m*sform1(M, [j], l) for j in range(len(te))]
         F += kp(m)*permIndex(l1, te1, M, kp)*permIndex(l2, te1, M, kp)
     return F
+
+
+def simp(f):
+    if f == 0:
+        return f
+    try:
+        return f.parent(f.factor().expand())
+    except:
+        return f

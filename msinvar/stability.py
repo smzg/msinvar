@@ -88,10 +88,14 @@ class Stability:
         """Rank of the lattice."""
         return len(self.a)
 
+    def weight(self, d):
+        """Return vector w such that w*e<0 iff slope(e)<slope(d)."""
+        return vec.sub(self.a, vec.scal(self(d), self.b))
+
     def normalize(self, d):
         """Return function f such that f(e)<0 iff slope(e)<slope(d)."""
-        c = vec.sub(self.a, vec.scal(self(d), self.b))
-        return lambda d: np.round(vec.dot(c, d), 10)
+        w = self.weight(d)
+        return lambda d: np.round(vec.dot(w, d), 10)
 
     def randomize(self):
         """Generic perturbation of self."""
