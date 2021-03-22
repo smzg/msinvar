@@ -300,61 +300,75 @@ self.twist.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.stacky_from_total">
-<code class="sig-name descname"><span class="pre">stacky_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stacky_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stacky_from_total" title="Permalink to this definition">¶</a></dt>
-<dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.
-The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’, ‘fast2’, ‘slow’.</p>
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stacky">
+<code class="sig-name descname"><span class="pre">stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stacky" title="Permalink to this definition">¶</a></dt>
+<dd><p>Stacky invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+<p>See <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a> for more details.
+The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’, ‘fast2’, ‘slow’.
+If the total invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> is None, we consider <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.total" title="msinvar.wall_crossing.WallCrossingStructure.total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total()</span></code></a>.</p>
+<p>EXAMPLES:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">KroneckerQuiver</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">W</span><span class="o">=</span><span class="n">Q</span><span class="o">.</span><span class="n">wcs</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">z</span><span class="o">=</span><span class="n">Stability</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I1</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">algo</span><span class="o">=</span><span class="s1">&#39;fast&#39;</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I2</span><span class="o">=</span><span class="n">W</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">algo</span><span class="o">=</span><span class="s1">&#39;fast2&#39;</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I1</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">y</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sage</span><span class="p">:</span> <span class="n">I1</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span><span class="o">-</span><span class="n">I2</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span>
+<span class="mi">0</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.stacky">
-<code class="sig-name descname"><span class="pre">stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stacky" title="Permalink to this definition">¶</a></dt>
-<dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.
-The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’, ‘fast2’, ‘slow’.</p>
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stacky_from_total">
+<code class="sig-name descname"><span class="pre">stacky_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stacky_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stacky_from_total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.stacky" title="msinvar.wall_crossing.WallCrossingStructure.stacky"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.Omh">
-<code class="sig-name descname"><span class="pre">Omh</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Omh" title="Permalink to this definition">¶</a></dt>
-<dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.
-The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’, ‘fast2’, ‘slow’.</p>
+<code class="sig-name descname"><span class="pre">Omh</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.Omh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Omh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.stacky" title="msinvar.wall_crossing.WallCrossingStructure.stacky"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.rat_from_total">
-<code class="sig-name descname"><span class="pre">rat_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat_from_total" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">rat_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat_from_total" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return rational invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.int_from_total">
-<code class="sig-name descname"><span class="pre">int_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int_from_total" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return integer invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.Omb">
-<code class="sig-name descname"><span class="pre">Omb</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Omb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return rational invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+<code class="sig-name descname"><span class="pre">Omb</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.Omb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Omb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.rat_from_total" title="msinvar.wall_crossing.WallCrossingStructure.rat_from_total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">rat_from_total()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.Om">
-<code class="sig-name descname"><span class="pre">Om</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Om" title="Permalink to this definition">¶</a></dt>
+<dt id="msinvar.wall_crossing.WallCrossingStructure.int_from_total">
+<code class="sig-name descname"><span class="pre">int_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int_from_total" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return integer invariant for the stability <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.total_from_stacky">
-<code class="sig-name descname"><span class="pre">total_from_stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.total_from_stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.total_from_stacky" title="Permalink to this definition">¶</a></dt>
+<dt id="msinvar.wall_crossing.WallCrossingStructure.Om">
+<code class="sig-name descname"><span class="pre">Om</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.Om"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.Om" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.int_from_total" title="msinvar.wall_crossing.WallCrossingStructure.int_from_total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">int_from_total()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stacky2total">
+<code class="sig-name descname"><span class="pre">stacky2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stacky2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stacky2total" title="Permalink to this definition">¶</a></dt>
 <dd><p>See <a class="reference internal" href="#msinvar.wall_crossing.stacky2total_algo1" title="msinvar.wall_crossing.stacky2total_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky2total_algo1()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stk2stk">
 <code class="sig-name descname"><span class="pre">stk2stk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">algo</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fast'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stk2stk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stk2stk" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z1</span></code> assuming that
-stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z</span></code> is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+<dd><p>Transform stacky invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> for stability <code class="docutils literal notranslate"><span class="pre">z</span></code> to the 
+stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z1</span></code>.</p>
+<p>The value of <code class="docutils literal notranslate"><span class="pre">algo</span></code> can be ‘fast’ or ‘slow’.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -365,123 +379,177 @@ By default we assume that <code class="docutils literal notranslate"><span class
 </dd></dl>
 
 <dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.rat2stk">
+<code class="sig-name descname"><span class="pre">rat2stk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat2stk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat2stk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform rational invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the stacky invariant.
+By default we assume that <code class="docutils literal notranslate"><span class="pre">z</span></code> is a generic stability.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.rat2int">
 <code class="sig-name descname"><span class="pre">rat2int</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat2int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat2int" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform rational invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the integer invariant.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.stk2int">
-<code class="sig-name descname"><span class="pre">stk2int</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stk2int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stk2int" title="Permalink to this definition">¶</a></dt>
-<dd><p>Transform stacky invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the integer invariant.</p>
+<dt id="msinvar.wall_crossing.WallCrossingStructure.int2rat">
+<code class="sig-name descname"><span class="pre">int2rat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int2rat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int2rat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform integer invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the rational invariant.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.int2rat">
-<code class="sig-name descname"><span class="pre">int2rat</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int2rat"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int2rat" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.rat2stk">
-<code class="sig-name descname"><span class="pre">rat2stk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.rat2stk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.rat2stk" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="msinvar.wall_crossing.WallCrossingStructure.stk2int">
+<code class="sig-name descname"><span class="pre">stk2int</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stk2int"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stk2int" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform stacky invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the integer invariant.
+We assume that the stability parameter is generic.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.int2stk">
 <code class="sig-name descname"><span class="pre">int2stk</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.int2stk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.int2stk" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="msinvar.wall_crossing.WallCrossingStructure.series">
-<code class="sig-name descname"><span class="pre">series</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.series" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Transform integer invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to the stacky invariant.
+We assume that the stability parameter is generic.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.poly">
-<code class="sig-name descname"><span class="pre">poly</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stab</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.poly" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname"><span class="pre">poly</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.poly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to a polynomial,
+considering only degrees having a given <code class="docutils literal notranslate"><span class="pre">slope</span></code> with respect to a
+given stability paramter <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.series">
+<code class="sig-name descname"><span class="pre">series</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.series" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.poly" title="msinvar.wall_crossing.WallCrossingStructure.poly"><code class="xref py py-meth docutils literal notranslate"><span class="pre">poly()</span></code></a>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.eform">
 <code class="sig-name descname"><span class="pre">eform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.eform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.eform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Euler form of the quiver (assuming that it is present).</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.qform">
 <code class="sig-name descname"><span class="pre">qform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.qform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.qform" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Quadratic form of the quiver.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.total_default">
 <code class="sig-name descname"><span class="pre">total_default</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.total_default"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.total_default" title="Permalink to this definition">¶</a></dt>
-<dd><p>Invariants of a quiver corresponding to the trivial stability</p>
+<dd><p>Total invariant of the quiver (stacky invariant for the trivial 
+stability).</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.twist_T">
 <code class="sig-name descname"><span class="pre">twist_T</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_T"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_T" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Auxiliary quiver-related term twist.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.twist_TI">
 <code class="sig-name descname"><span class="pre">twist_TI</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_TI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_TI" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Auxiliary quiver-related term twist.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">
 <code class="sig-name descname"><span class="pre">stable_from_stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable_from_stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky" title="Permalink to this definition">¶</a></dt>
-<dd><p>Count z-stable objects having given slope, assuming that stacky count
-of z-semistable objects is known.</p>
-<p>INPUT:</p>
-<p>I : Invariant counting z-semistable objects.</p>
-<p>z : Stability parameter.</p>
-<p>slope : The slope.</p>
+<dd><p>Count <code class="docutils literal notranslate"><span class="pre">z</span></code>-stable representations having a given <code class="docutils literal notranslate"><span class="pre">slope</span></code>, assuming
+that stacky invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> counting <code class="docutils literal notranslate"><span class="pre">z</span></code>-semistable objects is given.
+Based on <a class="reference external" href="https://arxiv.org/abs/0708.1259">arXiv:0708.1259</a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Stacky invariant counting z-semistable objects.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code> – Stability parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slope</span></code> – Slope value.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stable_from_total">
 <code class="sig-name descname"><span class="pre">stable_from_total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable_from_total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_total" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Count <code class="docutils literal notranslate"><span class="pre">z</span></code>-stable representations having a given <code class="docutils literal notranslate"><span class="pre">slope</span></code>, assuming
+that the total invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> is given.
+Based on <a class="reference external" href="https://arxiv.org/abs/0708.1259">arXiv:0708.1259</a>.</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code> – Stability parameter.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">slope</span></code> – Slope value.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Total invariant (if None, we consider <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.total" title="msinvar.wall_crossing.WallCrossingStructure.total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total()</span></code></a>).</p></li>
+</ul>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stable">
-<code class="sig-name descname"><span class="pre">stable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname"><span class="pre">stable</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kw</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_total" title="msinvar.wall_crossing.WallCrossingStructure.stable_from_total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stable_from_total()</span></code></a>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.simple">
 <code class="sig-name descname"><span class="pre">simple</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.simple"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.simple" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Count simple reprentations of a quiver, assuming that the total 
+invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> is given. If <code class="docutils literal notranslate"><span class="pre">I</span></code> is None, we consider <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.total" title="msinvar.wall_crossing.WallCrossingStructure.total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total()</span></code></a>.
+Based on <a class="reference external" href="https://arxiv.org/abs/0708.1259">arXiv:0708.1259</a>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.self_stab">
 <code class="sig-name descname"><span class="pre">self_stab</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.self_stab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.self_stab" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Self-stability for the dimension vector <code class="docutils literal notranslate"><span class="pre">d</span></code>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.attr_stab">
 <code class="sig-name descname"><span class="pre">attr_stab</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.attr_stab"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.attr_stab" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Attractor stability for the dimension vector <code class="docutils literal notranslate"><span class="pre">d</span></code>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stkAtt">
 <code class="sig-name descname"><span class="pre">stkAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stkAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stkAtt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate stacky attractor invariant assuming that the total 
+invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>. If <code class="docutils literal notranslate"><span class="pre">I</span></code> is None, we consider <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.total" title="msinvar.wall_crossing.WallCrossingStructure.total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total()</span></code></a>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.ratAtt">
 <code class="sig-name descname"><span class="pre">ratAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.ratAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.ratAtt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate rational attractor invariant assuming that the total 
+invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>. If <code class="docutils literal notranslate"><span class="pre">I</span></code> is None, we consider <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.total" title="msinvar.wall_crossing.WallCrossingStructure.total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total()</span></code></a>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.intAtt">
 <code class="sig-name descname"><span class="pre">intAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.intAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.intAtt" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate integer attractor invariant assuming that the total 
+invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>. If <code class="docutils literal notranslate"><span class="pre">I</span></code> is None, we consider <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.total" title="msinvar.wall_crossing.WallCrossingStructure.total"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total()</span></code></a>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">
-<code class="sig-name descname"><span class="pre">stkAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stkAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-name descname"><span class="pre">stkAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stkAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate total invariant, assuming that the stacky attractor invariant
+is <code class="docutils literal notranslate"><span class="pre">I</span></code>.
+This is a recursive inversion of <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.stkAtt" title="msinvar.wall_crossing.WallCrossingStructure.stkAtt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stkAtt()</span></code></a>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.ratAtt2total">
+<code class="sig-name descname"><span class="pre">ratAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.ratAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.ratAtt2total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate total invariant, assuming that the rational attractor 
+invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.wall_crossing.WallCrossingStructure.intAtt2total">
+<code class="sig-name descname"><span class="pre">intAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.intAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.intAtt2total" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate total invariant, assuming that the integer attractor invariant
+is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.intAtt_default">
@@ -511,13 +579,14 @@ of z-semistable objects is known.</p>
 <code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2stacky_algo1</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2stacky_algo1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2stacky_algo1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z</span></code>, assuming that the total 
 invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
-<p>INPUT:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
 </ul>
-<p>Has the same speed as <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo2" title="msinvar.wall_crossing.total2stacky_algo2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo2()</span></code></a>.</p>
+<p>Based on <a class="reference external" href="https://arxiv.org/abs/math/0204059">arXiv:math/0204059</a> (5.5) and its implementation by
+Pieter Belmans.
+Has comparable speed to <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo2" title="msinvar.wall_crossing.total2stacky_algo2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo2()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -525,13 +594,12 @@ invariant is <code class="docutils literal notranslate"><span class="pre">I</spa
 <code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2stacky_algo2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2stacky_algo2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2stacky_algo2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate stacky invariant for stability <code class="docutils literal notranslate"><span class="pre">z</span></code>, assuming that the total 
 invariant is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
-<p>INPUT:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
 </ul>
-<p>Has the same speed as <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.</p>
+<p>Has comparable speed to <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -540,7 +608,6 @@ invariant is <code class="docutils literal notranslate"><span class="pre">I</spa
 <dd><p>Calculate total invariant, assuming that the stacky invariant for 
 stability <code class="docutils literal notranslate"><span class="pre">z</span></code> is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
 <p>This algorithm is faster than <a class="reference internal" href="#msinvar.wall_crossing.stacky2total_algo2" title="msinvar.wall_crossing.stacky2total_algo2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky2total_algo2()</span></code></a>.</p>
-<p>INPUT:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
@@ -553,62 +620,12 @@ stability <code class="docutils literal notranslate"><span class="pre">z</span><
 <code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">stacky2total_algo2</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#stacky2total_algo2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.stacky2total_algo2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate total invariant, assuming that the stacky invariant for 
 stability <code class="docutils literal notranslate"><span class="pre">z</span></code> is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
-<p>This is a recursive inversion of total2stacky. It is slower than 
-<a class="reference internal" href="#msinvar.wall_crossing.stacky2total_algo1" title="msinvar.wall_crossing.stacky2total_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky2total_algo1()</span></code></a>.</p>
-<p>INPUT:</p>
+<p>This is a recursive inversion of <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo1" title="msinvar.wall_crossing.total2stacky_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo1()</span></code></a>.
+It is slower than <a class="reference internal" href="#msinvar.wall_crossing.stacky2total_algo1" title="msinvar.wall_crossing.stacky2total_algo1"><code class="xref py py-meth docutils literal notranslate"><span class="pre">stacky2total_algo1()</span></code></a>.</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py function">
-<dt id="msinvar.wall_crossing.total2stkAtt">
-<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2stkAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2stkAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2stkAtt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate stacky attractor invariant, assuming that the total invariant
-is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
-<p>INPUT:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py function">
-<dt id="msinvar.wall_crossing.total2intAtt">
-<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">total2intAtt</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#total2intAtt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.total2intAtt" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate integer attractor invariant, assuming that the total invariant
-is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
-<p>INPUT:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py function">
-<dt id="msinvar.wall_crossing.stkAtt2total">
-<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">stkAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#stkAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.stkAtt2total" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate total invariant, assuming that the stacky attractor invariant
-is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
-<p>This is a recursive inversion of <a class="reference internal" href="#msinvar.wall_crossing.total2stkAtt" title="msinvar.wall_crossing.total2stkAtt"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stkAtt()</span></code></a>.</p>
-<p>INPUT:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
-</ul>
-</dd></dl>
-
-<dl class="py function">
-<dt id="msinvar.wall_crossing.intAtt2total">
-<code class="sig-prename descclassname"><span class="pre">msinvar.wall_crossing.</span></code><code class="sig-name descname"><span class="pre">intAtt2total</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">W</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#intAtt2total"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.intAtt2total" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate total invariant, assuming that the integer attractor invariant
-is <code class="docutils literal notranslate"><span class="pre">I</span></code>.</p>
-<p>INPUT:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">W</span></code> – Wall-crossing structure,</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant.</p></li>
 </ul>
 </dd></dl>
 

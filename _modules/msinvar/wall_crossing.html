@@ -247,7 +247,6 @@
 <span class="c1">#                  http://www.gnu.org/licenses/</span>
 <span class="c1"># *****************************************************************************</span>
 
-<span class="kn">from</span> <span class="nn">sage.matrix.constructor</span> <span class="kn">import</span> <span class="n">matrix</span>
 <span class="kn">from</span> <span class="nn">msinvar.rings</span> <span class="kn">import</span> <span class="n">RF</span>
 <span class="kn">from</span> <span class="nn">msinvar.tm_polynomials</span> <span class="kn">import</span> <span class="n">TMPoly</span>
 <span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">vec</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">cache</span>
@@ -343,9 +342,26 @@
         <span class="sd">&quot;&quot;&quot;Set or return precision vector for the quantum affine plane.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">prec</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.stacky_from_total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky_from_total">[docs]</a>    <span class="k">def</span> <span class="nf">stacky_from_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s2">&quot;fast&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;See :meth:`total2stacky_algo1`.</span>
+<div class="viewcode-block" id="WallCrossingStructure.stacky"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s1">&#39;fast&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Stacky invariant for the stability ``z``.</span>
+
+<span class="sd">        See :meth:`total2stacky_algo1` for more details.</span>
 <span class="sd">        The value of ``algo`` can be &#39;fast&#39;, &#39;fast2&#39;, &#39;slow&#39;.</span>
+<span class="sd">        If the total invariant ``I`` is None, we consider :meth:`total`.        </span>
+
+<span class="sd">        EXAMPLES::</span>
+
+<span class="sd">            sage: from msinvar import *</span>
+<span class="sd">            sage: Q=KroneckerQuiver(2)</span>
+<span class="sd">            sage: W=Q.wcs([5,5])</span>
+<span class="sd">            sage: z=Stability([1,0])</span>
+<span class="sd">            sage: I1=W.stacky(z,algo=&#39;fast&#39;)</span>
+<span class="sd">            sage: I2=W.stacky(z,algo=&#39;fast2&#39;)</span>
+<span class="sd">            sage: I1([1,1])</span>
+<span class="sd">            (y^2 + 1)/(y^2 - 1)</span>
+<span class="sd">            sage: I1.poly()-I2.poly()</span>
+<span class="sd">            0</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
@@ -359,29 +375,43 @@
             <span class="k">return</span> <span class="n">T</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;No such algo&quot;</span><span class="p">)</span></div>
 
-    <span class="n">stacky</span> <span class="o">=</span> <span class="n">stacky_from_total</span>
-    <span class="n">Omh</span> <span class="o">=</span> <span class="n">stacky_from_total</span>
+<div class="viewcode-block" id="WallCrossingStructure.stacky_from_total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky_from_total">[docs]</a>    <span class="k">def</span> <span class="nf">stacky_from_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alias for :meth:`stacky`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">kw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.rat_from_total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.rat_from_total">[docs]</a>    <span class="k">def</span> <span class="nf">rat_from_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="WallCrossingStructure.Omh"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.Omh">[docs]</a>    <span class="k">def</span> <span class="nf">Omh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alias for :meth:`stacky`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.rat_from_total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.rat_from_total">[docs]</a>    <span class="k">def</span> <span class="nf">rat_from_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s1">&#39;fast&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return rational invariant for the stability ``z``.&quot;&quot;&quot;</span>
-        <span class="n">Omh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+        <span class="n">Omh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">algo</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2rat</span><span class="p">(</span><span class="n">Omh</span><span class="p">)</span>  <span class="c1"># assume that z is generic</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.int_from_total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int_from_total">[docs]</a>    <span class="k">def</span> <span class="nf">int_from_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="WallCrossingStructure.Omb"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.Omb">[docs]</a>    <span class="k">def</span> <span class="nf">Omb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alias for :meth:`rat_from_total`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">rat_from_total</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.int_from_total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int_from_total">[docs]</a>    <span class="k">def</span> <span class="nf">int_from_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s1">&#39;fast&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return integer invariant for the stability ``z``.&quot;&quot;&quot;</span>
-        <span class="n">Omh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+        <span class="n">Omh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">algo</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="n">Omh</span><span class="p">)</span>  <span class="c1"># assume that z is generic</span></div>
 
-    <span class="n">Omb</span> <span class="o">=</span> <span class="n">rat_from_total</span>
-    <span class="n">Om</span> <span class="o">=</span> <span class="n">int_from_total</span>
+<div class="viewcode-block" id="WallCrossingStructure.Om"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.Om">[docs]</a>    <span class="k">def</span> <span class="nf">Om</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alias for :meth:`int_from_total`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">int_from_total</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">*</span><span class="n">kw</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.total_from_stacky"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_from_stacky">[docs]</a>    <span class="k">def</span> <span class="nf">total_from_stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+<div class="viewcode-block" id="WallCrossingStructure.stacky2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky2total">[docs]</a>    <span class="k">def</span> <span class="nf">stacky2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;See :meth:`stacky2total_algo1`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">stacky2total_algo1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.stk2stk"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stk2stk">[docs]</a>    <span class="k">def</span> <span class="nf">stk2stk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">algo</span><span class="o">=</span><span class="s2">&quot;fast&quot;</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Calculate stacky invariant for stability ``z1`` assuming that</span>
-<span class="sd">        stacky invariant for stability ``z`` is ``I``.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform stacky invariant ``I`` for stability ``z`` to the </span>
+<span class="sd">        stacky invariant for stability ``z1``.</span>
+
+<span class="sd">        The value of ``algo`` can be &#39;fast&#39; or &#39;slow&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">algo</span> <span class="o">==</span> <span class="s2">&quot;fast&quot;</span><span class="p">:</span>
             <span class="n">I1</span> <span class="o">=</span> <span class="n">stacky2total_algo1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">total2stacky_algo1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I1</span><span class="p">,</span> <span class="n">z1</span><span class="p">)</span>
@@ -401,21 +431,10 @@
         <span class="n">T</span><span class="o">.</span><span class="n">twist</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">l</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span>
         <span class="k">return</span> <span class="n">T</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.rat2int"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.rat2int">[docs]</a>    <span class="k">def</span> <span class="nf">rat2int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Transform rational invariant ``I`` to the integer invariant.&quot;&quot;&quot;</span>
-        <span class="k">def</span> <span class="nf">I1</span><span class="p">(</span><span class="n">d</span><span class="p">):</span> <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">IPsi_map</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="WallCrossingStructure.stk2int"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stk2int">[docs]</a>    <span class="k">def</span> <span class="nf">stk2int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Transform stacky invariant ``I`` to the integer invariant.&quot;&quot;&quot;</span>
-        <span class="n">I1</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">pLog</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I1</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="WallCrossingStructure.int2rat"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int2rat">[docs]</a>    <span class="k">def</span> <span class="nf">int2rat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-        <span class="k">def</span> <span class="nf">I1</span><span class="p">(</span><span class="n">d</span><span class="p">):</span> <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">Psi_map</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
-
 <div class="viewcode-block" id="WallCrossingStructure.rat2stk"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.rat2stk">[docs]</a>    <span class="k">def</span> <span class="nf">rat2stk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transform rational invariant ``I`` to the stacky invariant.</span>
+<span class="sd">        By default we assume that ``z`` is a generic stability.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">I1</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">z</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">I1</span><span class="o">.</span><span class="n">pexp</span><span class="p">()</span>
@@ -423,48 +442,77 @@
         <span class="n">T</span><span class="o">.</span><span class="n">twist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">twist</span>
         <span class="k">return</span> <span class="n">T</span><span class="p">(</span><span class="n">I1</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="WallCrossingStructure.rat2int"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.rat2int">[docs]</a>    <span class="k">def</span> <span class="nf">rat2int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transform rational invariant ``I`` to the integer invariant.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">I1</span><span class="p">(</span><span class="n">d</span><span class="p">):</span> <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">IPsi_map</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.int2rat"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int2rat">[docs]</a>    <span class="k">def</span> <span class="nf">int2rat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transform integer invariant ``I`` to the rational invariant.&quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">I1</span><span class="p">(</span><span class="n">d</span><span class="p">):</span> <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">Psi_map</span><span class="p">(</span><span class="n">I1</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.stk2int"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stk2int">[docs]</a>    <span class="k">def</span> <span class="nf">stk2int</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transform stacky invariant ``I`` to the integer invariant.</span>
+<span class="sd">        We assume that the stability parameter is generic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">I1</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">pLog</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I1</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="WallCrossingStructure.int2stk"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int2stk">[docs]</a>    <span class="k">def</span> <span class="nf">int2stk</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transform integer invariant ``I`` to the stacky invariant.</span>
+<span class="sd">        We assume that the stability parameter is generic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">I1</span> <span class="o">=</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">I1</span><span class="o">.</span><span class="n">pExp</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.series"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.series">[docs]</a>    <span class="k">def</span> <span class="nf">series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">stab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">stab</span><span class="p">,</span>  <span class="n">slope</span><span class="p">)</span></div>
+<div class="viewcode-block" id="WallCrossingStructure.poly"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.poly">[docs]</a>    <span class="k">def</span> <span class="nf">poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform invariant ``I`` to a polynomial,</span>
+<span class="sd">        considering only degrees having a given ``slope`` with respect to a</span>
+<span class="sd">        given stability paramter ``z``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>  <span class="n">slope</span><span class="p">)</span></div>
 
-    <span class="n">poly</span> <span class="o">=</span> <span class="n">series</span>
+<div class="viewcode-block" id="WallCrossingStructure.series"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.series">[docs]</a>    <span class="k">def</span> <span class="nf">series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alias for :meth:`poly`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
     <span class="c1"># quiver related methods (requires Euler form)</span>
 <div class="viewcode-block" id="WallCrossingStructure.eform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.eform">[docs]</a>    <span class="k">def</span> <span class="nf">eform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Euler form of the quiver (assuming that it is present).&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quiver</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.qform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.qform">[docs]</a>    <span class="k">def</span> <span class="nf">qform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Quadratic form of the quiver.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.total_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_default">[docs]</a>    <span class="k">def</span> <span class="nf">total_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Invariants of a quiver corresponding to the trivial stability</span>
+<span class="sd">        Total invariant of the quiver (stacky invariant for the trivial </span>
+<span class="sd">        stability).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span><span class="o">/</span><span class="n">phi</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_T"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_T">[docs]</a>    <span class="k">def</span> <span class="nf">twist_T</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Auxiliary quiver-related term twist.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_TI"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_TI">[docs]</a>    <span class="k">def</span> <span class="nf">twist_TI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Auxiliary quiver-related term twist.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
     <span class="c1"># end of quiver related methods</span>
 
 <div class="viewcode-block" id="WallCrossingStructure.stable_from_stacky"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stable_from_stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Count z-stable objects having given slope, assuming that stacky count</span>
-<span class="sd">        of z-semistable objects is known.</span>
+<span class="sd">        Count ``z``-stable representations having a given ``slope``, assuming</span>
+<span class="sd">        that stacky invariant ``I`` counting ``z``-semistable objects is given.</span>
+<span class="sd">        Based on :arxiv:`0708.1259`.        </span>
 
-<span class="sd">        INPUT:</span>
-
-<span class="sd">        I : Invariant counting z-semistable objects.</span>
-
-<span class="sd">        z : Stability parameter.</span>
-
-<span class="sd">        slope : The slope.</span>
+<span class="sd">        - ``I`` -- Stacky invariant counting z-semistable objects.</span>
+<span class="sd">        - ``z`` -- Stability parameter.</span>
+<span class="sd">        - ``slope`` -- Slope value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">constant_coefficient</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -477,21 +525,38 @@
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f3</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.stable_from_total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_total">[docs]</a>    <span class="k">def</span> <span class="nf">stable_from_total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Count ``z``-stable representations having a given ``slope``, assuming</span>
+<span class="sd">        that the total invariant ``I`` is given.</span>
+<span class="sd">        Based on :arxiv:`0708.1259`.        </span>
+
+<span class="sd">        - ``z`` -- Stability parameter.</span>
+<span class="sd">        - ``slope`` -- Slope value.</span>
+<span class="sd">        - ``I`` -- Total invariant (if None, we consider :meth:`total`).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_stacky</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span></div>
 
-    <span class="n">stable</span> <span class="o">=</span> <span class="n">stable_from_total</span>
+<div class="viewcode-block" id="WallCrossingStructure.stable"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable">[docs]</a>    <span class="k">def</span> <span class="nf">stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Alias for :meth:`stable_from_total`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_total</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.simple"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.simple">[docs]</a>    <span class="k">def</span> <span class="nf">simple</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count simple reprentations of a quiver, assuming that the total </span>
+<span class="sd">        invariant ``I`` is given. If ``I`` is None, we consider :meth:`total`.</span>
+<span class="sd">        Based on :arxiv:`0708.1259`.        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_total</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.self_stab"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.self_stab">[docs]</a>    <span class="k">def</span> <span class="nf">self_stab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Self-stability for the dimension vector ``d``.&quot;&quot;&quot;</span>
         <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">a</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">sform</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">basis</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">),</span> <span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
         <span class="k">return</span> <span class="n">Stability</span><span class="p">(</span><span class="n">a</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.attr_stab"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.attr_stab">[docs]</a>    <span class="k">def</span> <span class="nf">attr_stab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Attractor stability for the dimension vector ``d``.&quot;&quot;&quot;</span>
         <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">self_stab</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="n">z</span><span class="o">.</span><span class="n">is_generic</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">randomize</span><span class="p">()</span>
@@ -499,22 +564,59 @@
         <span class="c1"># return self.self_stab(d).randomize()</span>
 
 <div class="viewcode-block" id="WallCrossingStructure.stkAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate stacky attractor invariant assuming that the total </span>
+<span class="sd">        invariant is ``I``. If ``I`` is None, we consider :meth:`total`.&quot;&quot;&quot;</span>
+
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr_stab</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-            <span class="n">I1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+            <span class="n">I1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">I1</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.ratAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt">[docs]</a>    <span class="k">def</span> <span class="nf">ratAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate rational attractor invariant assuming that the total </span>
+<span class="sd">        invariant is ``I``. If ``I`` is None, we consider :meth:`total`.&quot;&quot;&quot;</span>
         <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">plog</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.intAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt">[docs]</a>    <span class="k">def</span> <span class="nf">intAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate integer attractor invariant assuming that the total </span>
+<span class="sd">        invariant is ``I``. If ``I`` is None, we consider :meth:`total`.&quot;&quot;&quot;</span>
         <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">pLog</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="WallCrossingStructure.stkAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div>
+<div class="viewcode-block" id="WallCrossingStructure.stkAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate total invariant, assuming that the stacky attractor invariant</span>
+<span class="sd">        is ``I``.</span>
+<span class="sd">        This is a recursive inversion of :meth:`stkAtt`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt_default</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">I</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+        <span class="n">T1</span> <span class="o">=</span> <span class="n">recursive_inversion</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">T1</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.ratAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">ratAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate total invariant, assuming that the rational attractor </span>
+<span class="sd">        invariant is ``I``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ratAtt_default</span><span class="p">()</span>
+        <span class="n">I1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rat2stk</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt2total</span><span class="p">(</span><span class="n">I1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.intAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">intAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate total invariant, assuming that the integer attractor invariant</span>
+<span class="sd">        is ``I``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intAtt_default</span><span class="p">()</span>
+        <span class="n">I1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">int2stk</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt2total</span><span class="p">(</span><span class="n">I1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.intAtt_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt_default">[docs]</a>    <span class="k">def</span> <span class="nf">intAtt_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -538,42 +640,36 @@
 <span class="sd">    Calculate stacky invariant for stability ``z``, assuming that the total </span>
 <span class="sd">    invariant is ``I``.</span>
 
-<span class="sd">    INPUT:</span>
-
 <span class="sd">    - ``W`` -- Wall-crossing structure,</span>
 <span class="sd">    - ``I`` -- Invariant,</span>
 <span class="sd">    - ``z``-- Stability.</span>
 
-<span class="sd">    Has the same speed as :meth:`total2stacky_algo2`.</span>
+<span class="sd">    Based on :arxiv:`math/0204059` (5.5) and its implementation by</span>
+<span class="sd">    Pieter Belmans.</span>
+<span class="sd">    Has comparable speed to :meth:`total2stacky_algo2`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">matrix_T</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">1</span>
+        <span class="n">te</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">zero</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="n">zero</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-                        <span class="k">if</span> <span class="n">z</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">z</span><span class="p">(</span><span class="n">d</span><span class="p">))</span><span class="o">+</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
-        <span class="n">T</span> <span class="o">=</span> <span class="n">matrix</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
-                <span class="n">a</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
-                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">a</span><span class="p">):</span>
-                    <span class="n">T</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">I</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">T</span>
+                        <span class="k">if</span> <span class="n">te</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="n">d</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">solve</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="c1"># A is an upper-triangular nxn matrix (with 1 on the diagonal) and b is an n-vector</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+        <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">k</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">a</span><span class="p">):</span>
+                <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">*</span> <span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">a</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+
+        <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">n</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
-            <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">A</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
-        <span class="k">return</span> <span class="n">x</span>
-
-    <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-        <span class="n">T</span> <span class="o">=</span> <span class="n">matrix_T</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">nrows</span><span class="p">()</span>
-        <span class="n">v</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="p">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">+</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="o">-</span><span class="n">solve</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">v</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">-</span><span class="nb">sum</span><span class="p">(</span><span class="n">T</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span><span class="o">*</span><span class="n">x</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+        <span class="k">return</span> <span class="o">-</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">stacky</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>
 
@@ -583,20 +679,18 @@
 <span class="sd">    Calculate stacky invariant for stability ``z``, assuming that the total </span>
 <span class="sd">    invariant is ``I``.</span>
 
-<span class="sd">    INPUT:</span>
-
 <span class="sd">    - ``W`` -- Wall-crossing structure,</span>
 <span class="sd">    - ``I`` -- Invariant,</span>
 <span class="sd">    - ``z``-- Stability.</span>
 
-<span class="sd">    Has the same speed as :meth:`total2stacky_algo1`.</span>
+<span class="sd">    Has comparable speed to :meth:`total2stacky_algo1`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
             <span class="k">return</span> <span class="mi">1</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">z</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
+        <span class="n">te</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
 
         <span class="nd">@cache</span>
         <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -605,7 +699,7 @@
                 <span class="n">d1</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d1</span><span class="p">):</span>
                     <span class="n">s</span> <span class="o">+=</span> <span class="n">I</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">z</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
+                <span class="k">elif</span> <span class="n">te</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
                     <span class="n">s</span> <span class="o">-=</span> <span class="n">tail</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">*</span><span class="n">I</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">s</span>
         <span class="k">return</span> <span class="n">tail</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
@@ -618,8 +712,6 @@
 <span class="sd">    stability ``z`` is ``I``.</span>
 
 <span class="sd">    This algorithm is faster than :meth:`stacky2total_algo2`.</span>
-
-<span class="sd">    INPUT:</span>
 
 <span class="sd">    - ``W`` -- Wall-crossing structure,</span>
 <span class="sd">    - ``I`` -- Invariant,</span>
@@ -645,103 +737,90 @@
 <span class="sd">    Calculate total invariant, assuming that the stacky invariant for </span>
 <span class="sd">    stability ``z`` is ``I``.</span>
 
-<span class="sd">    This is a recursive inversion of total2stacky. It is slower than </span>
-<span class="sd">    :meth:`stacky2total_algo1`.</span>
-
-<span class="sd">    INPUT:</span>
+<span class="sd">    This is a recursive inversion of :meth:`total2stacky_algo1`.</span>
+<span class="sd">    It is slower than :meth:`stacky2total_algo1`.</span>
 
 <span class="sd">    - ``W`` -- Wall-crossing structure,</span>
 <span class="sd">    - ``I`` -- Invariant,</span>
 <span class="sd">    - ``z``-- Stability.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
-
-    <span class="nd">@cache</span>
-    <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
-            <span class="k">return</span> <span class="mi">1</span>
-        <span class="n">c</span> <span class="o">=</span> <span class="n">z</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
-
-        <span class="nd">@cache</span>
-        <span class="k">def</span> <span class="nf">tail</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-            <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-                <span class="n">d1</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d1</span><span class="p">):</span>
-                    <span class="n">s</span> <span class="o">+=</span> <span class="n">total</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-                <span class="k">elif</span> <span class="n">z</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
-                    <span class="n">s</span> <span class="o">-=</span> <span class="n">tail</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">*</span><span class="n">total</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
-            <span class="k">return</span> <span class="n">s</span>
-        <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
-            <span class="n">d1</span> <span class="o">=</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d1</span><span class="p">):</span>
-                <span class="k">pass</span>
-            <span class="k">elif</span> <span class="n">z</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">c</span><span class="p">:</span>
-                <span class="n">s</span> <span class="o">-=</span> <span class="n">tail</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">*</span><span class="n">total</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">twist</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">d1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span><span class="o">-</span><span class="n">s</span>
-    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">total</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="total2stkAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.total2stkAtt">[docs]</a><span class="k">def</span> <span class="nf">total2stkAtt</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate stacky attractor invariant, assuming that the total invariant</span>
-<span class="sd">    is ``I``.</span>
-
-<span class="sd">    INPUT:</span>
-
-<span class="sd">    - ``W`` -- Wall-crossing structure,</span>
-<span class="sd">    - ``I`` -- Invariant.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">attr_stab</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">total2stacky_algo1</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)(</span><span class="n">d</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="total2intAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.total2intAtt">[docs]</a><span class="k">def</span> <span class="nf">total2intAtt</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate integer attractor invariant, assuming that the total invariant</span>
-<span class="sd">    is ``I``.</span>
-
-<span class="sd">    INPUT:</span>
-
-<span class="sd">    - ``W`` -- Wall-crossing structure,</span>
-<span class="sd">    - ``I`` -- Invariant.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">I</span> <span class="o">=</span> <span class="n">total2stkAtt</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">pLog</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="n">W</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="n">W</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="stkAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.stkAtt2total">[docs]</a><span class="k">def</span> <span class="nf">stkAtt2total</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate total invariant, assuming that the stacky attractor invariant</span>
-<span class="sd">    is ``I``.</span>
-
-<span class="sd">    This is a recursive inversion of :meth:`total2stkAtt`.</span>
-
-<span class="sd">    INPUT:</span>
-
-<span class="sd">    - ``W`` -- Wall-crossing structure,</span>
-<span class="sd">    - ``I`` -- Invariant.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">I</span><span class="p">):</span> <span class="k">return</span> <span class="n">total2stkAtt</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">I</span><span class="p">):</span> <span class="k">return</span> <span class="n">total2stacky_algo1</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
     <span class="n">T1</span> <span class="o">=</span> <span class="n">recursive_inversion</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">T1</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="intAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.intAtt2total">[docs]</a><span class="k">def</span> <span class="nf">intAtt2total</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calculate total invariant, assuming that the integer attractor invariant</span>
-<span class="sd">    is ``I``.</span>
+<span class="c1"># def total2stkAtt(W, I):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculate stacky attractor invariant, assuming that the total invariant</span>
+<span class="c1">#     is ``I``.</span>
 
-<span class="sd">    INPUT:</span>
+<span class="c1">#     INPUT:</span>
 
-<span class="sd">    - ``W`` -- Wall-crossing structure,</span>
-<span class="sd">    - ``I`` -- Invariant.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">I1</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">int2stk</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">stkAtt2total</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">I1</span><span class="p">)</span></div>
+<span class="c1">#     - ``W`` -- Wall-crossing structure,</span>
+<span class="c1">#     - ``I`` -- Invariant.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     def f(d):</span>
+<span class="c1">#         z = W.attr_stab(d)</span>
+<span class="c1">#         return total2stacky_algo1(W, z, I)(d)</span>
+<span class="c1">#     return Invariant(f, W)</span>
+
+
+<span class="c1"># def total2intAtt(W, I):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculate integer attractor invariant, assuming that the total invariant</span>
+<span class="c1">#     is ``I``.</span>
+
+<span class="c1">#     INPUT:</span>
+
+<span class="c1">#     - ``W`` -- Wall-crossing structure,</span>
+<span class="c1">#     - ``I`` -- Invariant.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     I = total2stkAtt(W, I).pLog()</span>
+<span class="c1">#     return Invariant(lambda d: I(d)*W.gm, W)</span>
+
+
+<span class="c1"># def stacky2total_algo2(W, I, z):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Calculate total invariant, assuming that the stacky invariant for</span>
+<span class="c1">#     stability ``z`` is ``I``.</span>
+
+<span class="c1">#     This is a recursive inversion of total2stacky. It is slower than</span>
+<span class="c1">#     :meth:`stacky2total_algo1`.</span>
+
+<span class="c1">#     INPUT:</span>
+
+<span class="c1">#     - ``W`` -- Wall-crossing structure,</span>
+<span class="c1">#     - ``I`` -- Invariant,</span>
+<span class="c1">#     - ``z``-- Stability.</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     z = Stability.check(z)</span>
+
+<span class="c1">#     @cache</span>
+<span class="c1">#     def total(d0):</span>
+<span class="c1">#         if vec.iszero(d0):</span>
+<span class="c1">#             return 1</span>
+<span class="c1">#         c = z(d0)</span>
+
+<span class="c1">#         @cache</span>
+<span class="c1">#         def tail(d):</span>
+<span class="c1">#             s = 0</span>
+<span class="c1">#             for e in IntegerVectors_iterator(d):</span>
+<span class="c1">#                 d1 = vec.sub(d, e)</span>
+<span class="c1">#                 if vec.iszero(d1):</span>
+<span class="c1">#                     s += total(e)</span>
+<span class="c1">#                 elif z(d1) &lt; c:</span>
+<span class="c1">#                     s -= tail(d1)*total(e)*W.twist(e, d1)</span>
+<span class="c1">#             return s</span>
+<span class="c1">#         s = 0</span>
+<span class="c1">#         for e in IntegerVectors_iterator(d0):</span>
+<span class="c1">#             d1 = vec.sub(d0, e)</span>
+<span class="c1">#             if vec.iszero(d1):</span>
+<span class="c1">#                 pass</span>
+<span class="c1">#             elif z(d1) &lt; c:</span>
+<span class="c1">#                 s -= tail(d1)*total(e)*W.twist(e, d1)</span>
+<span class="c1">#         return I(d0)-s</span>
+<span class="c1">#     return Invariant(total, W)</span>
+
 
 <span class="c1"># def stkAtt2total_algo(W, I):</span>
 <span class="c1">#     &quot;&quot;&quot;</span>

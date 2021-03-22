@@ -181,7 +181,7 @@
 <span class="sd">    sage: z=Stability([1,0]); z</span>
 <span class="sd">    Stability function [[1, 0], [1, 1]]</span>
 <span class="sd">    sage: z([1,2]) #slope</span>
-<span class="sd">    0.3333333333</span>
+<span class="sd">    0.333333333333</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="c1"># *****************************************************************************</span>
@@ -207,7 +207,7 @@
 <span class="sd">        sage: z=Stability([1,0]); z</span>
 <span class="sd">        Stability function [[1, 0], [1, 1]]</span>
 <span class="sd">        sage: z([1,2]) #slope</span>
-<span class="sd">        0.3333333333</span>
+<span class="sd">        0.333333333333</span>
 <span class="sd">        sage: z([1,0],[0,1]) #difference of slopes</span>
 <span class="sd">        1</span>
 <span class="sd">        sage: z.less([1,0],[0,1])</span>
@@ -235,7 +235,7 @@
 
 <div class="viewcode-block" id="Stability.slope"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.slope">[docs]</a>    <span class="k">def</span> <span class="nf">slope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Slope of the vector ``d``.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">12</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stability.compare"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.compare">[docs]</a>    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Difference of slopes.&quot;&quot;&quot;</span>
@@ -269,7 +269,7 @@
 <div class="viewcode-block" id="Stability.normalize"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return function f such that f(e)&lt;0 iff slope(e)&lt;slope(d).&quot;&quot;&quot;</span>
         <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="k">return</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># this should be less than in slope</span></div>
 
 <div class="viewcode-block" id="Stability.randomize"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.randomize">[docs]</a>    <span class="k">def</span> <span class="nf">randomize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generic perturbation of self.&quot;&quot;&quot;</span>
