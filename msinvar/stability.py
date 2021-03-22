@@ -7,7 +7,7 @@ EXAMPLES::
     sage: z=Stability([1,0]); z
     Stability function [[1, 0], [1, 1]]
     sage: z([1,2]) #slope
-    0.3333333333
+    0.333333333333
 """
 
 # *****************************************************************************
@@ -33,7 +33,7 @@ class Stability:
         sage: z=Stability([1,0]); z
         Stability function [[1, 0], [1, 1]]
         sage: z([1,2]) #slope
-        0.3333333333
+        0.333333333333
         sage: z([1,0],[0,1]) #difference of slopes
         1
         sage: z.less([1,0],[0,1])
@@ -61,7 +61,7 @@ class Stability:
 
     def slope(self, d):
         """Slope of the vector ``d``."""
-        return np.round(vec.dot(self.a, d)/vec.dot(self.b, d), 10)
+        return np.round(vec.dot(self.a, d)/vec.dot(self.b, d), 12)
 
     def compare(self, d, e):
         """Difference of slopes."""
@@ -95,7 +95,7 @@ class Stability:
     def normalize(self, d):
         """Return function f such that f(e)<0 iff slope(e)<slope(d)."""
         w = self.weight(d)
-        return lambda d: np.round(vec.dot(w, d), 10)
+        return lambda d: np.round(vec.dot(w, d), 10) # this should be less than in slope
 
     def randomize(self):
         """Generic perturbation of self."""

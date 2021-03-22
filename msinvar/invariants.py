@@ -32,10 +32,9 @@ EXAMPLES::
 
 from numpy import array
 from sage.misc.misc_c import prod
-from sage.arith.misc import divisors, gcd, moebius, factor
+from sage.arith.misc import divisors, gcd, moebius
 from sage.functions.other import factorial
 from sage.rings.rational_field import QQ
-from sage.calculus.functional import expand
 
 from msinvar.tm_polynomials import TMPolynomial, TMPolynomialRing
 from msinvar.utils import cache, vec
@@ -373,7 +372,7 @@ class Transform:
     def value(self, l):
         return self.F(l)
 
-    def action(self, I, d):
+    def action(self, I, d=None):
         """Action of the transformation on an invariant ``I``."""
         if d is None:
             return Invariant(lambda d: self.action(I, d), I)
