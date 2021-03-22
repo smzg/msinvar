@@ -129,7 +129,7 @@ class Invariant:
                 add(d)
         return dct
 
-    def series(self, R=None, stab=None, slope=None):
+    def poly(self, R=None, stab=None, slope=None):
         """
         Convert invariant to a TMPolynomial.
         """
@@ -138,8 +138,8 @@ class Invariant:
         prec = R.prec()
         return R(self.dict(prec, stab, slope))
 
-    to_series = series
-    poly = series
+    to_series = poly
+    series = poly
 
     def term_twist(self, f):
         """Twist every term using the function ``f``."""
@@ -148,7 +148,6 @@ class Invariant:
     def restrict(self, z, slope=0):
         """Restrict invariant to dimension vectors d such that z(d)=slope,
         where ``z`` is a Stability (or the corresponding vector)."""
-
         z = Stability.check(z)
 
         def f(d):

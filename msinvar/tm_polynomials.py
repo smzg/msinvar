@@ -297,7 +297,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
     def prec(self, d=None):
         if d is not None:
             self._prec = d
-            return None
+            return
         return self._prec
 
     def prec_num(self):

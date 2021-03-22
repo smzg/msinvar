@@ -330,17 +330,14 @@ class WallCrossingStructure:
         return (-self.y)**(-self.qform(d))
     # end of quiver related methods
 
-    def stable_from_stacky(self, I, z, slope=0):
+    def stable_from_stacky(self, I):
         """
-        Count ``z``-stable representations having a given ``slope``, assuming
-        that stacky invariant ``I`` counting ``z``-semistable objects is given.
+        Count stable objects of a fixed slope, assuming that stacky invariant
+        ``I`` counting semistable objects of that slope is given.
         Based on :arxiv:`0708.1259`.        
-
-        - ``I`` -- Stacky invariant counting z-semistable objects.
-        - ``z`` -- Stability parameter.
-        - ``slope`` -- Slope value.
         """
-        f = self.series(I, z, slope)
+        # f = self.series(I, z, slope)
+        f = I.poly()
         if f.constant_coefficient() == 0:
             f = 1+f
         self.twist_product()  # quantum torus product
@@ -360,8 +357,8 @@ class WallCrossingStructure:
         - ``slope`` -- Slope value.
         - ``I`` -- Total invariant (if None, we consider :meth:`total`).
         """
-        I = self.stacky(z, I)
-        return self.stable_from_stacky(I, z, slope)
+        I1 = self.stacky(z, I).restrict(z, slope)
+        return self.stable_from_stacky(I1)
 
     def stable(self, *args, **kw):
         """Alias for :meth:`stable_from_total`."""
@@ -372,8 +369,9 @@ class WallCrossingStructure:
         invariant ``I`` is given. If ``I`` is None, we consider :meth:`total`.
         Based on :arxiv:`0708.1259`.        
         """
-        z = [0]*self.rank
-        return self.stable_from_total(z, 0, I)
+        if I is None:
+            I=self.total()
+        return self.stable_from_stacky(I)
 
     def self_stab(self, d):
         """Self-stability for the dimension vector ``d``."""
@@ -470,8 +468,9 @@ def total2stacky_algo1(W, I, z):
     - ``I`` -- Invariant,
     - ``z``-- Stability.
 
-    Based on :arxiv:`math/0204059` (5.5) and its implementation by
-    Pieter Belmans.
+    Based on :arxiv:`math/0204059` (5.5).
+    See also implementation by
+    `Pieter Belmans <https://github.com/pbelmans/hodge-diamond-cutter>`_.
     Has comparable speed to :meth:`total2stacky_algo2`.
     """
     z = Stability.check(z)
