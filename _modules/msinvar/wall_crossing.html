@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../curve_DT.html">DT invariants of curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
@@ -504,17 +505,14 @@
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
     <span class="c1"># end of quiver related methods</span>
 
-<div class="viewcode-block" id="WallCrossingStructure.stable_from_stacky"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stable_from_stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="WallCrossingStructure.stable_from_stacky"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stable_from_stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Count ``z``-stable representations having a given ``slope``, assuming</span>
-<span class="sd">        that stacky invariant ``I`` counting ``z``-semistable objects is given.</span>
+<span class="sd">        Count stable objects of a fixed slope, assuming that stacky invariant</span>
+<span class="sd">        ``I`` counting semistable objects of that slope is given.</span>
 <span class="sd">        Based on :arxiv:`0708.1259`.        </span>
-
-<span class="sd">        - ``I`` -- Stacky invariant counting z-semistable objects.</span>
-<span class="sd">        - ``z`` -- Stability parameter.</span>
-<span class="sd">        - ``slope`` -- Slope value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">f</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">series</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
+        <span class="c1"># f = self.series(I, z, slope)</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="n">I</span><span class="o">.</span><span class="n">poly</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">constant_coefficient</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">f</span> <span class="o">=</span> <span class="mi">1</span><span class="o">+</span><span class="n">f</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">twist_product</span><span class="p">()</span>  <span class="c1"># quantum torus product</span>
@@ -534,8 +532,8 @@
 <span class="sd">        - ``slope`` -- Slope value.</span>
 <span class="sd">        - ``I`` -- Total invariant (if None, we consider :meth:`total`).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_stacky</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span></div>
+        <span class="n">I1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">restrict</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_stacky</span><span class="p">(</span><span class="n">I1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.stable"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable">[docs]</a>    <span class="k">def</span> <span class="nf">stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Alias for :meth:`stable_from_total`.&quot;&quot;&quot;</span>
@@ -546,8 +544,9 @@
 <span class="sd">        invariant ``I`` is given. If ``I`` is None, we consider :meth:`total`.</span>
 <span class="sd">        Based on :arxiv:`0708.1259`.        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">z</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_total</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">I</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_stacky</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.self_stab"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.self_stab">[docs]</a>    <span class="k">def</span> <span class="nf">self_stab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Self-stability for the dimension vector ``d``.&quot;&quot;&quot;</span>
@@ -644,8 +643,9 @@
 <span class="sd">    - ``I`` -- Invariant,</span>
 <span class="sd">    - ``z``-- Stability.</span>
 
-<span class="sd">    Based on :arxiv:`math/0204059` (5.5) and its implementation by</span>
-<span class="sd">    Pieter Belmans.</span>
+<span class="sd">    Based on :arxiv:`math/0204059` (5.5).</span>
+<span class="sd">    See also implementation by</span>
+<span class="sd">    `Pieter Belmans &lt;https://github.com/pbelmans/hodge-diamond-cutter&gt;`_.</span>
 <span class="sd">    Has comparable speed to :meth:`total2stacky_algo2`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>

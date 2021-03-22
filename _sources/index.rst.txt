@@ -22,8 +22,9 @@ Applications:
     brane_tilings
     flow_trees
     higgs_bundles
+    curve_DT
     indecomposable
-
+    
 Auxiliary modules:
 ------------------
 .. toctree::

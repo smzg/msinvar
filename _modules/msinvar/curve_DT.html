@@ -1,0 +1,412 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>msinvar.curve_DT &mdash; Moduli space invariants 0.1 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Moduli space invariants
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../quivers.html">Quivers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../wall_crossing.html">Wall-crossing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../invariants.html">Invariants and transformations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../stability.html">Stability parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../curve_DT.html">DT invariants of curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../lambda_rings.html">Category of Lambda rings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../iterators.html">Iterators</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../posets.html">Posets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../utils.html">Utils</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Moduli space invariants</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>msinvar.curve_DT</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for msinvar.curve_DT</h1><div class="highlight"><pre>
+<span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">DT invariants of curves</span>
+
+<span class="sd">We compute invariants of moduli stacks of semistable vector bundles on a curve</span>
+<span class="sd">using the formula of </span>
+<span class="sd">`Zagier &lt;https://people.mpim-bonn.mpg.de/zagier/files/mpim/94-5/fulltext.pdf&gt;`_</span>
+<span class="sd">in the form presented in :arxiv:`1310.4991`.</span>
+
+<span class="sd">Then we compute integer DT invariants (by taking plethystic logarithm)</span>
+<span class="sd">and invariants of stable moduli spaces following :arxiv:`0711.0634`.</span>
+
+<span class="sd">EXAMPLES::</span>
+
+<span class="sd">    sage: from msinvar.curve_DT import Curve</span>
+<span class="sd">    sage: C=Curve(g=0,prec=[3,3]); C</span>
+<span class="sd">    Curve of genus 0</span>
+<span class="sd">    sage: C.intDT([1,0]).dict() #degree 0 and rank &lt;=3 DT invariants</span>
+<span class="sd">    {(1, 0): 1}</span>
+
+<span class="sd">    sage: C=Curve(g=1,prec=[3,3]); C</span>
+<span class="sd">    Curve of genus 1</span>
+<span class="sd">    sage: C.intDT([1,0]).dict() #degree 0 and rank &lt;=3 DT invariants</span>
+<span class="sd">    {(1, 0): y^2 - 2*y + 1}</span>
+
+<span class="sd">    sage: C=Curve(g=2,prec=[2,2]); C</span>
+<span class="sd">    Curve of genus 2</span>
+<span class="sd">    sage: C.intDT_val([1,0])</span>
+<span class="sd">    y^4 - 4*y^3 + 6*y^2 - 4*y + 1   </span>
+<span class="sd">    sage: C.intDT_val([2,0])</span>
+<span class="sd">    y^10 - 4*y^9 + 7*y^8 - 8*y^7 + 8*y^6 - 8*y^5 + 8*y^4 - 8*y^3 + 7*y^2 - 4*y + 1</span>
+<span class="sd">    sage: C.intDT_val([2,1])</span>
+<span class="sd">    y^10 - 4*y^9 + 7*y^8 - 12*y^7 + 24*y^6 - 32*y^5 + 24*y^4 - 12*y^3 + 7*y^2 - 4*y + 1</span>
+
+<span class="sd">    sage: C.stable_val([1,0]) # motivic classes of stable moduli spaces</span>
+<span class="sd">    y^4 - 4*y^3 + 6*y^2 - 4*y + 1</span>
+<span class="sd">    sage: C.stable_val([2,0]) # this value is different from int_DT</span>
+<span class="sd">    y^10 - 4*y^9 + 6*y^8 - 4*y^7 - 4*y^6 + 20*y^5 - 30*y^4 + 20*y^3 - 5*y^2</span>
+<span class="sd">    sage: C.stable_val([2,1])</span>
+<span class="sd">    y^10 - 4*y^9 + 7*y^8 - 12*y^7 + 24*y^6 - 32*y^5 + 24*y^4 - 12*y^3 + 7*y^2 - 4*y + 1</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># *****************************************************************************</span>
+<span class="c1">#  Copyright (C) 2021 Sergey Mozgovoy &lt;mozhov@gmail.com&gt;</span>
+<span class="c1">#</span>
+<span class="c1">#  Distributed under the terms of the GNU General Public License (GPL)</span>
+<span class="c1">#                  http://www.gnu.org/licenses/</span>
+<span class="c1"># *****************************************************************************</span>
+
+<span class="kn">from</span> <span class="nn">sage.misc.misc_c</span> <span class="kn">import</span> <span class="n">prod</span>
+<span class="kn">from</span> <span class="nn">sage.functions.other</span> <span class="kn">import</span> <span class="n">floor</span>
+<span class="kn">from</span> <span class="nn">sage.arith.misc</span> <span class="kn">import</span> <span class="n">gcd</span>
+<span class="kn">from</span> <span class="nn">msinvar.iterators</span> <span class="kn">import</span> <span class="n">OrderedPartitions_iterator</span>
+<span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="n">RF</span><span class="p">,</span> <span class="n">TMPoly</span><span class="p">,</span> <span class="n">WCS</span><span class="p">,</span> <span class="n">Invariant</span><span class="p">,</span> <span class="n">vec</span>
+
+
+<div class="viewcode-block" id="Curve"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve">[docs]</a><span class="k">class</span> <span class="nc">Curve</span><span class="p">(</span><span class="n">WCS</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wall-crossing structure of a curve.</span>
+
+<span class="sd">    It is a polynomial algebra in 2 variables (actually a quantum affine plane)</span>
+<span class="sd">    over the field Q(y,t), where our zeta function of the curve lives.</span>
+<span class="sd">    The zeta function is</span>
+<span class="sd">    `(1-yt)^{2g}/(1-t)/(1-y^2t)`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">g</span> <span class="o">=</span> <span class="n">g</span>  <span class="c1"># genus</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">RF</span><span class="p">(</span><span class="s1">&#39;y,t&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gm</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;Curve of genus &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Curve.eform"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.eform">[docs]</a>    <span class="k">def</span> <span class="nf">eform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Euler form between sheaves having Chern characters ``a``, ``b``,</span>
+<span class="sd">        where a[0] is a rank, a[1] is a degree and similarly for ``b``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">g</span><span class="p">)</span><span class="o">*</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="Curve.sform"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.sform">[docs]</a>    <span class="k">def</span> <span class="nf">sform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Skew-symmetric Euler form.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">b</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">a</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">b</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Curve.P"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.P">[docs]</a>    <span class="k">def</span> <span class="nf">P</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Numerator of the zeta function.&quot;&quot;&quot;</span>
+        <span class="n">y</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">y</span><span class="o">*</span><span class="n">t</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">g</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">p</span>
+        <span class="k">return</span> <span class="n">p</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Curve.Z"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.Z">[docs]</a>    <span class="k">def</span> <span class="nf">Z</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Zeta function of a curve.</span>
+<span class="sd">        It has the form `(1-yt)^{2g}/(1-t)/(1-y^2t)`.&quot;&quot;&quot;</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">t</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">q</span><span class="o">*</span><span class="n">t</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z</span>
+        <span class="k">return</span> <span class="n">z</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Curve.Zhat"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.Zhat">[docs]</a>    <span class="k">def</span> <span class="nf">Zhat</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Twsited version of :meth:`Z`.&quot;&quot;&quot;</span>
+        <span class="n">t</span><span class="p">,</span> <span class="n">g</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">t</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">g</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">t</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">g</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">kw</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">z</span>
+        <span class="k">return</span> <span class="n">z</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Curve.Bun"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.Bun">[docs]</a>    <span class="k">def</span> <span class="nf">Bun</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Motivic class of the moduli stack of rank ``r`` vector bundles</span>
+<span class="sd">        and some fixed degree.&quot;&quot;&quot;</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">P</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Z</span><span class="p">(</span><span class="n">t</span><span class="o">=</span><span class="n">q</span><span class="o">**</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Curve.Bun_tw"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.Bun_tw">[docs]</a>    <span class="k">def</span> <span class="nf">Bun_tw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Twisted version of :meth:`Bun`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bun</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">twist_T</span><span class="p">([</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Curve.stacky_val"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stacky_val">[docs]</a>    <span class="k">def</span> <span class="nf">stacky_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Motivic class of the stack of semistable vector bundles having</span>
+<span class="sd">        rank ``r`` and degree ``d``. If ``d`` is None, then ``r`` should be a</span>
+<span class="sd">        2-vector.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
+
+        <span class="k">def</span> <span class="nf">twist</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="p">(</span><span class="n">r</span><span class="o">-</span><span class="n">l</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">*</span><span class="n">d</span>
+            <span class="n">r1</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+                <span class="n">r1</span> <span class="o">+=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">r2</span> <span class="o">=</span> <span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="n">l</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">p</span> <span class="o">-=</span> <span class="n">r2</span><span class="o">*</span><span class="n">floor</span><span class="p">(</span><span class="n">r1</span><span class="o">*</span><span class="n">d</span><span class="o">/</span><span class="n">r</span><span class="p">)</span>
+                <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">q</span><span class="o">**</span><span class="n">r2</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">q</span><span class="o">**</span><span class="n">p</span><span class="o">/</span><span class="n">s</span>
+
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">OrderedPartitions_iterator</span><span class="p">(</span><span class="n">r</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">twist</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Bun_tw</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="Curve.stacky"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Invariant with values given by </span>
+<span class="sd">        motivic classes of stacks of semistable vector bundles along the ray</span>
+<span class="sd">        of Chern characters proportional to (r,d).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">//</span> <span class="n">k</span>
+        <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">//</span> <span class="n">k</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;prec should be specified.&quot;</span><span class="p">)</span>
+        <span class="n">dct</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">vec</span><span class="o">.</span><span class="n">le</span><span class="p">([</span><span class="n">i</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">d</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="p">()):</span>
+            <span class="n">dct</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky_val</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Curve.intDT"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.intDT">[docs]</a>    <span class="k">def</span> <span class="nf">intDT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Integer DT invariants along a ray.&quot;&quot;&quot;</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">term_twist</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="Curve.intDT_val"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.intDT_val">[docs]</a>    <span class="k">def</span> <span class="nf">intDT_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Integer DT invariant for the Chern class (r,d).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intDT</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)([</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="Curve.stable"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stable">[docs]</a>    <span class="k">def</span> <span class="nf">stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Invariant with values given by motivic classes of moduli spaces</span>
+<span class="sd">        of stable vector bundles along the ray of Chern characters proportional</span>
+<span class="sd">        to (r,d).&quot;&quot;&quot;</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_stacky</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Curve.stable_val"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stable_val">[docs]</a>    <span class="k">def</span> <span class="nf">stable_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Motivic class of the moduli space of stable vector bundles </span>
+<span class="sd">        having rank ``r`` and degree ``d`` (not necessarily coprime).&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)([</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Sergey Mozgovoy.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

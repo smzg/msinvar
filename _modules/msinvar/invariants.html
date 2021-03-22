@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../curve_DT.html">DT invariants of curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
@@ -303,7 +304,7 @@
                 <span class="n">add</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">dct</span></div>
 
-<div class="viewcode-block" id="Invariant.series"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.series">[docs]</a>    <span class="k">def</span> <span class="nf">series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Invariant.poly"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.poly">[docs]</a>    <span class="k">def</span> <span class="nf">poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">R</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">stab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Convert invariant to a TMPolynomial.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -312,8 +313,8 @@
         <span class="n">prec</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">prec</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">R</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dict</span><span class="p">(</span><span class="n">prec</span><span class="p">,</span> <span class="n">stab</span><span class="p">,</span> <span class="n">slope</span><span class="p">))</span></div>
 
-    <span class="n">to_series</span> <span class="o">=</span> <span class="n">series</span>
-    <span class="n">poly</span> <span class="o">=</span> <span class="n">series</span>
+    <span class="n">to_series</span> <span class="o">=</span> <span class="n">poly</span>
+    <span class="n">series</span> <span class="o">=</span> <span class="n">poly</span>
 
 <div class="viewcode-block" id="Invariant.term_twist"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.term_twist">[docs]</a>    <span class="k">def</span> <span class="nf">term_twist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Twist every term using the function ``f``.&quot;&quot;&quot;</span>
@@ -322,7 +323,6 @@
 <div class="viewcode-block" id="Invariant.restrict"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.Invariant.restrict">[docs]</a>    <span class="k">def</span> <span class="nf">restrict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Restrict invariant to dimension vectors d such that z(d)=slope,</span>
 <span class="sd">        where ``z`` is a Stability (or the corresponding vector).&quot;&quot;&quot;</span>
-
         <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>

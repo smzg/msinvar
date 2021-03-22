@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="brane_tilings.html">Brane tilings and crystal counting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="curve_DT.html">DT invariants of curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
@@ -238,9 +239,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="utils.html#msinvar.utils.vec.basis">basis() (msinvar.utils.vec static method)</a>
 </li>
+      <li><a href="brane_tilings.html#msinvar.brane_tilings.BTQuiver">BTQuiver (class in msinvar.brane_tilings)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="brane_tilings.html#msinvar.brane_tilings.BTQuiver">BTQuiver (class in msinvar.brane_tilings)</a>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.Bun">Bun() (msinvar.curve_DT.Curve method)</a>
+</li>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.Bun_tw">Bun_tw() (msinvar.curve_DT.Curve method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -261,6 +266,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="brane_tilings.html#msinvar.brane_tilings.BTQuiver.create_path_poset">create_path_poset() (msinvar.brane_tilings.BTQuiver method)</a>
+</li>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve">Curve (class in msinvar.curve_DT)</a>
 </li>
       <li><a href="higgs_bundles.html#msinvar.higgs_bundles.CurveAlgebra">CurveAlgebra (class in msinvar.higgs_bundles)</a>
 </li>
@@ -298,9 +305,11 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="quivers.html#msinvar.quivers.Quiver.eform">eform() (msinvar.quivers.Quiver method)</a>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.eform">eform() (msinvar.curve_DT.Curve method)</a>
 
       <ul>
+        <li><a href="quivers.html#msinvar.quivers.Quiver.eform">(msinvar.quivers.Quiver method)</a>
+</li>
         <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.eform">(msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       </ul></li>
@@ -424,10 +433,10 @@
 </li>
       <li><a href="utils.html#msinvar.utils.info">info() (in module msinvar.utils)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int2rat">int2rat() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int2stk">int2stk() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.int_from_total">int_from_total() (msinvar.wall_crossing.WallCrossingStructure method)</a>
@@ -437,6 +446,10 @@
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt2total">intAtt2total() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt_default">intAtt_default() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.intDT">intDT() (msinvar.curve_DT.Curve method)</a>
+</li>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.intDT_val">intDT_val() (msinvar.curve_DT.Curve method)</a>
 </li>
       <li><a href="iterators.html#msinvar.iterators.IntegerVectors_iterator">IntegerVectors_iterator() (in module msinvar.iterators)</a>
 </li>
@@ -542,6 +555,8 @@
       <ul>
         <li><a href="brane_tilings.html#module-msinvar.brane_tilings">msinvar.brane_tilings</a>
 </li>
+        <li><a href="curve_DT.html#module-msinvar.curve_DT">msinvar.curve_DT</a>
+</li>
         <li><a href="flow_trees.html#module-msinvar.flow_trees">msinvar.flow_trees</a>
 </li>
         <li><a href="higgs_bundles.html#module-msinvar.higgs_bundles">msinvar.higgs_bundles</a>
@@ -576,6 +591,13 @@
 
       <ul>
         <li><a href="brane_tilings.html#module-msinvar.brane_tilings">module</a>
+</li>
+      </ul></li>
+      <li>
+    msinvar.curve_DT
+
+      <ul>
+        <li><a href="curve_DT.html#module-msinvar.curve_DT">module</a>
 </li>
       </ul></li>
       <li>
@@ -724,6 +746,8 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.P">P() (msinvar.curve_DT.Curve method)</a>
+</li>
       <li><a href="brane_tilings.html#msinvar.brane_tilings.partition_func">partition_func() (in module msinvar.brane_tilings)</a>
 </li>
       <li><a href="brane_tilings.html#msinvar.brane_tilings.partition_func1">partition_func1() (in module msinvar.brane_tilings)</a>
@@ -754,10 +778,10 @@
 </li>
       <li><a href="invariants.html#msinvar.invariants.plog_fast">plog_fast() (in module msinvar.invariants)</a>
 </li>
-      <li><a href="invariants.html#msinvar.invariants.plog_map">plog_map() (in module msinvar.invariants)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="invariants.html#msinvar.invariants.plog_map">plog_map() (in module msinvar.invariants)</a>
+</li>
       <li><a href="utils.html#msinvar.utils.poch">poch() (in module msinvar.utils)</a>
 </li>
       <li><a href="invariants.html#msinvar.invariants.Invariant.poly">poly() (msinvar.invariants.Invariant method)</a>
@@ -874,8 +898,12 @@
         <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.series">(msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       </ul></li>
-      <li><a href="quivers.html#msinvar.quivers.Quiver.sform">sform() (msinvar.quivers.Quiver method)</a>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.sform">sform() (msinvar.curve_DT.Curve method)</a>
+
+      <ul>
+        <li><a href="quivers.html#msinvar.quivers.Quiver.sform">(msinvar.quivers.Quiver method)</a>
 </li>
+      </ul></li>
       <li><a href="quivers.html#msinvar.quivers.CyclicQuiver.shift">shift() (msinvar.quivers.CyclicQuiver method)</a>
 </li>
       <li><a href="flow_trees.html#msinvar.flow_trees.simp">simp() (in module msinvar.flow_trees)</a>
@@ -894,16 +922,26 @@
 </li>
       <li><a href="stability.html#msinvar.stability.Stability">Stability (class in msinvar.stability)</a>
 </li>
-      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable">stable() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.stable">stable() (msinvar.curve_DT.Curve method)</a>
+
+      <ul>
+        <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable">(msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
+      </ul></li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">stable_from_stacky() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_total">stable_from_total() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
-      <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky">stacky() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.stable_val">stable_val() (msinvar.curve_DT.Curve method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.stacky">stacky() (msinvar.curve_DT.Curve method)</a>
+
+      <ul>
+        <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky">(msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
+      </ul></li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky2total">stacky2total() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.stacky2total_algo1">stacky2total_algo1() (in module msinvar.wall_crossing)</a>
@@ -911,6 +949,8 @@
       <li><a href="wall_crossing.html#msinvar.wall_crossing.stacky2total_algo2">stacky2total_algo2() (in module msinvar.wall_crossing)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stacky_from_total">stacky_from_total() (msinvar.wall_crossing.WallCrossingStructure method)</a>
+</li>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.stacky_val">stacky_val() (msinvar.curve_DT.Curve method)</a>
 </li>
       <li><a href="wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stk2int">stk2int() (msinvar.wall_crossing.WallCrossingStructure method)</a>
 </li>
@@ -1072,6 +1112,8 @@
 <h2 id="Z">Z</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.Z">Z() (msinvar.curve_DT.Curve method)</a>
+</li>
       <li><a href="utils.html#msinvar.utils.vec.zero">zero() (msinvar.utils.vec static method)</a>
 </li>
   </ul></td>
@@ -1079,6 +1121,8 @@
       <li><a href="tm_polynomials.html#msinvar.tm_polynomials.TMPolynomialRing.zero_tuple">zero_tuple() (msinvar.tm_polynomials.TMPolynomialRing method)</a>
 </li>
       <li><a href="higgs_bundles.html#msinvar.higgs_bundles.CurveAlgebra.zeta">zeta() (msinvar.higgs_bundles.CurveAlgebra method)</a>
+</li>
+      <li><a href="curve_DT.html#msinvar.curve_DT.Curve.Zhat">Zhat() (msinvar.curve_DT.Curve method)</a>
 </li>
   </ul></td>
 </tr></table>

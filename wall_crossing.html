@@ -100,6 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="brane_tilings.html">Brane tilings and crystal counting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="curve_DT.html">DT invariants of curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
@@ -458,15 +459,10 @@ stability).</p>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">
-<code class="sig-name descname"><span class="pre">stable_from_stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable_from_stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky" title="Permalink to this definition">¶</a></dt>
-<dd><p>Count <code class="docutils literal notranslate"><span class="pre">z</span></code>-stable representations having a given <code class="docutils literal notranslate"><span class="pre">slope</span></code>, assuming
-that stacky invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> counting <code class="docutils literal notranslate"><span class="pre">z</span></code>-semistable objects is given.
+<code class="sig-name descname"><span class="pre">stable_from_stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable_from_stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky" title="Permalink to this definition">¶</a></dt>
+<dd><p>Count stable objects of a fixed slope, assuming that stacky invariant
+<code class="docutils literal notranslate"><span class="pre">I</span></code> counting semistable objects of that slope is given.
 Based on <a class="reference external" href="https://arxiv.org/abs/0708.1259">arXiv:0708.1259</a>.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Stacky invariant counting z-semistable objects.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">z</span></code> – Stability parameter.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">slope</span></code> – Slope value.</p></li>
-</ul>
 </dd></dl>
 
 <dl class="py method">
@@ -584,8 +580,9 @@ invariant is <code class="docutils literal notranslate"><span class="pre">I</spa
 <li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
 </ul>
-<p>Based on <a class="reference external" href="https://arxiv.org/abs/math/0204059">arXiv:math/0204059</a> (5.5) and its implementation by
-Pieter Belmans.
+<p>Based on <a class="reference external" href="https://arxiv.org/abs/math/0204059">arXiv:math/0204059</a> (5.5).
+See also implementation by
+<a class="reference external" href="https://github.com/pbelmans/hodge-diamond-cutter">Pieter Belmans</a>.
 Has comparable speed to <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo2" title="msinvar.wall_crossing.total2stacky_algo2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo2()</span></code></a>.</p>
 </dd></dl>
 
