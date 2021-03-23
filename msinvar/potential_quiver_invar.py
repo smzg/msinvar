@@ -133,7 +133,7 @@ def translation_PQ_total(PQ, prec=None):
     return interaction_invariant(Q.ind_list, si, dim, PQ.wcs())
 
 
-cyclic_TPQ_total = translation_PQ_total  # backwards compatibility
+# cyclic_TPQ_total = translation_PQ_total  # backwards compatibility
 
 
 def cyclic_potential_total(CQ, prec=None):

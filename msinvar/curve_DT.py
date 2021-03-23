@@ -166,12 +166,13 @@ class Curve(WCS):
         return Invariant(dct, self)
 
     def intDT(self, r, d=None):
-        """Integer DT invariants along a ray."""
+        """Integer DT invariants along the ray of Chern characters
+        proportional to (r,d)."""
         I = self.stk2int(self.stacky(r, d))
         return I.term_twist(lambda a: (-self.y)**(1-self.eform(a, a)))
 
     def intDT_val(self, r, d=None):
-        """Integer DT invariant for the Chern class (r,d)."""
+        """Integer DT invariant for the Chern character (r,d)."""
         if d is None:
             r, d = r[0], r[1]
         return self.intDT(r, d)([r, d])

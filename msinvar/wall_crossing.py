@@ -370,7 +370,7 @@ class WallCrossingStructure:
         Based on :arxiv:`0708.1259`.        
         """
         if I is None:
-            I=self.total()
+            I = self.total()
         return self.stable_from_stacky(I)
 
     def self_stab(self, d):
@@ -390,7 +390,6 @@ class WallCrossingStructure:
     def stkAtt(self, I=None):
         """Calculate stacky attractor invariant assuming that the total 
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
-
         def f(d):
             z = self.attr_stab(d)
             I1 = self.stacky(z, I)
@@ -400,14 +399,12 @@ class WallCrossingStructure:
     def ratAtt(self, I=None):
         """Calculate rational attractor invariant assuming that the total 
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
-        I = self.stkAtt(I).plog()
-        return Invariant(lambda d: I(d)*self.gm, self)
+        return self.stk2rat(self.stkAtt(I))
 
     def intAtt(self, I=None):
         """Calculate integer attractor invariant assuming that the total 
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
-        I = self.stkAtt(I).pLog()
-        return Invariant(lambda d: I(d)*self.gm, self)
+        return self.stk2int(self.stkAtt(I))
 
     def stkAtt2total(self, I=None):
         """
@@ -417,10 +414,8 @@ class WallCrossingStructure:
         """
         if I is None:
             I = self.stkAtt_default()
-
-        def T(I): return self.stkAtt(I)
-        T1 = recursive_inversion(T)
-        return T1(I)
+        T = recursive_inversion(self.stkAtt)
+        return T(I)
 
     def ratAtt2total(self, I=None):
         """
@@ -477,7 +472,7 @@ def total2stacky_algo1(W, I, z):
 
     def stacky(d):
         if vec.iszero(d):
-            return 1
+            return I(d)
         te = z.normalize(d)
         zero = [0]*len(d)
         l = [zero]+list(e for e in IntegerVectors_iterator(d)
@@ -514,7 +509,7 @@ def total2stacky_algo2(W, I, z):
 
     def stacky(d0):
         if vec.iszero(d0):
-            return 1
+            return I(d0)
         te = z.normalize(d0)
 
         @cache
@@ -547,7 +542,7 @@ def stacky2total_algo1(W, I, z):
     @cache
     def total(d, slope=None):
         if vec.iszero(d):
-            return 1
+            return I(d)
         s = 0
         for e in IntegerVectors_iterator(d):
             if slope is None or z(e) < slope:
