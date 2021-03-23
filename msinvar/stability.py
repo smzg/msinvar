@@ -23,6 +23,8 @@ from msinvar.iterators import IntegerVectors_iterator
 from msinvar.utils import vec
 from sage.misc.prandom import random
 
+PRECISION = 12
+
 
 class Stability:
     """Stability function corresponding to the vectors ``a``, ``b``.
@@ -59,13 +61,20 @@ class Stability:
             return self.slope(d)
         return self.compare(d, e)
 
+    def _slope(self, d):
+        """Slope of the vector ``d``."""
+        return vec.dot(self.a, d)/vec.dot(self.b, d)
+
     def slope(self, d):
         """Slope of the vector ``d``."""
-        return np.round(vec.dot(self.a, d)/vec.dot(self.b, d), 12)
+        return np.round(self._slope(d), PRECISION)
 
     def compare(self, d, e):
         """Difference of slopes."""
         return self.slope(d)-self.slope(e)
+
+    def has_slope(self, d, slope):
+        return np.round(self._slope(d)-slope, PRECISION)==0
 
     def less(self, d, e):
         """Return True if slope(d)<slope(e)."""
@@ -90,25 +99,25 @@ class Stability:
 
     def weight(self, d):
         """Return vector w such that w*e<0 iff slope(e)<slope(d)."""
-        return vec.sub(self.a, vec.scal(self(d), self.b))
+        return vec.sub(self.a, vec.scal(self._slope(d), self.b))
 
     def normalize(self, d):
         """Return function f such that f(e)<0 iff slope(e)<slope(d)."""
         w = self.weight(d)
-        return lambda d: np.round(vec.dot(w, d), 10) # this should be less than in slope
+        return lambda d: np.round(vec.dot(w, d), PRECISION)
 
     def randomize(self):
         """Generic perturbation of self."""
-        a, b=self.a, self.b
+        a, b = self.a, self.b
         return Stability([i+random()*1e-5 for i in a], b)
 
     def is_generic(self, prec):
         """Return True if slope(d)=slope(e) for d,e<=prec implies that
         d, e are proportional."""
-        s=set()
+        s = set()
         for d in IntegerVectors_iterator(prec):
             if gcd(d) == 1:
-                c=self.slope(d)
+                c = self.slope(d)
                 if c in s:
                     return False
                 s.add(c)

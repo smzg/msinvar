@@ -22,7 +22,8 @@ from sage.rings.polynomial.multi_polynomial_ring import MPolynomialRing_polydict
 from sage.arith.misc import moebius
 from sage.rings.rational_field import QQ
 from msinvar.lambda_rings import LambdaRings, adams
-from msinvar.utils import isiterable
+from msinvar.utils import isiterable, vec
+
 
 class TMPolynomial(MPolynomial_polydict):
     """
@@ -201,6 +202,18 @@ class TMPolynomial(MPolynomial_polydict):
             return f
         return self.subs_base(**kw)
 
+    def restrict(self, z, slope):
+        """Restrict polynomial to dimension vectors d such that z(d)=slope,
+        where ``z`` is a Stability (or the corresponding vector)."""
+        from msinvar.stability import Stability
+        z = Stability.check(z)
+
+        dct = {}
+        for e, c in self.dict().items():
+            if vec.iszero(e) or z.has_slope(e, slope):
+                dct[e] = c
+        return self._new_element(dct)
+
     def invar(self):
         from msinvar.invariants import Invariant
         return Invariant(self)
@@ -243,13 +256,13 @@ class TMPolynomialRing(MPolynomialRing_polydict):
         6. ``prod_twist`` - function that maps exponents (d,e) to the base_ring. The new product is x^d*x^e=prod_twist(d,e)*x^(d+e)
 
     EXAMPLES::
-    
+
         sage: from msinvar import TMPoly
         sage: R=TMPoly(QQ,2,prec=(2,2)); R
         Multivariate Polynomial Ring in x0, x1 over Rational Field truncated at degree (2, 2)
         sage: x=R.gens(); (x[0]+x[1])**3
         3*x0^2*x1 + 3*x0*x1^2
-    
+
         sage: QR=Frac(PolynomialRing(QQ,'y,t'))
         sage: S=TMPoly(QR,2,'x',prec=(2,2))
         sage: y,t=QR.gens(); x=S.gens()
@@ -257,7 +270,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
         y^2*x0^2 + x1^2
         sage: (y*x[0]).Exp()
         1 + y*x0 + y^2*x0^2
-    
+
         sage: R=TMPoly(QQ,1,prec=2, prod_twist=lambda a,b:2)
         sage: x=R.gen(); x*x
         2*x^2
@@ -319,14 +332,18 @@ class TMPolynomialRing(MPolynomialRing_polydict):
 
 TMPoly = TMPolynomialRing
 
+
 def Exp(f):
     return f.Exp()
+
 
 def Log(f):
     return f.Log()
 
+
 def Psi(f):
     return f.Psi()
+
 
 def IPsi(f):
     return f.IPsi()

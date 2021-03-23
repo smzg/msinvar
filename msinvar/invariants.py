@@ -145,13 +145,13 @@ class Invariant:
         """Twist every term using the function ``f``."""
         return Invariant(lambda d: self(d)*f(d), self)
 
-    def restrict(self, z, slope=0):
+    def restrict(self, z, slope):
         """Restrict invariant to dimension vectors d such that z(d)=slope,
         where ``z`` is a Stability (or the corresponding vector)."""
         z = Stability.check(z)
 
         def f(d):
-            if vec.iszero(d) or z(d) == slope:
+            if vec.iszero(d) or z.has_slope(d, slope):
                 return self.value(d)
             return 0
         return Invariant(f, self)

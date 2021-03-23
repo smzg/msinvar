@@ -176,7 +176,7 @@ def permIndex(l, te, M, kp):
         return sum(M[i][j] for i in l1 for j in l2)
 
     def slope1(te, l):
-        return np.round(sum(te[i] for i in l), 10)
+        return sum(te[i] for i in l)
 
     if len(l) == 1:
         return 1
@@ -186,7 +186,6 @@ def permIndex(l, te, M, kp):
         l2 = l[i:]
         m = sform1(M, l1, l2)
         c = slope1(te, l1)
-        c = round(c, 10)
         if m <= 0 or c >= 0:
             continue
         te1 = [te[j]-c/m*sform1(M, [j], l) for j in range(len(te))]

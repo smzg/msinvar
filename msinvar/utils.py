@@ -74,18 +74,6 @@ class vec:
     # def zero(n): return [0]*n
 
 
-# le_vec = vec.le
-# min_vec = vec.vmin
-# max_vec = vec.vmax
-# zero_vec = vec.iszero
-# eq_vec = vec.equal
-# scal_vec = vec.scal
-# add_vec = vec.add
-# add_vecs = vec.add
-# sub_vec = vec.sub
-# prod_vec = vec.dot
-
-
 ##### Information commands ##########
 def info(f):
     if inspect.isclass(f):
@@ -107,6 +95,11 @@ def timer(f, n=1000):
     for i in range(n):
         f
     return time()-t1
+
+def set_plots():
+    from sage.graphs.graph_plot import DEFAULT_PLOT_OPTIONS as DPO
+    DPO['layout'] = 'circular'
+    DPO['loop_size']=.3
 #####################################
 
 
