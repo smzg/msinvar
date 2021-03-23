@@ -545,7 +545,7 @@
 <span class="sd">        Based on :arxiv:`0708.1259`.        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">I</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
+            <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_stacky</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.self_stab"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.self_stab">[docs]</a>    <span class="k">def</span> <span class="nf">self_stab</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
@@ -565,7 +565,6 @@
 <div class="viewcode-block" id="WallCrossingStructure.stkAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate stacky attractor invariant assuming that the total </span>
 <span class="sd">        invariant is ``I``. If ``I`` is None, we consider :meth:`total`.&quot;&quot;&quot;</span>
-
         <span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
             <span class="n">z</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">attr_stab</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
             <span class="n">I1</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
@@ -575,14 +574,12 @@
 <div class="viewcode-block" id="WallCrossingStructure.ratAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt">[docs]</a>    <span class="k">def</span> <span class="nf">ratAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate rational attractor invariant assuming that the total </span>
 <span class="sd">        invariant is ``I``. If ``I`` is None, we consider :meth:`total`.&quot;&quot;&quot;</span>
-        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">plog</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2rat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.intAtt"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.intAtt">[docs]</a>    <span class="k">def</span> <span class="nf">intAtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate integer attractor invariant assuming that the total </span>
 <span class="sd">        invariant is ``I``. If ``I`` is None, we consider :meth:`total`.&quot;&quot;&quot;</span>
-        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span><span class="o">.</span><span class="n">pLog</span><span class="p">()</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">gm</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.stkAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -592,10 +589,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">I</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt_default</span><span class="p">()</span>
-
-        <span class="k">def</span> <span class="nf">T</span><span class="p">(</span><span class="n">I</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
-        <span class="n">T1</span> <span class="o">=</span> <span class="n">recursive_inversion</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">T1</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">recursive_inversion</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">T</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.ratAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.ratAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">ratAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -652,7 +647,7 @@
 
     <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-            <span class="k">return</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">te</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">zero</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">l</span> <span class="o">=</span> <span class="p">[</span><span class="n">zero</span><span class="p">]</span><span class="o">+</span><span class="nb">list</span><span class="p">(</span><span class="n">e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
@@ -689,7 +684,7 @@
 
     <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d0</span><span class="p">):</span>
-            <span class="k">return</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
         <span class="n">te</span> <span class="o">=</span> <span class="n">z</span><span class="o">.</span><span class="n">normalize</span><span class="p">(</span><span class="n">d0</span><span class="p">)</span>
 
         <span class="nd">@cache</span>
@@ -722,7 +717,7 @@
     <span class="nd">@cache</span>
     <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
-            <span class="k">return</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">I</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="n">s</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">slope</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">z</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">slope</span><span class="p">:</span>
