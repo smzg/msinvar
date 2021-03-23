@@ -94,10 +94,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../curve_DT.html">DT invariants of curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
@@ -247,18 +249,6 @@
     <span class="c1"># def zero(n): return [0]*n</span>
 
 
-<span class="c1"># le_vec = vec.le</span>
-<span class="c1"># min_vec = vec.vmin</span>
-<span class="c1"># max_vec = vec.vmax</span>
-<span class="c1"># zero_vec = vec.iszero</span>
-<span class="c1"># eq_vec = vec.equal</span>
-<span class="c1"># scal_vec = vec.scal</span>
-<span class="c1"># add_vec = vec.add</span>
-<span class="c1"># add_vecs = vec.add</span>
-<span class="c1"># sub_vec = vec.sub</span>
-<span class="c1"># prod_vec = vec.dot</span>
-
-
 <span class="c1">##### Information commands ##########</span>
 <div class="viewcode-block" id="info"><a class="viewcode-back" href="../../utils.html#msinvar.utils.info">[docs]</a><span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">inspect</span><span class="o">.</span><span class="n">isclass</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
@@ -280,6 +270,11 @@
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
         <span class="n">f</span>
     <span class="k">return</span> <span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">t1</span></div>
+
+<div class="viewcode-block" id="set_plots"><a class="viewcode-back" href="../../utils.html#msinvar.utils.set_plots">[docs]</a><span class="k">def</span> <span class="nf">set_plots</span><span class="p">():</span>
+    <span class="kn">from</span> <span class="nn">sage.graphs.graph_plot</span> <span class="kn">import</span> <span class="n">DEFAULT_PLOT_OPTIONS</span> <span class="k">as</span> <span class="n">DPO</span>
+    <span class="n">DPO</span><span class="p">[</span><span class="s1">&#39;layout&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;circular&#39;</span>
+    <span class="n">DPO</span><span class="p">[</span><span class="s1">&#39;loop_size&#39;</span><span class="p">]</span><span class="o">=.</span><span class="mi">3</span></div>
 <span class="c1">#####################################</span>
 
 

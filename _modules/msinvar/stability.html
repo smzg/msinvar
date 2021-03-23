@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../curve_DT.html">DT invariants of curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
@@ -197,6 +198,8 @@
 <span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">vec</span>
 <span class="kn">from</span> <span class="nn">sage.misc.prandom</span> <span class="kn">import</span> <span class="n">random</span>
 
+<span class="n">PRECISION</span> <span class="o">=</span> <span class="mi">12</span>
+
 
 <div class="viewcode-block" id="Stability"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability">[docs]</a><span class="k">class</span> <span class="nc">Stability</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Stability function corresponding to the vectors ``a``, ``b``.</span>
@@ -233,13 +236,20 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">compare</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
 
+    <span class="k">def</span> <span class="nf">_slope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Slope of the vector ``d``.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
 <div class="viewcode-block" id="Stability.slope"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.slope">[docs]</a>    <span class="k">def</span> <span class="nf">slope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Slope of the vector ``d``.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span><span class="o">/</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">12</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slope</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="n">PRECISION</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stability.compare"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.compare">[docs]</a>    <span class="k">def</span> <span class="nf">compare</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Difference of slopes.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Stability.has_slope"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.has_slope">[docs]</a>    <span class="k">def</span> <span class="nf">has_slope</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">slope</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slope</span><span class="p">(</span><span class="n">d</span><span class="p">)</span><span class="o">-</span><span class="n">slope</span><span class="p">,</span> <span class="n">PRECISION</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span></div>
 
 <div class="viewcode-block" id="Stability.less"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.less">[docs]</a>    <span class="k">def</span> <span class="nf">less</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">e</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if slope(d)&lt;slope(e).&quot;&quot;&quot;</span>
@@ -264,25 +274,25 @@
 
 <div class="viewcode-block" id="Stability.weight"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.weight">[docs]</a>    <span class="k">def</span> <span class="nf">weight</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return vector w such that w*e&lt;0 iff slope(e)&lt;slope(d).&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">vec</span><span class="o">.</span><span class="n">scal</span><span class="p">(</span><span class="bp">self</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="n">vec</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="n">vec</span><span class="o">.</span><span class="n">scal</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_slope</span><span class="p">(</span><span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="Stability.normalize"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.normalize">[docs]</a>    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return function f such that f(e)&lt;0 iff slope(e)&lt;slope(d).&quot;&quot;&quot;</span>
         <span class="n">w</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weight</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
-        <span class="k">return</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="mi">10</span><span class="p">)</span> <span class="c1"># this should be less than in slope</span></div>
+        <span class="k">return</span> <span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">vec</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">PRECISION</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stability.randomize"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.randomize">[docs]</a>    <span class="k">def</span> <span class="nf">randomize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Generic perturbation of self.&quot;&quot;&quot;</span>
-        <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
+        <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">a</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">b</span>
         <span class="k">return</span> <span class="n">Stability</span><span class="p">([</span><span class="n">i</span><span class="o">+</span><span class="n">random</span><span class="p">()</span><span class="o">*</span><span class="mf">1e-5</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">a</span><span class="p">],</span> <span class="n">b</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Stability.is_generic"><a class="viewcode-back" href="../../stability.html#msinvar.stability.Stability.is_generic">[docs]</a>    <span class="k">def</span> <span class="nf">is_generic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">prec</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return True if slope(d)=slope(e) for d,e&lt;=prec implies that</span>
 <span class="sd">        d, e are proportional.&quot;&quot;&quot;</span>
-        <span class="n">s</span><span class="o">=</span><span class="nb">set</span><span class="p">()</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">IntegerVectors_iterator</span><span class="p">(</span><span class="n">prec</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">c</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slope</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">s</span><span class="p">:</span>
                     <span class="k">return</span> <span class="kc">False</span>
                 <span class="n">s</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
