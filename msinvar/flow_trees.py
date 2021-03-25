@@ -6,17 +6,16 @@ and flow tree formula (see :arxiv:`1804.06928` and :arxiv:`2102.11200`).
 EXAMPLES::
 
     sage: from msinvar import *
-    sage: Q=KroneckerQuiver(2)
-    sage: W=Q.wcs([2,2])
+    sage: Q=KroneckerQuiver(2, prec=[2,2])
     sage: z=Stability([1,0])
-    sage: OmbAtt=W.ratAtt_default() #rational attractor invariant
+    sage: OmbAtt=Q.ratAtt_default() #rational attractor invariant
     sage: OmbAtt.dict()
     {(0, 1): 1, (0, 2): (-y)/(-2*y^2 - 2), (1, 0): 1, (2, 0): (-y)/(-2*y^2 - 2)}
 
 First we apply attractor tree formula to find rational DT invariants for the
 above stability z::
 
-    sage: Omb1=attr_tree_formula(W, z, OmbAtt)
+    sage: Omb1=attr_tree_formula(Q, z, OmbAtt)
     sage: Omb1.simp().dict()
     {(0, 1): 1,
      (0, 2): 1/2*y/(y^2 + 1),
@@ -29,7 +28,7 @@ above stability z::
     
 Next we apply flow tree formula::
     
-    sage: Omb2=flow_tree_formula(W, z, OmbAtt)
+    sage: Omb2=flow_tree_formula(Q, z, OmbAtt)
     sage: Omb2.simp().dict()
     {(0, 1): 1,
      (0, 2): 1/2*y/(y^2 + 1),
@@ -43,7 +42,7 @@ Next we apply flow tree formula::
 Finally, we apply the wall-crossing formula to determine the same invariant
 from the total invariant (stacky invariant for the trivial stability)::    
     
-    sage: Omb3=W.rat_from_total(z, W.total())
+    sage: Omb3=Q.rat_from_total(z, Q.total())
     sage: Omb3.dict()
     {(0, 1): 1,
      (0, 2): 1/2*y/(y^2 + 1),

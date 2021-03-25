@@ -73,7 +73,7 @@ from msinvar.utils import vec
 from msinvar.wall_crossing import WCS
 
 
-class Quiver(DiGraph):
+class Quiver(DiGraph, WCS):
     """
     Create a quiver from a list of arrows or from a potential.
 
@@ -112,12 +112,14 @@ class Quiver(DiGraph):
                 data = Quiver._get_arrow_set(self._potential)
         else:
             self._potential = None
-        super().__init__(data=data, loops=loops, multiedges=multiedges, name=name)
+        DiGraph.__init__(self, data=data, loops=loops,
+                         multiedges=multiedges, name=name)
         self._arrows = []
         vert = self.vertices()
         self._vertex_dict = {vert[i]: i for i in range(self.vertex_num())}
         self._set_quiver_dict()
-        self._wcs = WCS(self, prec=prec)
+        WCS.__init__(self, rank=len(vert), prec=prec)
+        # self._wcs = WCS(self, prec=prec)
 
     def _repr_(self):
         sv = f'Quiver with {self.vertex_num()} vertices'
@@ -129,26 +131,23 @@ class Quiver(DiGraph):
             return sv+', '+sa+f' and potential with {len(W)} terms'
         return sv+" and "+sa
 
-    def wcs(self, prec=None):
-        """Wall-crossing structure of the quiver.
+    # def wcs(self, prec=None):
+    #     """Wall-crossing structure of the quiver.
 
-        EXAMPLES::
+    #     EXAMPLES::
 
-            sage: from msinvar.quivers import *
-            sage: Q=KroneckerQuiver(2); Q
-            Kronecker quiver: Quiver with 2 vertices and 2 arrows
-            sage: W=Q.wcs([3,3]); W
-            Wall-crossing structure on a lattice of rank 2
-            sage: W.intAtt().dict() # integer attractor invariants
-            {(0, 1): 1, (1, 0): 1}
-        """
-        if prec is not None:
-            self._wcs.prec(prec)
-        return self._wcs
-
-    def prec(self, prec=None):
-        """Set (or return) precision vector for the WCS of the quiver."""
-        return self._wcs.prec(prec)
+    #         sage: from msinvar.quivers import *
+    #         sage: Q=KroneckerQuiver(2); Q
+    #         Kronecker quiver: Quiver with 2 vertices and 2 arrows
+    #         sage: Q.prec([3,3]) # precision vector
+    #         sage: Q.intAtt().dict() # integer attractor invariants
+    #         {(0, 1): 1, (1, 0): 1}
+    #     """
+    #     # if prec is not None:
+    #     #     self._wcs.prec(prec)
+    #     # return self._wcs
+    #     self.prec(prec)
+    #     return self
 
     def arrows(self, n=None):
         """Return the ``n``-th arrow or the list of arrows if ``n`` is None."""
@@ -257,6 +256,17 @@ class Quiver(DiGraph):
         for (i, j), k in self.quiver_dict.items():
             s += k * (a[j]*b[i]-a[i]*b[j])
         return s
+
+    def total_default(self):
+        """
+        Total invariant of the quiver (stacky invariant for the trivial 
+        stability).
+        """
+        from msinvar.invariants import Invariant
+        from msinvar.utils import phi
+        y = self.y
+        def f(d): return (-y)**(-self.eform(d, d))/phi(1/y**2, d)
+        return Invariant(f, self)
 
     def get_eform_matrix(self):
         """Matrix of the eform."""
@@ -382,16 +392,16 @@ class Quiver(DiGraph):
         pass
 
 
-def KroneckerQuiver(m=2):
+def KroneckerQuiver(m=2, prec=None):
     """Return the Kronecker quiver with m arrows."""
     l = [[1, 2, i] for i in range(m)]
-    return Quiver(l, name='Kronecker quiver')
+    return Quiver(l, name='Kronecker quiver', prec=prec)
 
 
-def JordanQuiver(m=1):
+def JordanQuiver(m=1, prec=None):
     """Return the quiver with 1 vertex and m loops."""
     l = [[1, 1, i] for i in range(m)]
-    return Quiver(l, name='Jordan quiver')
+    return Quiver(l, name='Jordan quiver', prec=prec)
 
 
 class ChainQuiver(Quiver):
@@ -620,9 +630,7 @@ class TranslationPQ(Quiver):
             sage: PQ=Q.translation_PQ(1); PQ
             Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
             sage: I=PQ.translation_PQ_total([2,2,2])
-            sage: W=PQ.wcs(); W
-            Wall-crossing structure on a lattice of rank 3
-            sage: W.intAtt(I).simp().dict()
+            sage: PQ.intAtt(I).simp().dict()
             {(0, 0, 1): 1,
              (0, 1, 0): 1,
              (1, 0, 0): 1,

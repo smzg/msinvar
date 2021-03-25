@@ -31,10 +31,9 @@ def hua_formula(Q):
         sage: hua_formula(Q).dict() # we use q=y^2
         {(1,): y^2, (2,): y^2, (3,): y^2}
     """
-    W = Q.wcs()
-    q = W.y**2
-    dct = hua_formula_dict(Q, q, W.prec())
-    return Invariant(W.R(dct).Log()*(q-1))
+    q = Q.y**2
+    dct = hua_formula_dict(Q, q, Q.prec())
+    return Invariant(Q.R(dct).Log()*(q-1))
 
 
 def hua_formula_dict(Q, q, bound):

@@ -16,9 +16,8 @@ EXAMPLES::
     sage: from msinvar import *
     sage: Q=KroneckerQuiver(2); Q
     Kronecker quiver: Quiver with 2 vertices and 2 arrows
-    sage: W=Q.wcs([2,2]); W #fix precision vector
-    Wall-crossing structure on a lattice of rank 2
-    sage: W.total().dict()
+    sage: Q.prec([2,2]) #fix precision vector
+    sage: Q.total().dict()
     {(0, 0): 1,
     (0, 1): y/(-y^2 + 1),
     (0, 2): y^2/(y^6 - y^4 - y^2 + 1),
@@ -31,7 +30,7 @@ EXAMPLES::
 
 ::
     
-    sage: I=W.stacky([1,0]); I.dict()
+    sage: I=Q.stacky([1,0]); I.dict()
     {(0, 0): 1,
      (0, 1): y/(-y^2 + 1),
      (0, 2): y^2/(y^6 - y^4 - y^2 + 1),
@@ -41,28 +40,28 @@ EXAMPLES::
      (2, 0): y^2/(y^6 - y^4 - y^2 + 1),
      (2, 1): y/(-y^2 + 1),
      (2, 2): (y^6 + y^4 + 2*y^2)/(y^6 - y^4 - y^2 + 1)}
-    sage: I1=W.stk2int(I); I1.dict()
+    sage: I1=Q.stk2int(I); I1.dict()
     {(0, 1): 1, (1, 0): 1, (1, 1): (-y^2 - 1)/y, (1, 2): 1, (2, 1): 1}
 
 ::
     
-    sage: I=W.stacky([0,1]); I.dict()
+    sage: I=Q.stacky([0,1]); I.dict()
     {(0, 0): 1,
      (0, 1): y/(-y^2 + 1),
      (0, 2): y^2/(y^6 - y^4 - y^2 + 1),
      (1, 0): y/(-y^2 + 1),
      (2, 0): y^2/(y^6 - y^4 - y^2 + 1)}
-    sage: I1=W.stk2int(I); I1.dict()
+    sage: I1=Q.stk2int(I); I1.dict()
     {(0, 1): 1, (1, 0): 1}
     
 ::
 
-    sage: W.intAtt().dict() #integer attractor invariants
+    sage: Q.intAtt().dict() #integer attractor invariants
     {(0, 1): 1, (1, 0): 1}
 
 ::
 
-    sage: W.stable([1,0], slope=1/2).dict() #invariants of stable moduli spaces
+    sage: Q.stable([1,0], slope=1/2).dict() #invariants of stable moduli spaces
     {(1, 1): y^2 + 1}
 """
 
@@ -75,7 +74,7 @@ EXAMPLES::
 
 from msinvar.rings import RF
 from msinvar.tm_polynomials import TMPoly
-from msinvar.utils import vec, phi, cache
+from msinvar.utils import vec, cache
 from msinvar.iterators import IntegerVectors_iterator
 from msinvar.stability import Stability
 from msinvar.invariants import Invariant, Psi_map, IPsi_map
@@ -99,23 +98,18 @@ class WallCrossingStructure:
     - ``prec`` -- precision vector for the quantum affine plane.
     """
 
-    def __init__(self, quiver=None, rank=0, sform=None, prec=None):
+    def __init__(self, rank=0, sform=None, prec=None):
+        self._rank = rank
+        self._sform = sform
         self.base = RF('y,q')
         self.y = self.base.gen(0)
         self.q = self.base.gen(1)
         self.gm = 1/self.y - self.y
-        if quiver is not None:
-            self.rank = quiver.vertex_num()
-            self.sform = quiver.sform
-            self.quiver = quiver
-        else:
-            self.rank = rank
-            self.sform = sform
-        self.R = TMPoly(self.base, self.rank, prec=prec)
+        self.R = TMPoly(self.base, rank, prec=prec)
         self._total = None
 
     def __repr__(self):
-        return f'Wall-crossing structure on a lattice of rank {self.rank}'
+        return f'Wall-crossing structure on a lattice of rank {self.rank()}'
 
     def total(self, I=None):
         """Total invariant, meaning the stacky invariant for the trivial stability.
@@ -123,11 +117,10 @@ class WallCrossingStructure:
         EXAMPLE::
 
             sage: from msinvar import *
-            sage: Q=JordanQuiver(1); Q
+            sage: Q=JordanQuiver(1); Q # Quivers inherit from WCS
             Jordan quiver: Quiver with 1 vertices and 1 arrows
-            sage: W=Q.wcs([2]); W
-            Wall-crossing structure on a lattice of rank 1
-            sage: I=W.total(); I.poly()
+            sage: Q.prec([2]); # set precision vector
+            sage: I=Q.total(); I.poly()
             1 + (y^2/(y^2 - 1))*x + (y^6/(y^6 - y^4 - y^2 + 1))*x^2
             sage: I.Log().poly()
             (y^2/(y^2 - 1))*x
@@ -138,6 +131,10 @@ class WallCrossingStructure:
         if self._total is None:
             self._total = self.total_default()
         return self._total
+
+    def rank(self): return self._rank
+    def sform(self, a, b): return self._sform(a, b)
+    def total_default(self): pass
 
     def twist(self, a, b=None):
         """
@@ -180,10 +177,10 @@ class WallCrossingStructure:
 
             sage: from msinvar import *
             sage: Q=KroneckerQuiver(2)
-            sage: W=Q.wcs([5,5])
+            sage: Q.prec([5,5])
             sage: z=Stability([1,0])
-            sage: I1=W.stacky(z,algo='fast')
-            sage: I2=W.stacky(z,algo='fast2')
+            sage: I1=Q.stacky(z,algo='fast')
+            sage: I2=Q.stacky(z,algo='fast2')
             sage: I1([1,1])
             (y^2 + 1)/(y^2 - 1)
             sage: I1.poly()-I2.poly()
@@ -306,28 +303,16 @@ class WallCrossingStructure:
 
     # quiver related methods (requires Euler form)
     def eform(self, a, b):
-        """Euler form of the quiver (assuming that it is present)."""
-        return self.quiver.eform(a, b)
-
-    def qform(self, d):
-        """Quadratic form of the quiver."""
-        return self.eform(d, d)
-
-    def total_default(self):
-        """
-        Total invariant of the quiver (stacky invariant for the trivial 
-        stability).
-        """
-        y = self.y
-        return Invariant(lambda d: (-y)**(-self.qform(d))/phi(1/y**2, d), self)
+        """Euler form of a quiver or curve."""
+        pass
 
     def twist_T(self, d):
         """Auxiliary quiver-related term twist."""
-        return (-self.y)**(self.qform(d))
+        return (-self.y)**(self.eform(d, d))
 
     def twist_TI(self, d):
         """Auxiliary quiver-related term twist."""
-        return (-self.y)**(-self.qform(d))
+        return (-self.y)**(-self.eform(d, d))
     # end of quiver related methods
 
     def stable_from_stacky(self, I):
