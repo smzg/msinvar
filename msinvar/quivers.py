@@ -74,8 +74,16 @@ EXAMPLES::
      [(1, 2, 'l1'), (2, 0, 'a2'), (0, 1, 'a1*')],
      [(2, 0, 'a2'), (0, 1, 'l0'), (1, 2, 'a2*')],
      [(2, 0, 'l2'), (0, 1, 'a0'), (1, 2, 'a2*')]]
+    sage: PQ.intAtt().simp().dict() # integer attractor invariants
+    {(0, 0, 1): 1,
+     (0, 1, 0): 1,
+     (1, 0, 0): 1,
+     (1, 1, 1): (-2*y^2 - 1)/y,
+     (2, 2, 2): (-2*y^2 - 1)/y}
+
+::
     
-    sage: PQ=CQ.translation_PQ(0); PQ
+    sage: PQ=CQ.translation_PQ(0, prec=[1,1,1]); PQ
     Ginzburg PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
     sage: PQ.arrows()
     [(0, 0, 'l0'),
@@ -87,6 +95,14 @@ EXAMPLES::
      (2, 0, 'a2'),
      (2, 1, 'a1*'),
      (2, 2, 'l2')]
+    sage: PQ.intAtt().dict() # integer attractor invariants
+    {(0, 0, 1): -y,
+     (0, 1, 0): -y,
+     (0, 1, 1): -y,
+     (1, 0, 0): -y,
+     (1, 0, 1): -y,
+     (1, 1, 0): -y,
+     (1, 1, 1): -3*y}
 """
 
 # *****************************************************************************
@@ -298,20 +314,20 @@ class Quiver(DiGraph, WCS):
             M[(j, i)] += k
         return M
 
-    def translation_PQ(self, tau=None, ind_tau=None):
+    def translation_PQ(self, tau=None, ind_tau=None, prec=None):
         """
         See :meth:`translation_PQ`
         """
-        return TranslationPQ(self, tau, ind_tau)
+        return TranslationPQ(self, tau, ind_tau, prec=prec)
 
-    def Ginzburg_PQ(self):
+    def Ginzburg_PQ(self, prec=None):
         """
         Return the Ginzburg quiver (with potential) for the original quiver.
 
         This construction corresponds to :meth:`translation_PQ` for the
         trivial automorphism.
         """
-        return self.translation_PQ()
+        return self.translation_PQ(prec=prec)
 
     @staticmethod
     def _get_potential(s):
@@ -564,7 +580,7 @@ class CyclicQuiver(Quiver):
             return (a+k) % r  # a vertex
         return tau
 
-    def translation_PQ(self, k=1):
+    def translation_PQ(self, k=1, prec=None):
         """
         Return translation potential quiver associated with the cyclic quiver
         and its k-cyclic shift.
@@ -579,8 +595,8 @@ class CyclicQuiver(Quiver):
         tau = self.shift(k)
         ind_tau = self.ind_shift(k)
         if k % self.vertex_num() == 0:
-            return TranslationPQ(self)
-        return TranslationPQ(self, tau, ind_tau)
+            return TranslationPQ(self, prec=prec)
+        return TranslationPQ(self, tau, ind_tau, prec=prec)
 
 
 def _cong_number(a, b, i, r):
@@ -644,7 +660,7 @@ class TranslationPQ(Quiver):
          (2, 2, 2): -3*y}
     """
 
-    def __init__(self, Q, tau=None, ind_tau=None):
+    def __init__(self, Q, tau=None, ind_tau=None, prec=None):
         if tau is None:
             def tau(i): return i
             name = 'Ginzburg PQ'
@@ -652,6 +668,8 @@ class TranslationPQ(Quiver):
             name = 'Translation PQ'
         if ind_tau is None:
             def ind_tau(i): return i
+        if prec is None:
+            prec = Q.prec()
         self.base_quiver = Q
         self.tau = tau
         self.ind_tau = ind_tau
@@ -667,7 +685,7 @@ class TranslationPQ(Quiver):
             li = (i, tau(i), 'l'+str(i))
             lj = (j, tau(j), 'l'+str(j))
             W += [[a, lj, a1], [li, b, a1]]
-        super().__init__(potential=W, name=name, prec=Q.prec())
+        super().__init__(potential=W, name=name, prec=prec)
 
     def total(self, I=None):
         """Total invariant, meaning the stacky invariant for the trivial
