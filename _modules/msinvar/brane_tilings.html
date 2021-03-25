@@ -98,6 +98,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../curve_DT.html">DT invariants of curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
@@ -205,7 +206,7 @@
 <span class="sd">    sage: from msinvar.brane_tilings import *</span>
 <span class="sd">    sage: CQ=CyclicQuiver(1)</span>
 <span class="sd">    sage: PQ=CQ.translation_PQ(); PQ</span>
-<span class="sd">    Quiver with 1 vertices, 3 arrows and potential with 2 terms</span>
+<span class="sd">    Ginzburg PQ: Quiver with 1 vertices, 3 arrows and potential with 2 terms</span>
 <span class="sd">    sage: Q=BTQuiver(potential=PQ._potential)</span>
 <span class="sd">    sage: Z=partition_func(Q, 0, 8); Z</span>
 <span class="sd">    1 + x + 3*x^2 + 6*x^3 + 13*x^4 + 24*x^5 + 48*x^6 + 86*x^7 + 160*x^8</span>
@@ -308,7 +309,13 @@
         <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
             <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">add_new_arrows</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
         <span class="n">P</span><span class="o">.</span><span class="n">vert</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">vert</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">P</span></div></div>
+        <span class="k">return</span> <span class="n">P</span></div>
+
+<div class="viewcode-block" id="BTQuiver.partition_func"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.partition_func">[docs]</a>    <span class="k">def</span> <span class="nf">partition_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">partition_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BTQuiver.partition_func1"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BTQuiver.partition_func1">[docs]</a>    <span class="k">def</span> <span class="nf">partition_func1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">partition_func1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Atom"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.Atom">[docs]</a><span class="k">class</span> <span class="nc">Atom</span><span class="p">:</span>
@@ -400,6 +407,18 @@
     <span class="p">[</span><span class="s2">&quot;Y30&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,2]*Phi[2,5,1]*Phi[5,6,1]*Phi[6,1,1]+Phi[3,4,1]*Phi[4,5,1]*Phi[5,6,2]*Phi[6,3,1]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,5,1]*Phi[5,6,2]*Phi[6,1,1]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,6,1]*Phi[6,3,1]&#39;</span><span class="p">],</span>
     <span class="p">[</span><span class="s2">&quot;Y31&quot;</span><span class="p">,</span> <span class="s1">&#39;Phi[1,2,2]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,6,1]*Phi[6,3,1]+Phi[5,6,2]*Phi[6,1,1]*Phi[1,5,1]+Phi[6,1,2]*Phi[1,2,1]*Phi[2,6,1]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,1]+Phi[3,4,1]*Phi[4,5,1]*Phi[5,6,2]*Phi[6,3,1]+Phi[5,6,1]*Phi[6,1,2]*Phi[1,5,1]+Phi[6,1,1]*Phi[1,2,2]*Phi[2,6,1]&#39;</span><span class="p">]</span>
 <span class="p">]</span>
+
+
+<div class="viewcode-block" id="BT_example"><a class="viewcode-back" href="../../brane_tilings.html#msinvar.brane_tilings.BT_example">[docs]</a><span class="k">def</span> <span class="nf">BT_example</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Brane tilings from the database by</span>
+<span class="sd">    `Boris Pioline &lt;https://www.lpthe.jussieu.fr/~pioline/computing.html&gt;`_.</span>
+
+<span class="sd">    ``n`` -- number of the brane tiling. If None, we return the whole list. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="n">BT_example</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">BTD</span><span class="p">))}</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">BTD</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">BTQuiver</span><span class="p">(</span><span class="n">potential</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
 </pre></div>
 
            </div>

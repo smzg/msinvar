@@ -181,17 +181,16 @@
 <span class="sd">EXAMPLES::</span>
 
 <span class="sd">    sage: from msinvar import *</span>
-<span class="sd">    sage: Q=KroneckerQuiver(2)</span>
-<span class="sd">    sage: W=Q.wcs([2,2])</span>
+<span class="sd">    sage: Q=KroneckerQuiver(2, prec=[2,2])</span>
 <span class="sd">    sage: z=Stability([1,0])</span>
-<span class="sd">    sage: OmbAtt=W.ratAtt_default() #rational attractor invariant</span>
+<span class="sd">    sage: OmbAtt=Q.ratAtt_default() #rational attractor invariant</span>
 <span class="sd">    sage: OmbAtt.dict()</span>
 <span class="sd">    {(0, 1): 1, (0, 2): (-y)/(-2*y^2 - 2), (1, 0): 1, (2, 0): (-y)/(-2*y^2 - 2)}</span>
 
 <span class="sd">First we apply attractor tree formula to find rational DT invariants for the</span>
 <span class="sd">above stability z::</span>
 
-<span class="sd">    sage: Omb1=attr_tree_formula(W, z, OmbAtt)</span>
+<span class="sd">    sage: Omb1=attr_tree_formula(Q, z, OmbAtt)</span>
 <span class="sd">    sage: Omb1.simp().dict()</span>
 <span class="sd">    {(0, 1): 1,</span>
 <span class="sd">     (0, 2): 1/2*y/(y^2 + 1),</span>
@@ -204,7 +203,7 @@
 <span class="sd">    </span>
 <span class="sd">Next we apply flow tree formula::</span>
 <span class="sd">    </span>
-<span class="sd">    sage: Omb2=flow_tree_formula(W, z, OmbAtt)</span>
+<span class="sd">    sage: Omb2=flow_tree_formula(Q, z, OmbAtt)</span>
 <span class="sd">    sage: Omb2.simp().dict()</span>
 <span class="sd">    {(0, 1): 1,</span>
 <span class="sd">     (0, 2): 1/2*y/(y^2 + 1),</span>
@@ -218,7 +217,7 @@
 <span class="sd">Finally, we apply the wall-crossing formula to determine the same invariant</span>
 <span class="sd">from the total invariant (stacky invariant for the trivial stability)::    </span>
 <span class="sd">    </span>
-<span class="sd">    sage: Omb3=W.rat_from_total(z, W.total())</span>
+<span class="sd">    sage: Omb3=Q.rat_from_total(z, Q.total())</span>
 <span class="sd">    sage: Omb3.dict()</span>
 <span class="sd">    {(0, 1): 1,</span>
 <span class="sd">     (0, 2): 1/2*y/(y^2 + 1),</span>
@@ -237,7 +236,6 @@
 <span class="c1">#                  http://www.gnu.org/licenses/</span>
 <span class="c1"># *****************************************************************************</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">sage.misc.misc_c</span> <span class="kn">import</span> <span class="n">prod</span>
 <span class="kn">from</span> <span class="nn">sage.functions.other</span> <span class="kn">import</span> <span class="n">factorial</span>
 <span class="kn">from</span> <span class="nn">sage.combinat.permutation</span> <span class="kn">import</span> <span class="n">Permutations</span>
@@ -363,7 +361,7 @@
         <span class="n">c</span> <span class="o">=</span> <span class="n">slope1</span><span class="p">(</span><span class="n">te</span><span class="p">,</span> <span class="n">l1</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">c</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">continue</span>
-        <span class="n">te1</span> <span class="o">=</span> <span class="p">[</span><span class="n">te</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">-</span><span class="n">c</span><span class="o">/</span><span class="n">m</span><span class="o">*</span><span class="n">sform1</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">te</span><span class="p">))]</span>
+        <span class="n">te1</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span><span class="o">-</span><span class="n">c</span><span class="o">/</span><span class="n">m</span><span class="o">*</span><span class="n">sform1</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">l</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">te</span><span class="p">)]</span>
         <span class="n">F</span> <span class="o">+=</span> <span class="n">kp</span><span class="p">(</span><span class="n">m</span><span class="p">)</span><span class="o">*</span><span class="n">permIndex</span><span class="p">(</span><span class="n">l1</span><span class="p">,</span> <span class="n">te1</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">kp</span><span class="p">)</span><span class="o">*</span><span class="n">permIndex</span><span class="p">(</span><span class="n">l2</span><span class="p">,</span> <span class="n">te1</span><span class="p">,</span> <span class="n">M</span><span class="p">,</span> <span class="n">kp</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">F</span></div>
 

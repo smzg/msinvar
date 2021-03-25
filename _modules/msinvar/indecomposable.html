@@ -94,10 +94,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tm_polynomials.html">Truncated multivariate polynomials</a></li>
 </ul>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../potential_quiver_invar.html">Invariants of quivers with potentials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../brane_tilings.html">Brane tilings and crystal counting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../flow_trees.html">Flow tree formulas</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../higgs_bundles.html">Counting twisted Higgs bundles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../curve_DT.html">DT invariants of curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../indecomposable.html">Indecomposable representations</a></li>
 </ul>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../rings.html">Special rings</a></li>
@@ -204,10 +206,9 @@
 <span class="sd">        sage: hua_formula(Q).dict() # we use q=y^2</span>
 <span class="sd">        {(1,): y^2, (2,): y^2, (3,): y^2}</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">W</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">wcs</span><span class="p">()</span>
-    <span class="n">q</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span>
-    <span class="n">dct</span> <span class="o">=</span> <span class="n">hua_formula_dict</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">W</span><span class="o">.</span><span class="n">prec</span><span class="p">())</span>
-    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">W</span><span class="o">.</span><span class="n">R</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">dct</span> <span class="o">=</span> <span class="n">hua_formula_dict</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">Q</span><span class="o">.</span><span class="n">prec</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">R</span><span class="p">(</span><span class="n">dct</span><span class="p">)</span><span class="o">.</span><span class="n">Log</span><span class="p">()</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="hua_formula_dict"><a class="viewcode-back" href="../../indecomposable.html#msinvar.indecomposable.hua_formula_dict">[docs]</a><span class="k">def</span> <span class="nf">hua_formula_dict</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">bound</span><span class="p">):</span>

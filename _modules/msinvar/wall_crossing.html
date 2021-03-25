@@ -190,10 +190,9 @@
 
 <span class="sd">    sage: from msinvar import *</span>
 <span class="sd">    sage: Q=KroneckerQuiver(2); Q</span>
-<span class="sd">    Quiver with 2 vertices and 2 arrows</span>
-<span class="sd">    sage: W=Q.wcs([2,2]); W #fix precision vector</span>
-<span class="sd">    Wall-crossing structure on a lattice of rank 2</span>
-<span class="sd">    sage: W.total().dict()</span>
+<span class="sd">    Kronecker quiver: Quiver with 2 vertices and 2 arrows</span>
+<span class="sd">    sage: Q.prec([2,2]) #fix precision vector</span>
+<span class="sd">    sage: Q.total().dict()</span>
 <span class="sd">    {(0, 0): 1,</span>
 <span class="sd">    (0, 1): y/(-y^2 + 1),</span>
 <span class="sd">    (0, 2): y^2/(y^6 - y^4 - y^2 + 1),</span>
@@ -206,7 +205,7 @@
 
 <span class="sd">::</span>
 <span class="sd">    </span>
-<span class="sd">    sage: I=W.stacky([1,0]); I.dict()</span>
+<span class="sd">    sage: I=Q.stacky([1,0]); I.dict()</span>
 <span class="sd">    {(0, 0): 1,</span>
 <span class="sd">     (0, 1): y/(-y^2 + 1),</span>
 <span class="sd">     (0, 2): y^2/(y^6 - y^4 - y^2 + 1),</span>
@@ -216,28 +215,28 @@
 <span class="sd">     (2, 0): y^2/(y^6 - y^4 - y^2 + 1),</span>
 <span class="sd">     (2, 1): y/(-y^2 + 1),</span>
 <span class="sd">     (2, 2): (y^6 + y^4 + 2*y^2)/(y^6 - y^4 - y^2 + 1)}</span>
-<span class="sd">    sage: I1=W.stk2int(I); I1.dict()</span>
+<span class="sd">    sage: I1=Q.stk2int(I); I1.dict()</span>
 <span class="sd">    {(0, 1): 1, (1, 0): 1, (1, 1): (-y^2 - 1)/y, (1, 2): 1, (2, 1): 1}</span>
 
 <span class="sd">::</span>
 <span class="sd">    </span>
-<span class="sd">    sage: I=W.stacky([0,1]); I.dict()</span>
+<span class="sd">    sage: I=Q.stacky([0,1]); I.dict()</span>
 <span class="sd">    {(0, 0): 1,</span>
 <span class="sd">     (0, 1): y/(-y^2 + 1),</span>
 <span class="sd">     (0, 2): y^2/(y^6 - y^4 - y^2 + 1),</span>
 <span class="sd">     (1, 0): y/(-y^2 + 1),</span>
 <span class="sd">     (2, 0): y^2/(y^6 - y^4 - y^2 + 1)}</span>
-<span class="sd">    sage: I1=W.stk2int(I); I1.dict()</span>
+<span class="sd">    sage: I1=Q.stk2int(I); I1.dict()</span>
 <span class="sd">    {(0, 1): 1, (1, 0): 1}</span>
 <span class="sd">    </span>
 <span class="sd">::</span>
 
-<span class="sd">    sage: W.intAtt().dict() #integer attractor invariants</span>
+<span class="sd">    sage: Q.intAtt().dict() #integer attractor invariants</span>
 <span class="sd">    {(0, 1): 1, (1, 0): 1}</span>
 
 <span class="sd">::</span>
 
-<span class="sd">    sage: W.stable([1,0], slope=1/2).dict() #invariants of stable moduli spaces</span>
+<span class="sd">    sage: Q.stable([1,0], slope=1/2).dict() #invariants of stable moduli spaces</span>
 <span class="sd">    {(1, 1): y^2 + 1}</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
@@ -250,7 +249,7 @@
 
 <span class="kn">from</span> <span class="nn">msinvar.rings</span> <span class="kn">import</span> <span class="n">RF</span>
 <span class="kn">from</span> <span class="nn">msinvar.tm_polynomials</span> <span class="kn">import</span> <span class="n">TMPoly</span>
-<span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">vec</span><span class="p">,</span> <span class="n">phi</span><span class="p">,</span> <span class="n">cache</span>
+<span class="kn">from</span> <span class="nn">msinvar.utils</span> <span class="kn">import</span> <span class="n">vec</span><span class="p">,</span> <span class="n">cache</span>
 <span class="kn">from</span> <span class="nn">msinvar.iterators</span> <span class="kn">import</span> <span class="n">IntegerVectors_iterator</span>
 <span class="kn">from</span> <span class="nn">msinvar.stability</span> <span class="kn">import</span> <span class="n">Stability</span>
 <span class="kn">from</span> <span class="nn">msinvar.invariants</span> <span class="kn">import</span> <span class="n">Invariant</span><span class="p">,</span> <span class="n">Psi_map</span><span class="p">,</span> <span class="n">IPsi_map</span>
@@ -268,29 +267,23 @@
 
 <span class="sd">    INPUT:</span>
 
-<span class="sd">    - ``quiver`` -- Quiver (if None, ``rank`` and ``sform`` should be present).</span>
 <span class="sd">    - ``rank`` -- Rank of the lattice.</span>
 <span class="sd">    - ``sform`` -- Skew-symmetric form on the lattice (a function).</span>
 <span class="sd">    - ``prec`` -- precision vector for the quantum affine plane.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">quiver</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rank</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">sform</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rank</span> <span class="o">=</span> <span class="n">rank</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_sform</span> <span class="o">=</span> <span class="n">sform</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">base</span> <span class="o">=</span> <span class="n">RF</span><span class="p">(</span><span class="s1">&#39;y,q&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="o">.</span><span class="n">gen</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gm</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">if</span> <span class="n">quiver</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">quiver</span><span class="o">.</span><span class="n">vertex_num</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sform</span> <span class="o">=</span> <span class="n">quiver</span><span class="o">.</span><span class="n">sform</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">quiver</span> <span class="o">=</span> <span class="n">quiver</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">rank</span> <span class="o">=</span> <span class="n">rank</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">sform</span> <span class="o">=</span> <span class="n">sform</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">TMPoly</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">base</span><span class="p">,</span> <span class="n">rank</span><span class="p">,</span> <span class="n">prec</span><span class="o">=</span><span class="n">prec</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Wall-crossing structure on a lattice of rank &quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">)</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s1">&#39;Wall-crossing structure on a lattice of rank </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">rank</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span>
 
 <div class="viewcode-block" id="WallCrossingStructure.total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total">[docs]</a>    <span class="k">def</span> <span class="nf">total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Total invariant, meaning the stacky invariant for the trivial stability.</span>
@@ -298,11 +291,10 @@
 <span class="sd">        EXAMPLE::</span>
 
 <span class="sd">            sage: from msinvar import *</span>
-<span class="sd">            sage: Q=JordanQuiver(1); Q</span>
-<span class="sd">            Quiver with 1 vertices and 1 arrows</span>
-<span class="sd">            sage: W=Q.wcs([2]); W</span>
-<span class="sd">            Wall-crossing structure on a lattice of rank 1</span>
-<span class="sd">            sage: I=W.total(); I.poly()</span>
+<span class="sd">            sage: Q=JordanQuiver(1); Q # Quivers inherit from WCS</span>
+<span class="sd">            Jordan quiver: Quiver with 1 vertices and 1 arrows</span>
+<span class="sd">            sage: Q.prec([2]); # set precision vector</span>
+<span class="sd">            sage: I=Q.total(); I.poly()</span>
 <span class="sd">            1 + (y^2/(y^2 - 1))*x + (y^6/(y^6 - y^4 - y^2 + 1))*x^2</span>
 <span class="sd">            sage: I.Log().poly()</span>
 <span class="sd">            (y^2/(y^2 - 1))*x</span>
@@ -313,6 +305,10 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_total</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">total_default</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_total</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.rank"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.rank">[docs]</a>    <span class="k">def</span> <span class="nf">rank</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rank</span></div>
+<div class="viewcode-block" id="WallCrossingStructure.sform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.sform">[docs]</a>    <span class="k">def</span> <span class="nf">sform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span> <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+<div class="viewcode-block" id="WallCrossingStructure.total_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_default">[docs]</a>    <span class="k">def</span> <span class="nf">total_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span> <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist">[docs]</a>    <span class="k">def</span> <span class="nf">twist</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -355,10 +351,10 @@
 
 <span class="sd">            sage: from msinvar import *</span>
 <span class="sd">            sage: Q=KroneckerQuiver(2)</span>
-<span class="sd">            sage: W=Q.wcs([5,5])</span>
+<span class="sd">            sage: Q.prec([5,5])</span>
 <span class="sd">            sage: z=Stability([1,0])</span>
-<span class="sd">            sage: I1=W.stacky(z,algo=&#39;fast&#39;)</span>
-<span class="sd">            sage: I2=W.stacky(z,algo=&#39;fast2&#39;)</span>
+<span class="sd">            sage: I1=Q.stacky(z,algo=&#39;fast&#39;)</span>
+<span class="sd">            sage: I2=Q.stacky(z,algo=&#39;fast2&#39;)</span>
 <span class="sd">            sage: I1([1,1])</span>
 <span class="sd">            (y^2 + 1)/(y^2 - 1)</span>
 <span class="sd">            sage: I1.poly()-I2.poly()</span>
@@ -481,28 +477,16 @@
 
     <span class="c1"># quiver related methods (requires Euler form)</span>
 <div class="viewcode-block" id="WallCrossingStructure.eform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.eform">[docs]</a>    <span class="k">def</span> <span class="nf">eform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Euler form of the quiver (assuming that it is present).&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">quiver</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="WallCrossingStructure.qform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.qform">[docs]</a>    <span class="k">def</span> <span class="nf">qform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Quadratic form of the quiver.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="WallCrossingStructure.total_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.total_default">[docs]</a>    <span class="k">def</span> <span class="nf">total_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Total invariant of the quiver (stacky invariant for the trivial </span>
-<span class="sd">        stability).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span><span class="o">/</span><span class="n">phi</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span></div>
+        <span class="sd">&quot;&quot;&quot;Euler form of a quiver or curve.&quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_T"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_T">[docs]</a>    <span class="k">def</span> <span class="nf">twist_T</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Auxiliary quiver-related term twist.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_TI"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_TI">[docs]</a>    <span class="k">def</span> <span class="nf">twist_TI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Auxiliary quiver-related term twist.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">qform</span><span class="p">(</span><span class="n">d</span><span class="p">))</span></div>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span></div>
     <span class="c1"># end of quiver related methods</span>
 
 <div class="viewcode-block" id="WallCrossingStructure.stable_from_stacky"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stable_from_stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
@@ -581,6 +565,10 @@
 <span class="sd">        invariant is ``I``. If ``I`` is None, we consider :meth:`total`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stkAtt</span><span class="p">(</span><span class="n">I</span><span class="p">))</span></div>
 
+    <span class="n">OmhAtt</span> <span class="o">=</span> <span class="n">stkAtt</span>
+    <span class="n">OmbAtt</span> <span class="o">=</span> <span class="n">ratAtt</span>
+    <span class="n">OmAtt</span> <span class="o">=</span> <span class="n">intAtt</span>
+
 <div class="viewcode-block" id="WallCrossingStructure.stkAtt2total"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt2total">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt2total</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate total invariant, assuming that the stacky attractor invariant</span>
@@ -623,7 +611,17 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">int2rat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intAtt_default</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.stkAtt_default"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stkAtt_default">[docs]</a>    <span class="k">def</span> <span class="nf">stkAtt_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">int2stk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intAtt_default</span><span class="p">())</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">int2stk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">intAtt_default</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.attr_tree_formula"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.attr_tree_formula">[docs]</a>    <span class="k">def</span> <span class="nf">attr_tree_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See :meth:`msinvar.flow_trees.attr_tree_formula`.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">msinvar.flow_trees</span> <span class="kn">import</span> <span class="n">attr_tree_formula</span>
+        <span class="k">return</span> <span class="n">attr_tree_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WallCrossingStructure.flow_tree_formula"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.flow_tree_formula">[docs]</a>    <span class="k">def</span> <span class="nf">flow_tree_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;See :meth:`msinvar.flow_trees.flow_tree_formula`.&quot;&quot;&quot;</span>
+        <span class="kn">from</span> <span class="nn">msinvar.flow_trees</span> <span class="kn">import</span> <span class="n">flow_tree_formula</span>
+        <span class="k">return</span> <span class="n">flow_tree_formula</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span></div></div>
 
 
 <span class="n">WCS</span> <span class="o">=</span> <span class="n">WallCrossingStructure</span>

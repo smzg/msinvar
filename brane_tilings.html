@@ -206,7 +206,7 @@ which is closely related to numerical DT invariants of (Q,W).</p>
 <span class="n">sage</span><span class="p">:</span> <span class="kn">from</span> <span class="nn">msinvar.brane_tilings</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">CQ</span><span class="o">=</span><span class="n">CyclicQuiver</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">PQ</span><span class="o">=</span><span class="n">CQ</span><span class="o">.</span><span class="n">translation_PQ</span><span class="p">();</span> <span class="n">PQ</span>
-<span class="n">Quiver</span> <span class="k">with</span> <span class="mi">1</span> <span class="n">vertices</span><span class="p">,</span> <span class="mi">3</span> <span class="n">arrows</span> <span class="ow">and</span> <span class="n">potential</span> <span class="k">with</span> <span class="mi">2</span> <span class="n">terms</span>
+<span class="n">Ginzburg</span> <span class="n">PQ</span><span class="p">:</span> <span class="n">Quiver</span> <span class="k">with</span> <span class="mi">1</span> <span class="n">vertices</span><span class="p">,</span> <span class="mi">3</span> <span class="n">arrows</span> <span class="ow">and</span> <span class="n">potential</span> <span class="k">with</span> <span class="mi">2</span> <span class="n">terms</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">Q</span><span class="o">=</span><span class="n">BTQuiver</span><span class="p">(</span><span class="n">potential</span><span class="o">=</span><span class="n">PQ</span><span class="o">.</span><span class="n">_potential</span><span class="p">)</span>
 <span class="n">sage</span><span class="p">:</span> <span class="n">Z</span><span class="o">=</span><span class="n">partition_func</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">8</span><span class="p">);</span> <span class="n">Z</span>
 <span class="mi">1</span> <span class="o">+</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">3</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">6</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">3</span> <span class="o">+</span> <span class="mi">13</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">4</span> <span class="o">+</span> <span class="mi">24</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">5</span> <span class="o">+</span> <span class="mi">48</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">6</span> <span class="o">+</span> <span class="mi">86</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">7</span> <span class="o">+</span> <span class="mi">160</span><span class="o">*</span><span class="n">x</span><span class="o">^</span><span class="mi">8</span>
@@ -267,6 +267,16 @@ in the Jacobian algebra if and only if their weights are equal).</p>
 and have length &lt;= <code class="docutils literal notranslate"><span class="pre">N</span></code>.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt id="msinvar.brane_tilings.BTQuiver.partition_func">
+<code class="sig-name descname"><span class="pre">partition_func</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/brane_tilings.html#BTQuiver.partition_func"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.brane_tilings.BTQuiver.partition_func" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt id="msinvar.brane_tilings.BTQuiver.partition_func1">
+<code class="sig-name descname"><span class="pre">partition_func1</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">N</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/brane_tilings.html#BTQuiver.partition_func1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.brane_tilings.BTQuiver.partition_func1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </dd></dl>
 
 <dl class="py class">
@@ -305,6 +315,14 @@ that start at the vertex <code class="docutils literal notranslate"><span class=
 <dd><p>Partition function of ideals (molten crystals) in the crystal of atoms
 that start at the vertex <code class="docutils literal notranslate"><span class="pre">i</span></code> and have length &lt;= <code class="docutils literal notranslate"><span class="pre">N</span></code>.</p>
 <p>We keep track only of the sizes of ideals.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt id="msinvar.brane_tilings.BT_example">
+<code class="sig-prename descclassname"><span class="pre">msinvar.brane_tilings.</span></code><code class="sig-name descname"><span class="pre">BT_example</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/brane_tilings.html#BT_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.brane_tilings.BT_example" title="Permalink to this definition">¶</a></dt>
+<dd><p>Brane tilings from the database by
+<a class="reference external" href="https://www.lpthe.jussieu.fr/~pioline/computing.html">Boris Pioline</a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">n</span></code> – number of the brane tiling. If None, we return the whole list.</p>
 </dd></dl>
 
 </div>
