@@ -15,7 +15,7 @@ EXAMPLES::
 
     sage: from msinvar import *
     sage: Q=KroneckerQuiver(2); Q
-    Quiver with 2 vertices and 2 arrows
+    Kronecker quiver: Quiver with 2 vertices and 2 arrows
     sage: W=Q.wcs([2,2]); W #fix precision vector
     Wall-crossing structure on a lattice of rank 2
     sage: W.total().dict()
@@ -115,7 +115,7 @@ class WallCrossingStructure:
         self._total = None
 
     def __repr__(self):
-        return "Wall-crossing structure on a lattice of rank "+str(self.rank)
+        return f'Wall-crossing structure on a lattice of rank {self.rank}'
 
     def total(self, I=None):
         """Total invariant, meaning the stacky invariant for the trivial stability.
@@ -124,7 +124,7 @@ class WallCrossingStructure:
 
             sage: from msinvar import *
             sage: Q=JordanQuiver(1); Q
-            Quiver with 1 vertices and 1 arrows
+            Jordan quiver: Quiver with 1 vertices and 1 arrows
             sage: W=Q.wcs([2]); W
             Wall-crossing structure on a lattice of rank 1
             sage: I=W.total(); I.poly()
@@ -406,6 +406,10 @@ class WallCrossingStructure:
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
         return self.stk2int(self.stkAtt(I))
 
+    OmhAtt = stkAtt
+    OmbAtt = ratAtt
+    OmAtt = intAtt
+
     def stkAtt2total(self, I=None):
         """
         Calculate total invariant, assuming that the stacky attractor invariant
@@ -449,6 +453,16 @@ class WallCrossingStructure:
 
     def stkAtt_default(self):
         return self.int2stk(self.intAtt_default())
+
+    def attr_tree_formula(self, z, I, t=0):
+        """See :meth:`msinvar.flow_trees.attr_tree_formula`."""
+        from msinvar.flow_trees import attr_tree_formula
+        return attr_tree_formula(self, z, I, t)
+
+    def flow_tree_formula(self, z, I):
+        """See :meth:`msinvar.flow_trees.flow_tree_formula`."""
+        from msinvar.flow_trees import flow_tree_formula
+        return flow_tree_formula(self, z, I)
 
 
 WCS = WallCrossingStructure

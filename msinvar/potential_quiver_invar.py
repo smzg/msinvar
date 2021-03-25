@@ -16,7 +16,7 @@ EXAMPLES::
     sage: from msinvar.potential_quiver_invar import *
     sage: r, k = 3, 1
     sage: CQ = CyclicQuiver(r); CQ
-    Quiver with 3 vertices and 3 arrows
+    Cyclic quiver: Quiver with 3 vertices and 3 arrows
     sage: W=CQ.wcs([2]*r); W
     Wall-crossing structure on a lattice of rank 3
     sage: W.intAtt().dict() #Attractor invar for a cyclic quiver without potential
@@ -31,7 +31,7 @@ EXAMPLES::
 ::
     
     sage: PQ = CQ.translation_PQ(1); PQ # translation quiver with potential
-    Quiver with 3 vertices, 9 arrows and potential with 6 terms
+    Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
     sage: W = PQ.wcs([2,2,2])
     sage: total=translation_PQ_total(PQ)
     sage: W.intAtt(total).simp().dict() #Attractor invar for the translation quiver with potential
@@ -53,7 +53,7 @@ from numpy import array
 from msinvar.iterators import Multiplicities_iterator
 from msinvar.utils import phi
 from msinvar.invariants import Invariant
-from msinvar.quivers import Quiver, CyclicQuiver, ChainQuiver
+from msinvar.quivers import Quiver, ChainQuiver
 
 
 def interaction_invariant(S, si, dim, W):
@@ -103,9 +103,9 @@ def translation_PQ_total(PQ, prec=None):
         sage: from msinvar import *
         sage: from msinvar.potential_quiver_invar import *
         sage: Q=CyclicQuiver(3); Q
-        Quiver with 3 vertices and 3 arrows
+        Cyclic quiver: Quiver with 3 vertices and 3 arrows
         sage: PQ=Q.translation_PQ(1); PQ
-        Quiver with 3 vertices, 9 arrows and potential with 6 terms
+        Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
         sage: I=translation_PQ_total(PQ, [2,2,2])
         sage: W=PQ.wcs(); W
         Wall-crossing structure on a lattice of rank 3
@@ -168,7 +168,7 @@ class QuiverExample1(Quiver):
         sage: Q=QuiverExample1(); Q
         Quiver with 3 vertices and 2 arrows
         sage: PQ=Q.translation_PQ(); PQ
-        Quiver with 3 vertices, 7 arrows and potential with 4 terms
+        Translation PQ: Quiver with 3 vertices, 7 arrows and potential with 4 terms
         sage: W=PQ.wcs([3,3,3]); W
         Wall-crossing structure on a lattice of rank 3
         sage: I=PQ.translation_PQ_total()

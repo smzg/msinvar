@@ -11,7 +11,7 @@ EXAMPLES::
 
     sage: from msinvar.quivers import *
     sage: Q=KroneckerQuiver(3); Q
-    Quiver with 2 vertices and 3 arrows
+    Kronecker quiver: Quiver with 2 vertices and 3 arrows
     sage: Q.vertices()
     [1, 2]
     sage: Q.arrows()
@@ -34,11 +34,11 @@ EXAMPLES::
 ::
     
     sage: Q=CyclicQuiver(3); Q
-    Quiver with 3 vertices and 3 arrows
+    Cyclic quiver: Quiver with 3 vertices and 3 arrows
     sage: Q.arrows()
     [(0, 1, 1), (1, 2, 1), (2, 0, 1)]
     sage: Q2=Q.translation_PQ(1); Q2
-    Quiver with 3 vertices, 9 arrows and potential with 6 terms
+    Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
     sage: Q2.arrows()
     [(0, 1, 'a0'),
      (0, 1, 'a1*'),
@@ -101,7 +101,8 @@ class Quiver(DiGraph):
     """
 
     def __init__(self, data=None, potential=None, prec=None,
-                 pos=None, loops=None, format=None, weighted=False, data_structure=None, name=None):
+                 loops=True, multiedges=True, name=None,
+                 pos=None,  format=None, weighted=None, data_structure=None):
         """Init a quiver."""
         if data is not None and isinstance(data, str):
             data = Quiver._get_arrow_set(data)
@@ -111,12 +112,22 @@ class Quiver(DiGraph):
                 data = Quiver._get_arrow_set(self._potential)
         else:
             self._potential = None
-        super().__init__(data=data, multiedges=True, loops=True)
+        super().__init__(data=data, loops=loops, multiedges=multiedges, name=name)
         self._arrows = []
         vert = self.vertices()
-        self.vertex_dict = {vert[i]: i for i in range(self.vertex_num())}
+        self._vertex_dict = {vert[i]: i for i in range(self.vertex_num())}
         self._set_quiver_dict()
         self._wcs = WCS(self, prec=prec)
+
+    def _repr_(self):
+        sv = f'Quiver with {self.vertex_num()} vertices'
+        if hasattr(self, '_name'):
+            sv = self._name+": "+sv
+        sa = f'{self.arrow_num()} arrows'
+        W = self.potential()
+        if W is not None:
+            return sv+', '+sa+f' and potential with {len(W)} terms'
+        return sv+" and "+sa
 
     def wcs(self, prec=None):
         """Wall-crossing structure of the quiver.
@@ -125,7 +136,7 @@ class Quiver(DiGraph):
 
             sage: from msinvar.quivers import *
             sage: Q=KroneckerQuiver(2); Q
-            Quiver with 2 vertices and 2 arrows
+            Kronecker quiver: Quiver with 2 vertices and 2 arrows
             sage: W=Q.wcs([3,3]); W
             Wall-crossing structure on a lattice of rank 2
             sage: W.intAtt().dict() # integer attractor invariants
@@ -163,7 +174,7 @@ class Quiver(DiGraph):
         """
         if i is None:
             return self.order()
-        return self.vertex_dict[i]
+        return self._vertex_dict[i]
 
     def s(self, a):
         """Source of an arrow ``a``, which can be an arrow or an index in the
@@ -263,14 +274,6 @@ class Quiver(DiGraph):
             M[(i, j)] -= k
             M[(j, i)] += k
         return M
-
-    def _repr_(self):
-        sv = "Quiver with "+str(self.vertex_num())+" vertices"
-        sa = str(self.arrow_num())+" arrows"
-        W = self.potential()
-        if W is not None:
-            return sv+", "+sa+" and potential with "+str(len(W))+" terms"
-        return sv+" and "+sa
 
     def translation_PQ(self, tau=None, ind_tau=None):
         """
@@ -382,13 +385,13 @@ class Quiver(DiGraph):
 def KroneckerQuiver(m=2):
     """Return the Kronecker quiver with m arrows."""
     l = [[1, 2, i] for i in range(m)]
-    return Quiver(l)
+    return Quiver(l, name='Kronecker quiver')
 
 
 def JordanQuiver(m=1):
     """Return the quiver with 1 vertex and m loops."""
     l = [[1, 1, i] for i in range(m)]
-    return Quiver(l)
+    return Quiver(l, name='Jordan quiver')
 
 
 class ChainQuiver(Quiver):
@@ -417,7 +420,7 @@ class ChainQuiver(Quiver):
 
     def __init__(self, n, prec=None):
         l = [[i, i+1, 1] for i in range(n-1)]
-        super().__init__(l, prec=prec)
+        super().__init__(l, prec=prec, name='Chain quiver')
 
     def ind_list(self, *args):
         """
@@ -460,7 +463,7 @@ class CyclicQuiver(Quiver):
 
     def __init__(self, n, prec=None):
         l = [[i, i+1, 1] for i in range(n-1)]
-        super().__init__(l, prec=prec)
+        super().__init__(l, prec=prec, name='Cyclic quiver')
 
         l = [[i, i+1, 1] for i in range(n-1)]+[[n-1, 0, 1]]
         super().__init__(l, prec=prec)
@@ -548,7 +551,7 @@ class CyclicQuiver(Quiver):
             sage: from msinvar import *
             sage: Q=CyclicQuiver(3)
             sage: Q2=Q.translation_PQ(1); Q2
-            Quiver with 3 vertices, 9 arrows and potential with 6 terms
+            Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
         """
         tau = self.shift(k)
         ind_tau = self.ind_shift(k)
@@ -603,19 +606,19 @@ class TranslationPQ(Quiver):
             li = (i, tau(i), 'l'+str(i))
             lj = (j, tau(j), 'l'+str(j))
             W += [[a, lj, a1], [li, b, a1]]
-        super().__init__(potential=W)
+        super().__init__(potential=W, name='Translation PQ')
 
     def translation_PQ_total(self, prec=None):
         """See :meth:`msinvar.potential_quiver_invar.translation_PQ_total`.
-        
+
         EXAMPLES::
-        
+
             sage: from msinvar import *
             sage: from msinvar.potential_quiver_invar import *
             sage: Q=CyclicQuiver(3); Q
-            Quiver with 3 vertices and 3 arrows
+            Cyclic quiver: Quiver with 3 vertices and 3 arrows
             sage: PQ=Q.translation_PQ(1); PQ
-            Quiver with 3 vertices, 9 arrows and potential with 6 terms
+            Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
             sage: I=PQ.translation_PQ_total([2,2,2])
             sage: W=PQ.wcs(); W
             Wall-crossing structure on a lattice of rank 3
@@ -626,6 +629,6 @@ class TranslationPQ(Quiver):
              (1, 1, 1): (-2*y^2 - 1)/y,
              (2, 2, 2): (-2*y^2 - 1)/y}
         """
-        
+
         from msinvar.potential_quiver_invar import translation_PQ_total
         return translation_PQ_total(self, prec)

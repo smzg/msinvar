@@ -31,7 +31,7 @@ EXAMPLES::
     sage: from msinvar.brane_tilings import *
     sage: CQ=CyclicQuiver(1)
     sage: PQ=CQ.translation_PQ(); PQ
-    Quiver with 1 vertices, 3 arrows and potential with 2 terms
+    Translation PQ: Quiver with 1 vertices, 3 arrows and potential with 2 terms
     sage: Q=BTQuiver(potential=PQ._potential)
     sage: Z=partition_func(Q, 0, 8); Z
     1 + x + 3*x^2 + 6*x^3 + 13*x^4 + 24*x^5 + 48*x^6 + 86*x^7 + 160*x^8
@@ -136,6 +136,12 @@ class BTQuiver(Quiver):
         P.vert = set(P.vert)
         return P
 
+    def partition_func(self, i, N=5):
+        return partition_func(self, i, N)
+
+    def partition_func1(self, i, N=5):
+        return partition_func1(self, i, N)
+
 
 class Atom:
     """
@@ -226,3 +232,15 @@ BTD = [
     ["Y30", 'Phi[1,2,2]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[1,2,2]*Phi[2,5,1]*Phi[5,6,1]*Phi[6,1,1]+Phi[3,4,1]*Phi[4,5,1]*Phi[5,6,2]*Phi[6,3,1]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,1]+Phi[1,2,1]*Phi[2,5,1]*Phi[5,6,2]*Phi[6,1,1]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,6,1]*Phi[6,3,1]'],
     ["Y31", 'Phi[1,2,2]*Phi[2,3,1]*Phi[3,4,1]*Phi[4,1,1]+Phi[3,4,2]*Phi[4,5,1]*Phi[5,6,1]*Phi[6,3,1]+Phi[5,6,2]*Phi[6,1,1]*Phi[1,5,1]+Phi[6,1,2]*Phi[1,2,1]*Phi[2,6,1]-Phi[1,2,1]*Phi[2,3,1]*Phi[3,4,2]*Phi[4,1,1]+Phi[3,4,1]*Phi[4,5,1]*Phi[5,6,2]*Phi[6,3,1]+Phi[5,6,1]*Phi[6,1,2]*Phi[1,5,1]+Phi[6,1,1]*Phi[1,2,2]*Phi[2,6,1]']
 ]
+
+
+def BT_example(n=None):
+    """Brane tilings from the database by
+    `Boris Pioline <https://www.lpthe.jussieu.fr/~pioline/computing.html>`_.
+
+    ``n`` -- number of the brane tiling. If None, we return the whole list. 
+    """
+    if n is None:
+        return {i: BT_example(i) for i in range(len(BTD))}
+    d = BTD[n]
+    return BTQuiver(potential=d[1], name=d[0])

@@ -62,7 +62,6 @@ from the total invariant (stacky invariant for the trivial stability)::
 #                  http://www.gnu.org/licenses/
 # *****************************************************************************
 
-import numpy as np
 from sage.misc.misc_c import prod
 from sage.functions.other import factorial
 from sage.combinat.permutation import Permutations
@@ -188,7 +187,7 @@ def permIndex(l, te, M, kp):
         c = slope1(te, l1)
         if m <= 0 or c >= 0:
             continue
-        te1 = [te[j]-c/m*sform1(M, [j], l) for j in range(len(te))]
+        te1 = [x-c/m*sform1(M, [j], l) for j, x in enumerate(te)]
         F += kp(m)*permIndex(l1, te1, M, kp)*permIndex(l2, te1, M, kp)
     return F
 
