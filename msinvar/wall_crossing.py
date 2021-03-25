@@ -92,7 +92,6 @@ class WallCrossingStructure:
 
     INPUT:
 
-    - ``quiver`` -- Quiver (if None, ``rank`` and ``sform`` should be present).
     - ``rank`` -- Rank of the lattice.
     - ``sform`` -- Skew-symmetric form on the lattice (a function).
     - ``prec`` -- precision vector for the quantum affine plane.

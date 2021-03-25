@@ -10,36 +10,54 @@ and constructors KroneckerQuiver, JordanQuiver.
 EXAMPLES::
 
     sage: from msinvar.quivers import *
-    sage: Q=KroneckerQuiver(3); Q
-    Kronecker quiver: Quiver with 2 vertices and 3 arrows
+    sage: Q=KroneckerQuiver(2); Q
+    Kronecker quiver: Quiver with 2 vertices and 2 arrows
     sage: Q.vertices()
     [1, 2]
     sage: Q.arrows()
-    [(1, 2, 0), (1, 2, 1), (1, 2, 2)]
+    [(1, 2, 0), (1, 2, 1)]
+    sage: Q.prec([2,2]) # precision vector
+    sage: Q.simple().dict() # counting simple objects
+    {(0, 1): 1, (1, 0): 1}
+    sage: Q.Om([1,0]).dict() # integer DT invariants for stability (1,0)
+    {(0, 1): 1, (1, 0): 1, (1, 1): (-y^2 - 1)/y, (1, 2): 1, (2, 1): 1}
+    sage: Q.Om([0,1]).dict() # integer DT invariants for stability (1,0)
+    {(0, 1): 1, (1, 0): 1}
     
 ::
     
-    sage: Q=Quiver('1-2-3'); Q
+    sage: Q=Quiver('1-2-3', prec=[2,2,2]); Q
     Quiver with 3 vertices and 2 arrows
     sage: Q.arrows()
     [(1, 2, 1), (2, 3, 1)]
+    sage: Q.simple().dict() # counting simple objects
+    {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
     
 ::
     
-    sage: Q=Quiver('1-2,1-3'); Q
-    Quiver with 3 vertices and 2 arrows
+    sage: Q=Quiver('1-2-3,1-3', prec=[2,2,2]); Q
+    Quiver with 3 vertices and 3 arrows
     sage: Q.arrows()
-    [(1, 2, 1), (1, 3, 1)]
+    [(1, 2, 1), (1, 3, 1), (2, 3, 1)]
+    sage: Q.simple().dict() # counting simple objects
+    {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
     
 ::
     
-    sage: Q=CyclicQuiver(3); Q
+    sage: CQ=CyclicQuiver(3, prec=[2,2,2]); CQ
     Cyclic quiver: Quiver with 3 vertices and 3 arrows
-    sage: Q.arrows()
+    sage: CQ.arrows()
     [(0, 1, 1), (1, 2, 1), (2, 0, 1)]
-    sage: Q2=Q.translation_PQ(1); Q2
+    sage: CQ.simple().dict() # counting simple objects
+    {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): y^2 - 1}
+    sage: CQ.intAtt().dict() # integer attractor invariants
+    {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -y}
+
+::  
+    
+    sage: PQ=CQ.translation_PQ(1); PQ
     Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
-    sage: Q2.arrows()
+    sage: PQ.arrows()
     [(0, 1, 'a0'),
      (0, 1, 'a1*'),
      (0, 1, 'l0'),
@@ -49,13 +67,26 @@ EXAMPLES::
      (2, 0, 'a0*'),
      (2, 0, 'a2'),
      (2, 0, 'l2')]
-    sage: Q2.potential()
+    sage: PQ.potential()
     [[(0, 1, 'a0'), (1, 2, 'l1'), (2, 0, 'a0*')],
      [(0, 1, 'l0'), (1, 2, 'a1'), (2, 0, 'a0*')],
      [(1, 2, 'a1'), (2, 0, 'l2'), (0, 1, 'a1*')],
      [(1, 2, 'l1'), (2, 0, 'a2'), (0, 1, 'a1*')],
      [(2, 0, 'a2'), (0, 1, 'l0'), (1, 2, 'a2*')],
      [(2, 0, 'l2'), (0, 1, 'a0'), (1, 2, 'a2*')]]
+    
+    sage: PQ=CQ.translation_PQ(0); PQ
+    Ginzburg PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
+    sage: PQ.arrows()
+    [(0, 0, 'l0'),
+     (0, 1, 'a0'),
+     (0, 2, 'a2*'),
+     (1, 0, 'a0*'),
+     (1, 1, 'l1'),
+     (1, 2, 'a1'),
+     (2, 0, 'a2'),
+     (2, 1, 'a1*'),
+     (2, 2, 'l2')]
 """
 
 # *****************************************************************************
