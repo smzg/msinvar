@@ -113,8 +113,6 @@ def translation_PQ_total(PQ, prec=None):
          (1, 1, 1): (-2*y^2 - 1)/y,
          (2, 2, 2): (-2*y^2 - 1)/y}
     """
-    if not isinstance(PQ, Quiver):
-        PQ = PQ.quiver
     PQ.prec(prec)
     Q = PQ.base_quiver
     hom = Q.ind_hom

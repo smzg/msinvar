@@ -131,24 +131,6 @@ class Quiver(DiGraph, WCS):
             return sv+', '+sa+f' and potential with {len(W)} terms'
         return sv+" and "+sa
 
-    # def wcs(self, prec=None):
-    #     """Wall-crossing structure of the quiver.
-
-    #     EXAMPLES::
-
-    #         sage: from msinvar.quivers import *
-    #         sage: Q=KroneckerQuiver(2); Q
-    #         Kronecker quiver: Quiver with 2 vertices and 2 arrows
-    #         sage: Q.prec([3,3]) # precision vector
-    #         sage: Q.intAtt().dict() # integer attractor invariants
-    #         {(0, 1): 1, (1, 0): 1}
-    #     """
-    #     # if prec is not None:
-    #     #     self._wcs.prec(prec)
-    #     # return self._wcs
-    #     self.prec(prec)
-    #     return self
-
     def arrows(self, n=None):
         """Return the ``n``-th arrow or the list of arrows if ``n`` is None."""
         if not n is None:
@@ -378,18 +360,18 @@ class Quiver(DiGraph, WCS):
 
     def ind_list(self, *args):
         "The list of indecomposable representations."
-        pass
+        raise NotImplementedError("Implement this method")
 
     def ind_dim(self, a):
         "Dimension vector of an indecomposable representation ``a``."
-        pass
+        raise NotImplementedError("Implement this method")
 
     def ind_hom(self, a, b):
         """
         Dimension of the Hom-space between indecomposable
         representations ``a`` and  ``b``.
         """
-        pass
+        raise NotImplementedError("Implement this method")
 
 
 def KroneckerQuiver(m=2, prec=None):
@@ -565,6 +547,8 @@ class CyclicQuiver(Quiver):
         """
         tau = self.shift(k)
         ind_tau = self.ind_shift(k)
+        if k % self.vertex_num() == 0:
+            return TranslationPQ(self)
         return TranslationPQ(self, tau, ind_tau)
 
 
@@ -585,7 +569,8 @@ class TranslationPQ(Quiver):
     Construct a new quiver with potential based on a quiver ``Q`` and its
     automorphism ``tau``. See :arxiv:`1911.01788`.
 
-    If ``tau`` is None, we consider the trivial automorphism.
+    If ``tau`` is None, we consider the trivial automorphism and return
+    the Ginzburg quiver (with potential).
     The method ``ind_tau`` should be the induced bijection on indecomposables.
 
     1. For any arrow a:i->j we add an arrow tau(j)->i.
@@ -594,11 +579,46 @@ class TranslationPQ(Quiver):
 
         1. i->j->tau(j)->i
         2. -i->tau(i)->tau(j)->i
+
+    EXAMPLES::
+
+        sage: from msinvar import *
+        sage: Q=CyclicQuiver(3, prec=[2,2,2]); Q
+        Cyclic quiver: Quiver with 3 vertices and 3 arrows
+        sage: PQ=Q.translation_PQ(1); PQ
+        Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
+        sage: PQ.intAtt().simp().dict()
+        {(0, 0, 1): 1,
+         (0, 1, 0): 1,
+         (1, 0, 0): 1,
+         (1, 1, 1): (-2*y^2 - 1)/y,
+         (2, 2, 2): (-2*y^2 - 1)/y}
+
+        sage: PQ=Q.translation_PQ(0); PQ
+        Ginzburg PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
+        sage: PQ.intAtt().simp().dict()
+        {(0, 0, 1): -y,
+         (0, 1, 0): -y,
+         (0, 1, 1): -y,
+         (1, 0, 0): -y,
+         (1, 0, 1): -y,
+         (1, 1, 0): -y,
+         (1, 1, 1): -3*y,
+         (1, 1, 2): -y,
+         (1, 2, 1): -y,
+         (1, 2, 2): -y,
+         (2, 1, 1): -y,
+         (2, 1, 2): -y,
+         (2, 2, 1): -y,
+         (2, 2, 2): -3*y}
     """
 
     def __init__(self, Q, tau=None, ind_tau=None):
         if tau is None:
             def tau(i): return i
+            name = 'Ginzburg PQ'
+        else:
+            name = 'Translation PQ'
         if ind_tau is None:
             def ind_tau(i): return i
         self.base_quiver = Q
@@ -616,7 +636,20 @@ class TranslationPQ(Quiver):
             li = (i, tau(i), 'l'+str(i))
             lj = (j, tau(j), 'l'+str(j))
             W += [[a, lj, a1], [li, b, a1]]
-        super().__init__(potential=W, name='Translation PQ')
+        super().__init__(potential=W, name=name, prec=Q.prec())
+
+    def total(self, I=None):
+        """Total invariant, meaning the stacky invariant for the trivial
+        stability.
+        """
+        if I is not None:
+            self._total = I
+        if self._total is None:
+            try:
+                self._total = self.translation_PQ_total()
+            except:
+                self._total = self.total_default()
+        return self._total
 
     def translation_PQ_total(self, prec=None):
         """See :meth:`msinvar.potential_quiver_invar.translation_PQ_total`.
@@ -624,7 +657,6 @@ class TranslationPQ(Quiver):
         EXAMPLES::
 
             sage: from msinvar import *
-            sage: from msinvar.potential_quiver_invar import *
             sage: Q=CyclicQuiver(3); Q
             Cyclic quiver: Quiver with 3 vertices and 3 arrows
             sage: PQ=Q.translation_PQ(1); PQ

@@ -31,7 +31,7 @@ EXAMPLES::
     sage: from msinvar.brane_tilings import *
     sage: CQ=CyclicQuiver(1)
     sage: PQ=CQ.translation_PQ(); PQ
-    Translation PQ: Quiver with 1 vertices, 3 arrows and potential with 2 terms
+    Ginzburg PQ: Quiver with 1 vertices, 3 arrows and potential with 2 terms
     sage: Q=BTQuiver(potential=PQ._potential)
     sage: Z=partition_func(Q, 0, 8); Z
     1 + x + 3*x^2 + 6*x^3 + 13*x^4 + 24*x^5 + 48*x^6 + 86*x^7 + 160*x^8
