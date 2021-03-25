@@ -74,7 +74,10 @@ class Stability:
         return self.slope(d)-self.slope(e)
 
     def has_slope(self, d, slope):
-        return np.round(self._slope(d)-slope, PRECISION)==0
+        try:
+            return np.round(self._slope(d)-slope, PRECISION)==0
+        except:
+            return False
 
     def less(self, d, e):
         """Return True if slope(d)<slope(e)."""

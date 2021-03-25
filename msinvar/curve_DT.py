@@ -12,23 +12,27 @@ and invariants of stable moduli spaces following :arxiv:`0711.0634`.
 EXAMPLES::
 
     sage: from msinvar.curve_DT import Curve
-    sage: C=Curve(g=0,prec=[3,3]); C
+    sage: C=Curve(g=0,prec=[2,2]); C
     Curve of genus 0
-    sage: C.intDT([1,0]).dict() #degree 0 and rank <=3 DT invariants
-    {(1, 0): 1}
+    sage: C.intDT().dict() # DT invariants for rank<=2 and 0<=deg<=2
+    {(1, 0): 1, (1, 1): 1, (1, 2): 1}
 
-    sage: C=Curve(g=1,prec=[3,3]); C
+    sage: C=Curve(g=1,prec=[2,2]); C
     Curve of genus 1
-    sage: C.intDT([1,0]).dict() #degree 0 and rank <=3 DT invariants
-    {(1, 0): y^2 - 2*y + 1}
+    sage: C.intDT().dict() # DT invariants for rank<=2 and 0<=deg<=2
+    {(1, 0): y^2 - 2*y + 1,
+     (1, 1): y^2 - 2*y + 1,
+     (1, 2): y^2 - 2*y + 1,
+     (2, 1): y^2 - 2*y + 1}
 
     sage: C=Curve(g=2,prec=[2,2]); C
     Curve of genus 2
-    sage: C.intDT_val([1,0])
+    sage: I=C.intDT()
+    sage: I([1,0])
     y^4 - 4*y^3 + 6*y^2 - 4*y + 1   
-    sage: C.intDT_val([2,0])
+    sage: I([2,0])
     y^10 - 4*y^9 + 7*y^8 - 8*y^7 + 8*y^6 - 8*y^5 + 8*y^4 - 8*y^3 + 7*y^2 - 4*y + 1
-    sage: C.intDT_val([2,1])
+    sage: I([2,1])
     y^10 - 4*y^9 + 7*y^8 - 12*y^7 + 24*y^6 - 32*y^5 + 24*y^4 - 12*y^3 + 7*y^2 - 4*y + 1
 
     sage: C.stable_val([1,0]) # motivic classes of stable moduli spaces
@@ -48,9 +52,8 @@ EXAMPLES::
 
 from sage.misc.misc_c import prod
 from sage.functions.other import floor
-from sage.arith.misc import gcd
 from msinvar.iterators import OrderedPartitions_iterator
-from msinvar import RF, TMPoly, WCS, Invariant, vec
+from msinvar import RF, TMPoly, WCS, Invariant, Stability
 
 
 class Curve(WCS):
@@ -122,6 +125,10 @@ class Curve(WCS):
         """Twisted version of :meth:`Bun`."""
         return self.Bun(r)*self.twist_T([r, 0])
 
+    def stacky(self):
+        """Motivic classes of stacks of semistable vector bundles."""
+        return Invariant(lambda a: self.stacky_val(a), self)
+
     def stacky_val(self, r, d=None):
         """Motivic class of the stack of semistable vector bundles having
         rank ``r`` and degree ``d``. If ``d`` is None, then ``r`` should be a
@@ -129,6 +136,8 @@ class Curve(WCS):
         """
         if d is None:
             r, d = r[0], r[1]
+        if r == 0:
+            return 1 if d == 0 else 0
         q = self.q
 
         def twist(l):
@@ -147,41 +156,23 @@ class Curve(WCS):
             val += twist(l)*prod(self.Bun_tw(i) for i in l)
         return val
 
-    def stacky(self, r, d=None):
-        """Invariant with values given by 
-        motivic classes of stacks of semistable vector bundles along the ray
-        of Chern characters proportional to (r,d)."""
-        if d is None:
-            r, d = r[0], r[1]
-        k = gcd(r, d)
-        r = r // k
-        d = d // k
-        if self.prec() is None:
-            raise ValueError("prec should be specified.")
-        dct = {(0, 0): 1}
-        i = 1
-        while vec.le([i*r, i*d], self.prec()):
-            dct[i*r, i*d] = self.stacky_val(i*r, i*d)
-            i += 1
-        return Invariant(dct, self)
-
-    def intDT(self, r, d=None):
-        """Integer DT invariants along the ray of Chern characters
-        proportional to (r,d)."""
-        I = self.stk2int(self.stacky(r, d))
+    def intDT(self):
+        """Integer DT invariants."""
+        I = self.stk2int(self.stacky())
         return I.term_twist(lambda a: (-self.y)**(1-self.eform(a, a)))
 
     def intDT_val(self, r, d=None):
-        """Integer DT invariant for the Chern character (r,d)."""
+        """Motivic class of the moduli space of stable vector bundles 
+        having rank ``r`` and degree ``d`` (not necessarily coprime)."""
         if d is None:
             r, d = r[0], r[1]
-        return self.intDT(r, d)([r, d])
+        return self.intDT()([r, d])
 
-    def stable(self, r, d=None):
-        """Invariant with values given by motivic classes of moduli spaces
-        of stable vector bundles along the ray of Chern characters proportional
-        to (r,d)."""
-        I = self.stacky(r, d)
+    def stable(self, slope=0):
+        """Motivic classes of moduli spaces of stable vector bundles 
+        having slope d/r equal ``slope``."""
+        z = Stability([0, 1], [1, 0])
+        I = self.stacky().restrict(z, slope)
         return self.stable_from_stacky(I)
 
     def stable_val(self, r, d=None):
@@ -189,4 +180,4 @@ class Curve(WCS):
         having rank ``r`` and degree ``d`` (not necessarily coprime)."""
         if d is None:
             r, d = r[0], r[1]
-        return self.stable(r, d)([r, d])
+        return self.stable(d/r)([r, d])
