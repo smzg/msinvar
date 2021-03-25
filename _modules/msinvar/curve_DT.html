@@ -187,23 +187,27 @@
 <span class="sd">EXAMPLES::</span>
 
 <span class="sd">    sage: from msinvar.curve_DT import Curve</span>
-<span class="sd">    sage: C=Curve(g=0,prec=[3,3]); C</span>
+<span class="sd">    sage: C=Curve(g=0,prec=[2,2]); C</span>
 <span class="sd">    Curve of genus 0</span>
-<span class="sd">    sage: C.intDT([1,0]).dict() #degree 0 and rank &lt;=3 DT invariants</span>
-<span class="sd">    {(1, 0): 1}</span>
+<span class="sd">    sage: C.intDT().dict() # DT invariants for rank&lt;=2 and 0&lt;=deg&lt;=2</span>
+<span class="sd">    {(1, 0): 1, (1, 1): 1, (1, 2): 1}</span>
 
-<span class="sd">    sage: C=Curve(g=1,prec=[3,3]); C</span>
+<span class="sd">    sage: C=Curve(g=1,prec=[2,2]); C</span>
 <span class="sd">    Curve of genus 1</span>
-<span class="sd">    sage: C.intDT([1,0]).dict() #degree 0 and rank &lt;=3 DT invariants</span>
-<span class="sd">    {(1, 0): y^2 - 2*y + 1}</span>
+<span class="sd">    sage: C.intDT().dict() # DT invariants for rank&lt;=2 and 0&lt;=deg&lt;=2</span>
+<span class="sd">    {(1, 0): y^2 - 2*y + 1,</span>
+<span class="sd">     (1, 1): y^2 - 2*y + 1,</span>
+<span class="sd">     (1, 2): y^2 - 2*y + 1,</span>
+<span class="sd">     (2, 1): y^2 - 2*y + 1}</span>
 
 <span class="sd">    sage: C=Curve(g=2,prec=[2,2]); C</span>
 <span class="sd">    Curve of genus 2</span>
-<span class="sd">    sage: C.intDT_val([1,0])</span>
+<span class="sd">    sage: I=C.intDT()</span>
+<span class="sd">    sage: I([1,0])</span>
 <span class="sd">    y^4 - 4*y^3 + 6*y^2 - 4*y + 1   </span>
-<span class="sd">    sage: C.intDT_val([2,0])</span>
+<span class="sd">    sage: I([2,0])</span>
 <span class="sd">    y^10 - 4*y^9 + 7*y^8 - 8*y^7 + 8*y^6 - 8*y^5 + 8*y^4 - 8*y^3 + 7*y^2 - 4*y + 1</span>
-<span class="sd">    sage: C.intDT_val([2,1])</span>
+<span class="sd">    sage: I([2,1])</span>
 <span class="sd">    y^10 - 4*y^9 + 7*y^8 - 12*y^7 + 24*y^6 - 32*y^5 + 24*y^4 - 12*y^3 + 7*y^2 - 4*y + 1</span>
 
 <span class="sd">    sage: C.stable_val([1,0]) # motivic classes of stable moduli spaces</span>
@@ -223,9 +227,8 @@
 
 <span class="kn">from</span> <span class="nn">sage.misc.misc_c</span> <span class="kn">import</span> <span class="n">prod</span>
 <span class="kn">from</span> <span class="nn">sage.functions.other</span> <span class="kn">import</span> <span class="n">floor</span>
-<span class="kn">from</span> <span class="nn">sage.arith.misc</span> <span class="kn">import</span> <span class="n">gcd</span>
 <span class="kn">from</span> <span class="nn">msinvar.iterators</span> <span class="kn">import</span> <span class="n">OrderedPartitions_iterator</span>
-<span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="n">RF</span><span class="p">,</span> <span class="n">TMPoly</span><span class="p">,</span> <span class="n">WCS</span><span class="p">,</span> <span class="n">Invariant</span><span class="p">,</span> <span class="n">vec</span>
+<span class="kn">from</span> <span class="nn">msinvar</span> <span class="kn">import</span> <span class="n">RF</span><span class="p">,</span> <span class="n">TMPoly</span><span class="p">,</span> <span class="n">WCS</span><span class="p">,</span> <span class="n">Invariant</span><span class="p">,</span> <span class="n">Stability</span>
 
 
 <div class="viewcode-block" id="Curve"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve">[docs]</a><span class="k">class</span> <span class="nc">Curve</span><span class="p">(</span><span class="n">WCS</span><span class="p">):</span>
@@ -297,6 +300,10 @@
         <span class="sd">&quot;&quot;&quot;Twisted version of :meth:`Bun`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">Bun</span><span class="p">(</span><span class="n">r</span><span class="p">)</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">twist_T</span><span class="p">([</span><span class="n">r</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span></div>
 
+<div class="viewcode-block" id="Curve.stacky"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Motivic classes of stacks of semistable vector bundles.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky_val</span><span class="p">(</span><span class="n">a</span><span class="p">),</span> <span class="bp">self</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Curve.stacky_val"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stacky_val">[docs]</a>    <span class="k">def</span> <span class="nf">stacky_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Motivic class of the stack of semistable vector bundles having</span>
 <span class="sd">        rank ``r`` and degree ``d``. If ``d`` is None, then ``r`` should be a</span>
@@ -304,6 +311,8 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">r</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">d</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
         <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span>
 
         <span class="k">def</span> <span class="nf">twist</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
@@ -322,41 +331,23 @@
             <span class="n">val</span> <span class="o">+=</span> <span class="n">twist</span><span class="p">(</span><span class="n">l</span><span class="p">)</span><span class="o">*</span><span class="n">prod</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Bun_tw</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">l</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">val</span></div>
 
-<div class="viewcode-block" id="Curve.stacky"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Invariant with values given by </span>
-<span class="sd">        motivic classes of stacks of semistable vector bundles along the ray</span>
-<span class="sd">        of Chern characters proportional to (r,d).&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span> <span class="o">//</span> <span class="n">k</span>
-        <span class="n">d</span> <span class="o">=</span> <span class="n">d</span> <span class="o">//</span> <span class="n">k</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;prec should be specified.&quot;</span><span class="p">)</span>
-        <span class="n">dct</span> <span class="o">=</span> <span class="p">{(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">):</span> <span class="mi">1</span><span class="p">}</span>
-        <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
-        <span class="k">while</span> <span class="n">vec</span><span class="o">.</span><span class="n">le</span><span class="p">([</span><span class="n">i</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">d</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">prec</span><span class="p">()):</span>
-            <span class="n">dct</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky_val</span><span class="p">(</span><span class="n">i</span><span class="o">*</span><span class="n">r</span><span class="p">,</span> <span class="n">i</span><span class="o">*</span><span class="n">d</span><span class="p">)</span>
-            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="n">dct</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="Curve.intDT"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.intDT">[docs]</a>    <span class="k">def</span> <span class="nf">intDT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Integer DT invariants along the ray of Chern characters</span>
-<span class="sd">        proportional to (r,d).&quot;&quot;&quot;</span>
-        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span>
+<div class="viewcode-block" id="Curve.intDT"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.intDT">[docs]</a>    <span class="k">def</span> <span class="nf">intDT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Integer DT invariants.&quot;&quot;&quot;</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stk2int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">term_twist</span><span class="p">(</span><span class="k">lambda</span> <span class="n">a</span><span class="p">:</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">)))</span></div>
 
 <div class="viewcode-block" id="Curve.intDT_val"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.intDT_val">[docs]</a>    <span class="k">def</span> <span class="nf">intDT_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Integer DT invariant for the Chern character (r,d).&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Motivic class of the moduli space of stable vector bundles </span>
+<span class="sd">        having rank ``r`` and degree ``d`` (not necessarily coprime).&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intDT</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)([</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">intDT</span><span class="p">()([</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span></div>
 
-<div class="viewcode-block" id="Curve.stable"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stable">[docs]</a>    <span class="k">def</span> <span class="nf">stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Invariant with values given by motivic classes of moduli spaces</span>
-<span class="sd">        of stable vector bundles along the ray of Chern characters proportional</span>
-<span class="sd">        to (r,d).&quot;&quot;&quot;</span>
-        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+<div class="viewcode-block" id="Curve.stable"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stable">[docs]</a>    <span class="k">def</span> <span class="nf">stable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slope</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Motivic classes of moduli spaces of stable vector bundles </span>
+<span class="sd">        having slope d/r equal ``slope``.&quot;&quot;&quot;</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stacky</span><span class="p">()</span><span class="o">.</span><span class="n">restrict</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">slope</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_from_stacky</span><span class="p">(</span><span class="n">I</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Curve.stable_val"><a class="viewcode-back" href="../../curve_DT.html#msinvar.curve_DT.Curve.stable_val">[docs]</a>    <span class="k">def</span> <span class="nf">stable_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -364,7 +355,7 @@
 <span class="sd">        having rank ``r`` and degree ``d`` (not necessarily coprime).&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">r</span><span class="p">,</span> <span class="n">d</span> <span class="o">=</span> <span class="n">r</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">r</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">)([</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span></div></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable</span><span class="p">(</span><span class="n">d</span><span class="o">/</span><span class="n">r</span><span class="p">)([</span><span class="n">r</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span></div></div>
 </pre></div>
 
            </div>
