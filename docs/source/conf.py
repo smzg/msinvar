@@ -11,14 +11,14 @@ authors = u"Sergey Mozgovoy"
 sys.path.insert(0, os.path.abspath(package_folder))
 sys.path.append(os.path.join(SAGE_SRC, "sage_setup", "docbuild", "ext"))
 
-print("Using sys.path = {}".format(sys.path))
+# print("Using sys.path = {}".format(sys.path))
 
 from msinvar.version import version
 
 mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
-# html_static_path = ['_static']
-# html_css_files = ['custom.css']
+html_baseurl = 'https://smzg.github.io/msinvar/'
+html_extra_path = ['robots.txt']
 
 def setup(app):
     # app.connect("autodoc-skip-member", skip)
@@ -57,6 +57,7 @@ extensions = [
     'sphinx.ext.extlinks',
     'sphinx.ext.mathjax',
     'sphinx.ext.viewcode',
+    'sphinx_sitemap'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

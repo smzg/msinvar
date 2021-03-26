@@ -21,7 +21,7 @@ EXAMPLES::
     {(0, 1): 1, (1, 0): 1}
     sage: Q.Om([1,0]).dict() # integer DT invariants for stability (1,0)
     {(0, 1): 1, (1, 0): 1, (1, 1): (-y^2 - 1)/y, (1, 2): 1, (2, 1): 1}
-    sage: Q.Om([0,1]).dict() # integer DT invariants for stability (1,0)
+    sage: Q.Om([0,1]).dict() # integer DT invariants for stability (0,1)
     {(0, 1): 1, (1, 0): 1}
     
 ::
@@ -163,7 +163,7 @@ class Quiver(DiGraph, WCS):
                          multiedges=multiedges, name=name)
         self._arrows = []
         vert = self.vertices()
-        self._vertex_dict = {vert[i]: i for i in range(self.vertex_num())}
+        self._vertex_dict = {v: i for i, v in enumerate(vert)}
         self._set_quiver_dict()
         WCS.__init__(self, rank=len(vert), prec=prec)
         # self._wcs = WCS(self, prec=prec)

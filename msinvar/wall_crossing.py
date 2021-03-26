@@ -151,8 +151,8 @@ class WallCrossingStructure:
         return (-self.y)**s
 
     def twist_product(self):
-        """Twist the product in the quantum affine plane (self.R) using
-        self.twist."""
+        """Twist the product in the quantum affine plane using
+        :meth:`twist`."""
         self.R.prod_twist = self.twist
 
     def untwist_product(self):
@@ -292,7 +292,7 @@ class WallCrossingStructure:
         """
         Transform invariant ``I`` to a polynomial,
         considering only degrees having a given ``slope`` with respect to a
-        given stability paramter ``z``.
+        given stability parameter ``z``.
         """
         return I.poly(self, z,  slope)
 
@@ -302,22 +302,22 @@ class WallCrossingStructure:
 
     # quiver related methods (requires Euler form)
     def eform(self, a, b):
-        """Euler form of a quiver or curve."""
+        """Euler form of a quiver or a curve."""
         pass
 
     def twist_T(self, d):
-        """Auxiliary quiver-related term twist."""
+        """Auxiliary term twist that depends on :meth:`eform`."""
         return (-self.y)**(self.eform(d, d))
 
     def twist_TI(self, d):
-        """Auxiliary quiver-related term twist."""
+        """Auxiliary term twist that depends on :meth:`eform`."""
         return (-self.y)**(-self.eform(d, d))
     # end of quiver related methods
 
     def stable_from_stacky(self, I):
         """
-        Count stable objects of a fixed slope, assuming that stacky invariant
-        ``I`` counting semistable objects of that slope is given.
+        Count stable objects of a fixed slope, assuming that the stacky
+        invariant ``I`` counting semistable objects of that slope is given.
         Based on :arxiv:`0708.1259`.        
         """
         # f = self.series(I, z, slope)
@@ -461,8 +461,8 @@ def total2stacky_algo1(W, I, z):
     - ``I`` -- Invariant,
     - ``z``-- Stability.
 
-    Based on :arxiv:`math/0204059` (5.5).
-    See also implementation by
+    Based on :arxiv:`math/0204059` (5.5)
+    and implementation by
     `Pieter Belmans <https://github.com/pbelmans/hodge-diamond-cutter>`_.
     Has comparable speed to :meth:`total2stacky_algo2`.
     """
