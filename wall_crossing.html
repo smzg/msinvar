@@ -21,6 +21,7 @@
   
 
   
+    <link rel="canonical" href="https://smzg.github.io/msinvar/wall_crossing.html" />
 
   
   <!--[if lt IE 9]>
@@ -295,8 +296,8 @@ corresponding to different stability parameters).</p>
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.twist_product">
 <code class="sig-name descname"><span class="pre">twist_product</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_product"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_product" title="Permalink to this definition">¶</a></dt>
-<dd><p>Twist the product in the quantum affine plane (self.R) using
-self.twist.</p>
+<dd><p>Twist the product in the quantum affine plane using
+<a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.twist" title="msinvar.wall_crossing.WallCrossingStructure.twist"><code class="xref py py-meth docutils literal notranslate"><span class="pre">twist()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -429,7 +430,7 @@ We assume that the stability parameter is generic.</p>
 <code class="sig-name descname"><span class="pre">poly</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.poly"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.poly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> to a polynomial,
 considering only degrees having a given <code class="docutils literal notranslate"><span class="pre">slope</span></code> with respect to a
-given stability paramter <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+given stability parameter <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -441,26 +442,26 @@ given stability paramter <code class="docutils literal notranslate"><span class=
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.eform">
 <code class="sig-name descname"><span class="pre">eform</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.eform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.eform" title="Permalink to this definition">¶</a></dt>
-<dd><p>Euler form of a quiver or curve.</p>
+<dd><p>Euler form of a quiver or a curve.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.twist_T">
 <code class="sig-name descname"><span class="pre">twist_T</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_T"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_T" title="Permalink to this definition">¶</a></dt>
-<dd><p>Auxiliary quiver-related term twist.</p>
+<dd><p>Auxiliary term twist that depends on <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.eform" title="msinvar.wall_crossing.WallCrossingStructure.eform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eform()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.twist_TI">
 <code class="sig-name descname"><span class="pre">twist_TI</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">d</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.twist_TI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.twist_TI" title="Permalink to this definition">¶</a></dt>
-<dd><p>Auxiliary quiver-related term twist.</p>
+<dd><p>Auxiliary term twist that depends on <a class="reference internal" href="#msinvar.wall_crossing.WallCrossingStructure.eform" title="msinvar.wall_crossing.WallCrossingStructure.eform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">eform()</span></code></a>.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">
 <code class="sig-name descname"><span class="pre">stable_from_stacky</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">I</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/msinvar/wall_crossing.html#WallCrossingStructure.stable_from_stacky"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky" title="Permalink to this definition">¶</a></dt>
-<dd><p>Count stable objects of a fixed slope, assuming that stacky invariant
-<code class="docutils literal notranslate"><span class="pre">I</span></code> counting semistable objects of that slope is given.
+<dd><p>Count stable objects of a fixed slope, assuming that the stacky
+invariant <code class="docutils literal notranslate"><span class="pre">I</span></code> counting semistable objects of that slope is given.
 Based on <a class="reference external" href="https://arxiv.org/abs/0708.1259">arXiv:0708.1259</a>.</p>
 </dd></dl>
 
@@ -612,8 +613,8 @@ invariant is <code class="docutils literal notranslate"><span class="pre">I</spa
 <li><p><code class="docutils literal notranslate"><span class="pre">I</span></code> – Invariant,</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">z</span></code>– Stability.</p></li>
 </ul>
-<p>Based on <a class="reference external" href="https://arxiv.org/abs/math/0204059">arXiv:math/0204059</a> (5.5).
-See also implementation by
+<p>Based on <a class="reference external" href="https://arxiv.org/abs/math/0204059">arXiv:math/0204059</a> (5.5)
+and implementation by
 <a class="reference external" href="https://github.com/pbelmans/hodge-diamond-cutter">Pieter Belmans</a>.
 Has comparable speed to <a class="reference internal" href="#msinvar.wall_crossing.total2stacky_algo2" title="msinvar.wall_crossing.total2stacky_algo2"><code class="xref py py-meth docutils literal notranslate"><span class="pre">total2stacky_algo2()</span></code></a>.</p>
 </dd></dl>

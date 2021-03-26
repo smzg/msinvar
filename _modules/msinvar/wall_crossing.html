@@ -326,8 +326,8 @@
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="n">s</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_product"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_product">[docs]</a>    <span class="k">def</span> <span class="nf">twist_product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Twist the product in the quantum affine plane (self.R) using</span>
-<span class="sd">        self.twist.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Twist the product in the quantum affine plane using</span>
+<span class="sd">        :meth:`twist`.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">R</span><span class="o">.</span><span class="n">prod_twist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">twist</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.untwist_product"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.untwist_product">[docs]</a>    <span class="k">def</span> <span class="nf">untwist_product</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -467,7 +467,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Transform invariant ``I`` to a polynomial,</span>
 <span class="sd">        considering only degrees having a given ``slope`` with respect to a</span>
-<span class="sd">        given stability paramter ``z``.</span>
+<span class="sd">        given stability parameter ``z``.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">I</span><span class="o">.</span><span class="n">poly</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span>  <span class="n">slope</span><span class="p">)</span></div>
 
@@ -477,22 +477,22 @@
 
     <span class="c1"># quiver related methods (requires Euler form)</span>
 <div class="viewcode-block" id="WallCrossingStructure.eform"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.eform">[docs]</a>    <span class="k">def</span> <span class="nf">eform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Euler form of a quiver or curve.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Euler form of a quiver or a curve.&quot;&quot;&quot;</span>
         <span class="k">pass</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_T"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_T">[docs]</a>    <span class="k">def</span> <span class="nf">twist_T</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Auxiliary quiver-related term twist.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Auxiliary term twist that depends on :meth:`eform`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span></div>
 
 <div class="viewcode-block" id="WallCrossingStructure.twist_TI"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.twist_TI">[docs]</a>    <span class="k">def</span> <span class="nf">twist_TI</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Auxiliary quiver-related term twist.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Auxiliary term twist that depends on :meth:`eform`.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">eform</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">d</span><span class="p">))</span></div>
     <span class="c1"># end of quiver related methods</span>
 
 <div class="viewcode-block" id="WallCrossingStructure.stable_from_stacky"><a class="viewcode-back" href="../../wall_crossing.html#msinvar.wall_crossing.WallCrossingStructure.stable_from_stacky">[docs]</a>    <span class="k">def</span> <span class="nf">stable_from_stacky</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">I</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Count stable objects of a fixed slope, assuming that stacky invariant</span>
-<span class="sd">        ``I`` counting semistable objects of that slope is given.</span>
+<span class="sd">        Count stable objects of a fixed slope, assuming that the stacky</span>
+<span class="sd">        invariant ``I`` counting semistable objects of that slope is given.</span>
 <span class="sd">        Based on :arxiv:`0708.1259`.        </span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># f = self.series(I, z, slope)</span>
@@ -636,8 +636,8 @@
 <span class="sd">    - ``I`` -- Invariant,</span>
 <span class="sd">    - ``z``-- Stability.</span>
 
-<span class="sd">    Based on :arxiv:`math/0204059` (5.5).</span>
-<span class="sd">    See also implementation by</span>
+<span class="sd">    Based on :arxiv:`math/0204059` (5.5)</span>
+<span class="sd">    and implementation by</span>
 <span class="sd">    `Pieter Belmans &lt;https://github.com/pbelmans/hodge-diamond-cutter&gt;`_.</span>
 <span class="sd">    Has comparable speed to :meth:`total2stacky_algo2`.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
