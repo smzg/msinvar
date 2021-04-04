@@ -21,6 +21,7 @@
   
 
   
+    <link rel="canonical" href="https://smzg.github.io/msinvar/_modules/msinvar/flow_trees.html" />
 
   
   <!--[if lt IE 9]>
@@ -296,26 +297,31 @@
     <span class="k">return</span> <span class="n">Transform</span><span class="p">(</span><span class="n">F</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="flow_tree_formula"><a class="viewcode-back" href="../../flow_trees.html#msinvar.flow_trees.flow_tree_formula">[docs]</a><span class="k">def</span> <span class="nf">flow_tree_formula</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="flow_tree_formula"><a class="viewcode-back" href="../../flow_trees.html#msinvar.flow_trees.flow_tree_formula">[docs]</a><span class="k">def</span> <span class="nf">flow_tree_formula</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">quant</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Flow tree formula, conjectured in :arxiv:`1804.06928` and proved</span>
 <span class="sd">    in :arxiv:`2102.11200`. We use its modification from :arxiv:`2101.07636`.</span>
 
 <span class="sd">    - ``W`` -- wall-crossing structure :class:`WCS`.</span>
 <span class="sd">    - ``z`` -- stability parameter.</span>
 <span class="sd">    - ``I`` -- rational attractor invariant `\bar\Omega_*`.</span>
+<span class="sd">    - ``quant`` -- quantized or not.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">z</span> <span class="o">=</span> <span class="n">Stability</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">z</span><span class="o">.</span><span class="n">a</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-3</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Stability coordinates are too small&quot;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">flow_tree_formula</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">W</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">flow_tree_formula</span><span class="p">(</span><span class="n">W</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">quant</span><span class="p">),</span> <span class="n">W</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">zero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
         <span class="k">return</span> <span class="mi">0</span>
 
-    <span class="k">def</span> <span class="nf">kp</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
-        <span class="n">y</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">y</span>
-        <span class="k">return</span> <span class="n">QQ</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">**</span><span class="n">m</span><span class="o">-</span><span class="n">y</span><span class="o">**</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">-</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">quant</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">kp</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">y</span>
+            <span class="k">return</span> <span class="n">QQ</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">**</span><span class="n">m</span><span class="o">-</span><span class="n">y</span><span class="o">**</span><span class="n">m</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">y</span><span class="o">-</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">kp</span><span class="p">(</span><span class="n">m</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">QQ</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="n">m</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">mult_factorial</span><span class="p">(</span><span class="n">l</span><span class="p">):</span>
         <span class="n">m</span> <span class="o">=</span> <span class="p">{}</span>

@@ -21,6 +21,7 @@
   
 
   
+    <link rel="canonical" href="https://smzg.github.io/msinvar/_modules/msinvar/invariants.html" />
 
   
   <!--[if lt IE 9]>
@@ -469,9 +470,9 @@
     <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
     <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">d1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">+=</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">k</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">I</span><span class="p">([</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">c</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">k</span>
     <span class="k">return</span> <span class="n">val</span></div>
 
 
@@ -484,11 +485,36 @@
     <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
     <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
-        <span class="n">d1</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">val</span> <span class="o">+=</span> <span class="n">moebius</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">I</span><span class="p">(</span><span class="n">d1</span><span class="p">)</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">k</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">I</span><span class="p">([</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">moebius</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">c</span><span class="o">.</span><span class="n">adams</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">/</span><span class="n">k</span>
     <span class="k">return</span> <span class="n">val</span></div>
 
+<div class="viewcode-block" id="rat2int_num"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.rat2int_num">[docs]</a><span class="k">def</span> <span class="nf">rat2int_num</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">rat2int_num</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">I</span><span class="p">([</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">moebius</span><span class="p">(</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="int2rat_num"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.int2rat_num">[docs]</a><span class="k">def</span> <span class="nf">int2rat_num</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">d</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Invariant</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">int2rat_num</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">d</span><span class="p">),</span> <span class="n">I</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">vec</span><span class="o">.</span><span class="n">iszero</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">gcd</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">divisors</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">I</span><span class="p">([</span><span class="n">i</span><span class="o">//</span><span class="n">k</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">c</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">+=</span> <span class="n">c</span><span class="o">/</span><span class="p">(</span><span class="n">k</span><span class="o">*</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">val</span></div>
 
 <div class="viewcode-block" id="recursive_inversion"><a class="viewcode-back" href="../../invariants.html#msinvar.invariants.recursive_inversion">[docs]</a><span class="k">def</span> <span class="nf">recursive_inversion</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Invert the transformation (map on invariants) T, assuming that</span>
