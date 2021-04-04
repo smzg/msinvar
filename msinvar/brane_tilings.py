@@ -28,12 +28,11 @@ which is closely related to numerical DT invariants of (Q,W).
 EXAMPLES::
 
     sage: from msinvar import *
-    sage: from msinvar.brane_tilings import *
     sage: CQ=CyclicQuiver(1)
     sage: PQ=CQ.translation_PQ(); PQ
     Ginzburg PQ: Quiver with 1 vertices, 3 arrows and potential with 2 terms
-    sage: Q=BTQuiver(potential=PQ._potential)
-    sage: Z=partition_func(Q, 0, 8); Z
+    sage: Q=BTQuiver(PQ)
+    sage: Z=Q.partition_func(0, 8); Z
     1 + x + 3*x^2 + 6*x^3 + 13*x^4 + 24*x^5 + 48*x^6 + 86*x^7 + 160*x^8
     sage: Z.Log()
     x + 2*x^2 + 3*x^3 + 4*x^4 + 5*x^5 + 6*x^6 + 7*x^7 + 8*x^8
@@ -45,10 +44,20 @@ EXAMPLES::
      'Phi[1,2,1]*Phi[2,1,1]*Phi[1,2,2]*Phi[2,1,2]-Phi[1,2,1]*Phi[2,1,2]*Phi[1,2,2]*Phi[2,1,1]']
     sage: Q=BTQuiver(potential=BTD[1][1]); Q
     Quiver with 2 vertices, 4 arrows and potential with 2 terms
-    sage: Z=partition_func(Q, 1, 5); Z
-    1 + x0 + 2*x0*x1 + 4*x0^2*x1 + x0*x1^2 + 2*x0^3*x1 + 8*x0^2*x1^2 + 14*x0^3*x1^2 + 4*x0^2*x1^3
+    sage: Z=Q.NCDT(1, 5); Z
+    1 + x0 - 2*x0*x1 - 4*x0^2*x1 + x0*x1^2 - 2*x0^3*x1 + 8*x0^2*x1^2 + 14*x0^3*x1^2 - 4*x0^2*x1^3
     sage: Z.Log()
-    x0 - x0^2 + 2*x0*x1 + 2*x0^2*x1 + x0*x1^2 + 4*x0^2*x1^2 + 3*x0^3*x1^2 + 2*x0^2*x1^3
+    x0 - x0^2 - 2*x0*x1 - 2*x0^2*x1 + x0*x1^2 + 6*x0^2*x1^2 + 3*x0^3*x1^2 - 2*x0^2*x1^3
+
+::
+    
+    sage: CQ=CyclicQuiver(3)
+    sage: PQ=CQ.translation_PQ(1); PQ
+    Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
+    sage: Q=BTQuiver(PQ,prec=[1,1,1])
+    sage: Q.intAtt_from_crystals().dict() # numerical integer attractor inv. 
+    {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -3}
+
 """
 
 # *****************************************************************************
@@ -64,6 +73,7 @@ from msinvar.utils import vec
 from msinvar.posets import Poset
 from msinvar.tm_polynomials import TMPoly
 from sage.rings.rational_field import QQ
+from msinvar import Invariant, WCS, Stability
 
 
 class BTQuiver(Quiver):
@@ -73,8 +83,8 @@ class BTQuiver(Quiver):
     in the Jacobian algebra if and only if their weights are equal).
     """
 
-    def __init__(self, **kw):
-        super().__init__(**kw)
+    def __init__(self, *args, **kw):
+        super().__init__(*args, **kw)
         A = matrix([self.path2vec(p) for p in self._potential])
         m = len(self._potential)
         A1 = A.augment(vector([1]*m))
@@ -136,11 +146,26 @@ class BTQuiver(Quiver):
         P.vert = set(P.vert)
         return P
 
+    def crystal_dict(self, i, N=5):
+
+        return crystal_dict(self, i, N)
+
+    def NCDT(self, i, N=5):
+        return NCDT(self, i, N)
+
     def partition_func(self, i, N=5):
         return partition_func(self, i, N)
 
     def partition_func1(self, i, N=5):
         return partition_func1(self, i, N)
+
+    def ratAtt_from_crystals(self):
+        """See :meth:`ratAtt_from_crystals`."""
+        return ratAtt_from_crystals(self)
+
+    def intAtt_from_crystals(self):
+        """See :meth:`intAtt_from_crystals`."""
+        return intAtt_from_crystals(self)
 
 
 class Atom:
@@ -171,12 +196,11 @@ class Atom:
         return "Atom "+str(self.t)+"-"+str(self.wt)
 
 
-def partition_func(Q, i, N=5):
-    """Partition function of ideals (molten crystals) in the crystal of atoms
+def crystal_dict(Q, i, N=5):
+    """Dictionary counting ideals (molten crystals) in the crystal of atoms
     that start at the vertex ``i`` and have length <= ``N``.
 
     We keep track of the dimension vectors of ideals."""
-    R = TMPoly(QQ, Q.vertex_num(), 'x', prec=N)
     P = Q.create_path_poset(i, N)
     dct = {}
     for I in P.ideals(N):
@@ -184,7 +208,29 @@ def partition_func(Q, i, N=5):
         if d not in dct:
             dct[d] = 0
         dct[d] += 1
+    return dct
+
+
+def NCDT(Q, i, N=5):
+    """Numerical NCDT invariants counting (with a sign) ideals 
+    (molten crystals) in the 
+    crystal of atoms that start at the vertex ``i`` and have length <= ``N``.
+
+    We keep track of the dimension vectors of ideals."""
+    R = TMPoly(QQ, Q.vertex_num(), 'x', prec=N)
+    i0 = Q.vertex_num(i)
+    dct = {d: c*(-1)**(d[i0]+Q.eform(d, d))
+           for d, c in crystal_dict(Q, i, N).items()}
     return R(dct)
+
+
+def partition_func(Q, i, N=5):
+    """Partition function of ideals (molten crystals) in the crystal of atoms
+    that start at the vertex ``i`` and have length <= ``N``.
+
+    We keep track of the dimension vectors of ideals."""
+    R = TMPoly(QQ, Q.vertex_num(), 'x', prec=N)
+    return R(crystal_dict(Q, i, N))
 
 
 def partition_func1(Q, i, N=5):
@@ -193,13 +239,12 @@ def partition_func1(Q, i, N=5):
 
     We keep track only of the sizes of ideals."""
     R = TMPoly(QQ, 1, 'x', prec=N)
-    P = Q.create_path_poset(i, N)
     dct = {}
-    for I in P.ideals(N):
-        d = (len(I),)
-        if d not in dct:
-            dct[d] = 0
-        dct[d] += 1
+    for d, c in crystal_dict(Q, i, N).items():
+        n = (sum(d),)
+        if n not in dct:
+            dct[n] = 0
+        dct[n] += c
     return R(dct)
 
 
@@ -244,3 +289,68 @@ def BT_example(n=None):
         return {i: BT_example(i) for i in range(len(BTD))}
     d = BTD[n]
     return BTQuiver(potential=d[1], name=d[0])
+
+
+def ratAtt_from_crystals(Q):
+    """Numerical rational attractor invariants obtained by recursion from
+    the NCDT invariants (computed by counting crystals) and the flow tree
+    formula.
+
+    This algorithm works for any brane tiling.
+
+    EXAMPLE::
+        
+        sage: from msinvar import *
+        sage: Q=BT_example(6); Q
+        P2=C^3/(1,1,1): Quiver with 3 vertices, 9 arrows and potential with 6 terms
+        sage: Q.prec([1,1,1])
+        sage: Q.ratAtt_from_crystals().dict()  
+        {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -3}
+    """
+    N = sum(Q.prec())
+    Z = [Invariant(Q.NCDT(i, N)) for i in Q.vertices()]
+    r = Q.vertex_num()
+    W = WCS(rank=r+1, sform=None, prec=Q.prec()+[1])
+    z = Stability([0]*r+[1])
+
+    def f(d):
+        dn = sum(d)
+        if dn == 0:
+            return 0
+        if dn == 1:
+            return 1
+        i, m = next((i, m) for i, m in enumerate(d) if m != 0)
+        W.sform = lambda a, b: Q.sform(a, b)-a[-1]*b[i]+b[-1]*a[i]
+
+        def f1(e):
+            if sum(e) == 1:
+                return QQ(1)
+            if e[-1] == 1:
+                return QQ(0)
+            if vec.equal(d, e):
+                return QQ(0)
+            return J(e[:-1])
+        ncdt = W.flow_tree_formula(z, f1, quant=False)
+        return (ncdt(list(d)+[1])-Z[i](d))/m*(-1)**(m)
+    J = Invariant(f, Q)
+    return J
+
+
+def intAtt_from_crystals(Q):
+    """Numerical integer attractor invariants obtained by recursion from
+    the NCDT invariants (computed by counting crystals) and the flow tree
+    formula.
+
+    This algorithm works for any brane tiling.
+
+    EXAMPLE::
+        
+        sage: from msinvar import *
+        sage: Q=BT_example(6); Q
+        P2=C^3/(1,1,1): Quiver with 3 vertices, 9 arrows and potential with 6 terms
+        sage: Q.prec([1,1,1])
+        sage: Q.intAtt_from_crystals().dict()  
+        {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -3}
+    """
+    from msinvar.invariants import rat2int_num
+    return rat2int_num(ratAtt_from_crystals(Q))

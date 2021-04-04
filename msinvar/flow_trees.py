@@ -121,26 +121,31 @@ def transform_g(f, t=0):
     return Transform(F)
 
 
-def flow_tree_formula(W, z, I, d=None):
+def flow_tree_formula(W, z, I, d=None, quant=True):
     r"""Flow tree formula, conjectured in :arxiv:`1804.06928` and proved
     in :arxiv:`2102.11200`. We use its modification from :arxiv:`2101.07636`.
 
     - ``W`` -- wall-crossing structure :class:`WCS`.
     - ``z`` -- stability parameter.
     - ``I`` -- rational attractor invariant `\bar\Omega_*`.
+    - ``quant`` -- quantized or not.
     """
     z = Stability.check(z)
     if max(abs(i) for i in z.a) < 1e-3:
         raise ValueError("Stability coordinates are too small")
 
     if d is None:
-        return Invariant(lambda d: flow_tree_formula(W, z, I, d), W)
+        return Invariant(lambda d: flow_tree_formula(W, z, I, d, quant), W)
     if vec.zero(d):
         return 0
 
-    def kp(m):
-        y = W.y
-        return QQ((-1)**(m-1))*(1/y**m-y**m)/(1/y-y)
+    if quant:
+        def kp(m):
+            y = W.y
+            return QQ((-1)**(m-1))*(1/y**m-y**m)/(1/y-y)
+    else:
+        def kp(m):
+            return QQ((-1)**(m-1)*m)
 
     def mult_factorial(l):
         m = {}

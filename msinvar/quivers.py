@@ -151,14 +151,20 @@ class Quiver(DiGraph, WCS):
                  loops=True, multiedges=True, name=None,
                  pos=None,  format=None, weighted=None, data_structure=None):
         """Init a quiver."""
-        if data is not None and isinstance(data, str):
-            data = Quiver._get_arrow_set(data)
-        if potential is not None:
-            self._potential = Quiver._get_potential(potential)
-            if data is None:
-                data = Quiver._get_arrow_set(self._potential)
+        if data is not None and isinstance(data, Quiver):
+            self._potential = data.potential()
+            prec = prec or data.prec()
+            name = name or data.name()
+            data = data.arrows()
         else:
-            self._potential = None
+            if data is not None and isinstance(data, str):
+                data = Quiver._get_arrow_set(data)
+            if potential is not None:
+                self._potential = Quiver._get_potential(potential)
+                if data is None:
+                    data = Quiver._get_arrow_set(self._potential)
+            else:
+                self._potential = None
         DiGraph.__init__(self, data=data, loops=loops,
                          multiedges=multiedges, name=name)
         self._arrows = []

@@ -294,9 +294,9 @@ def Psi_map(I, d=None):
     n = gcd(d)
     val = 0
     for k in divisors(n):
-        d1 = [i//k for i in d]
-        if I(d1) != 0:
-            val += I(d1).adams(k)/k
+        c = I([i//k for i in d])
+        if c != 0:
+            val += c.adams(k)/k
     return val
 
 
@@ -309,11 +309,36 @@ def IPsi_map(I, d=None):
     n = gcd(d)
     val = 0
     for k in divisors(n):
-        d1 = [i//k for i in d]
-        if I(d1) != 0:
-            val += moebius(k) * I(d1).adams(k)/k
+        c = I([i//k for i in d])
+        if c != 0:
+            val += moebius(k) * c.adams(k)/k
     return val
 
+def rat2int_num(I, d=None):
+    if d is None:
+        return Invariant(lambda d: rat2int_num(I, d), I)
+    if vec.iszero(d):
+        return 0
+    n = gcd(d)
+    val = 0
+    for k in divisors(n):
+        c = I([i//k for i in d])
+        if c != 0:
+            val += moebius(k) * c/(k*k)
+    return val
+
+def int2rat_num(I, d=None):
+    if d is None:
+        return Invariant(lambda d: int2rat_num(I, d), I)
+    if vec.iszero(d):
+        return 0
+    n = gcd(d)
+    val = 0
+    for k in divisors(n):
+        c = I([i//k for i in d])
+        if c != 0:
+            val += c/(k*k)
+    return val
 
 def recursive_inversion(T):
     """Invert the transformation (map on invariants) T, assuming that

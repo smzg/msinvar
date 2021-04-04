@@ -443,10 +443,10 @@ class WallCrossingStructure:
         from msinvar.flow_trees import attr_tree_formula
         return attr_tree_formula(self, z, I, t)
 
-    def flow_tree_formula(self, z, I):
+    def flow_tree_formula(self, z, I, **kw):
         """See :meth:`msinvar.flow_trees.flow_tree_formula`."""
         from msinvar.flow_trees import flow_tree_formula
-        return flow_tree_formula(self, z, I)
+        return flow_tree_formula(self, z, I, **kw)
 
 
 WCS = WallCrossingStructure
