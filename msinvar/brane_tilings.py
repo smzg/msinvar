@@ -80,7 +80,7 @@ class BTQuiver(Quiver):
     """Quiver with potential associated with a brane tiling.
 
     Contains the method :meth:`wt` such that two paths are equivalent (equal
-    in the Jacobian algebra if and only if their weights are equal).
+    in the Jacobian algebra) if and only if their weights are equal.
     """
 
     def __init__(self, *args, **kw):
