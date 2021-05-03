@@ -371,24 +371,26 @@ class WallCrossingStructure:
         return z
         # return self.self_stab(d).randomize()
 
-    def stkAtt(self, I=None):
+    def stkAtt(self, I=None, sign=None):
         """Calculate stacky attractor invariant assuming that the total 
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
         def f(d):
             z = self.attr_stab(d)
+            if sign is not None:
+                z.a = [i*sign for i in z.a]
             I1 = self.stacky(z, I)
             return I1(d)
         return Invariant(f, self)
 
-    def ratAtt(self, I=None):
+    def ratAtt(self, I=None, sign=None):
         """Calculate rational attractor invariant assuming that the total 
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
-        return self.stk2rat(self.stkAtt(I))
+        return self.stk2rat(self.stkAtt(I, sign))
 
-    def intAtt(self, I=None):
+    def intAtt(self, I=None, sign=None):
         """Calculate integer attractor invariant assuming that the total 
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
-        return self.stk2int(self.stkAtt(I))
+        return self.stk2int(self.stkAtt(I, sign))
 
     OmhAtt = stkAtt
     OmbAtt = ratAtt
