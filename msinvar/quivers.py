@@ -300,7 +300,10 @@ class Quiver(DiGraph, WCS):
         from msinvar.invariants import Invariant
         from msinvar.utils import phi
         y = self.y
-        def f(d): return (-y)**(-self.eform(d, d))/phi(1/y**2, d)
+        def f(d): 
+            if all(i>=0 for i in d):
+                return (-y)**(-self.eform(d, d))/phi(1/y**2, d)
+            return 0
         return Invariant(f, self)
 
     def get_eform_matrix(self):

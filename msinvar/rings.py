@@ -59,7 +59,7 @@ class RationalFunctionField(FractionField_generic):
         super().__init__(R, element_class=RationalFunction)  # , category=cat)
         LambdaRings.add_ring(self)
 
-    def symbolic(self, f):
+    def symb(self, f):
         """
         Symbolic expression of a given rational function f.
         """
@@ -85,6 +85,10 @@ class RationalFunction(FractionFieldElement):
         if self == 0:
             return self
         return self.parent(self.factor().expand())
+    
+    def symb(self):
+        return SR(self)
+        # return self.parent().symbolic(self)
 
 
 def root_vars(f, k=2):

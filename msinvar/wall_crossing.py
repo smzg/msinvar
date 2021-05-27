@@ -371,6 +371,24 @@ class WallCrossingStructure:
         return z
         # return self.self_stab(d).randomize()
 
+    def is_central(self, d):
+        n = len(d)
+        return all(self.sform(vec.basis(i, n), d) == 0 for i in range(n))
+
+    def trace(self, I=None, d=None):
+        if I is None:
+            I = self.total()
+        if d is None:
+            return Invariant(lambda d: self.trace(I, d), I)
+        if not self.is_central(d):
+            return 0
+        f = 0
+        for e, c in I.dict().items():
+            e1 = vec.add(e, d)
+            if all(i >= 0 for i in e1):
+                f += c*I(e1)
+        return f
+
     def stkAtt(self, I=None, sign=None):
         """Calculate stacky attractor invariant assuming that the total 
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
