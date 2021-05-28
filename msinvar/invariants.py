@@ -35,6 +35,7 @@ from sage.misc.misc_c import prod
 from sage.arith.misc import divisors, gcd, moebius
 from sage.functions.other import factorial
 from sage.rings.rational_field import QQ
+from sage.rings.polynomial.polydict import ETuple
 
 from msinvar.tm_polynomials import TMPolynomial, TMPolynomialRing
 from msinvar.utils import cache, vec
@@ -85,7 +86,10 @@ class Invariant:
             try:
                 return f[tuple(d)]
             except:
-                return 0
+                try:
+                    return f[ETuple(d)]
+                except:
+                    return 0
         return f(d)
 
     def get_ring(self, I=None):
@@ -127,6 +131,23 @@ class Invariant:
         for d in IntegerVectors_iterator(prec):
             if stab is None or stab(d) == slope:
                 add(d)
+        return dct
+
+    def dict_neg(self, prec=None):
+        """
+        Convert invariant to a dictionary, with keys having possibly negative entries. 
+        """
+        dct = {}
+
+        def add(d):
+            c = self.value(d)
+            if c != 0:
+                dct[tuple(d)] = c
+
+        p1 = self.get_prec(prec)
+        p2 = vec.scal(2, p1)
+        for d in IntegerVectors_iterator(p2):
+            add(vec.sub(d, p1))
         return dct
 
     def poly(self, R=None, stab=None, slope=None):
@@ -314,6 +335,7 @@ def IPsi_map(I, d=None):
             val += moebius(k) * c.adams(k)/k
     return val
 
+
 def rat2int_num(I, d=None):
     if d is None:
         return Invariant(lambda d: rat2int_num(I, d), I)
@@ -327,6 +349,7 @@ def rat2int_num(I, d=None):
             val += moebius(k) * c/(k*k)
     return val
 
+
 def int2rat_num(I, d=None):
     if d is None:
         return Invariant(lambda d: int2rat_num(I, d), I)
@@ -339,6 +362,7 @@ def int2rat_num(I, d=None):
         if c != 0:
             val += c/(k*k)
     return val
+
 
 def recursive_inversion(T):
     """Invert the transformation (map on invariants) T, assuming that
