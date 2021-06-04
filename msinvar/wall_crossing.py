@@ -365,11 +365,7 @@ class WallCrossingStructure:
 
     def attr_stab(self, d):
         """Attractor stability for the dimension vector ``d``."""
-        z = self.self_stab(d)
-        while not z.is_generic(d):
-            z = z.randomize()
-        return z
-        # return self.self_stab(d).randomize()
+        return self.self_stab(d).randomize(d)
 
     def is_central(self, d):
         n = len(d)

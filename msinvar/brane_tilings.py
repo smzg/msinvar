@@ -314,6 +314,7 @@ def ratAtt_from_crystals(Q):
     z = Stability([0]*r+[1])
 
     def f(d):
+        #the value of the rational attr inv at d
         dn = sum(d)
         if dn == 0:
             return 0
@@ -323,6 +324,8 @@ def ratAtt_from_crystals(Q):
         W.sform = lambda a, b: Q.sform(a, b)-a[-1]*b[i]+b[-1]*a[i]
 
         def f1(e):
+        #the 'fake' value of the rational attr. inv. for the framed quiver
+        #at e, with f1(e)=f(e) for e<d and f1(d)=0
             if sum(e) == 1:
                 return QQ(1)
             if e[-1] == 1:
@@ -331,6 +334,7 @@ def ratAtt_from_crystals(Q):
                 return QQ(0)
             return J(e[:-1])
         ncdt = W.flow_tree_formula(z, f1, quant=False)
+        #we use the fact that Z(d)=bOm(d,1)=flow_tree(f1)(d,1)+m(-1)^(m+1)*Om_*(d)
         return (ncdt(list(d)+[1])-Z[i](d))/m*(-1)**(m)
     J = Invariant(f, Q)
     return J

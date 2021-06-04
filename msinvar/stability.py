@@ -75,7 +75,7 @@ class Stability:
 
     def has_slope(self, d, slope):
         try:
-            return np.round(self._slope(d)-slope, PRECISION)==0
+            return np.round(self._slope(d)-slope, PRECISION) == 0
         except:
             return False
 
@@ -97,10 +97,6 @@ class Stability:
         te = self.normalize(d[0])
         return all(te(d[i]) == 0 for i in range(1, len(d)))
 
-    def dim(self):  # used in HN_transform
-        """Rank of the lattice."""
-        return len(self.a)
-
     def weight(self, d):
         """Return vector w such that w*e<0 iff slope(e)<slope(d)."""
         return vec.sub(self.a, vec.scal(self._slope(d), self.b))
@@ -110,10 +106,14 @@ class Stability:
         w = self.weight(d)
         return lambda d: np.round(vec.dot(w, d), PRECISION)
 
-    def randomize(self):
+    def randomize(self, d=None):
         """Generic perturbation of self."""
-        a, b = self.a, self.b
-        return Stability([i+random()*1e-5 for i in a], b)
+        if d is None:
+            return Stability([i+random()*1e-5 for i in self.a], self.b)
+        z = self.randomize()
+        while not z.is_generic(d):
+            z = self.randomize()
+        return z
 
     def is_generic(self, prec):
         """Return True if slope(d)=slope(e) for d,e<=prec implies that

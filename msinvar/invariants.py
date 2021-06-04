@@ -551,12 +551,12 @@ def joyce_transform(z, z1):
 def HN_transform(z):
     """See :arxiv:`2101.07636`."""
     z = Stability.check(z)
-    z1 = Stability.trivial(z.dim())
+    z1 = Stability.trivial(len(z.a))
     return joyce_transform(z, z1)
 
 
 def indivisible(d):
-    """Return True if ``d`` is an indivisible vector."""
+    """Return indivisible vector proportional to  ``d``."""
     d = array(d)
     n = gcd(d)
     return d//n

@@ -96,17 +96,18 @@ def timer(f, n=1000):
         f
     return time()-t1
 
+
 def set_plots():
     from sage.graphs.graph_plot import DEFAULT_PLOT_OPTIONS as DPO
     DPO['layout'] = 'circular'
-    DPO['loop_size']=.3
+    DPO['loop_size'] = .3
 #####################################
 
 
 # @cache
 def phi(q, n):
     r"""Return `(q)_n=\prod_{i=1}^n(1-q^i)`.
-    
+
     If ``n`` is a list, apply :meth:`phi` to all entries and take the product.
     """
     if isiterable(n):
@@ -117,7 +118,7 @@ def phi(q, n):
 # @cache
 def poch(a, q, n):
     r"""Return the Pochhammer symbol `(a;q)_n=\prod_{i=0}^{n-1}(1-aq^i)`.
-    
+
     If ``n`` is a list, apply :meth:`poch` to all entries and take the product.
         """
     if isiterable(n):
