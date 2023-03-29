@@ -107,7 +107,7 @@ class BTQuiver(Quiver):
 
     def ideal_dim(self, I):
         """Dimension vector of an ideal I that consists of atoms (paths)."""
-        vert = self.vertices()
+        vert = self.vertices(sort=False)
         d = {i: 0 for i in vert}
         for u in I:
             d[u.t] += 1
@@ -308,7 +308,7 @@ def ratAtt_from_crystals(Q):
         {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -3}
     """
     N = sum(Q.prec())
-    Z = [Invariant(Q.NCDT(i, N)) for i in Q.vertices()]
+    Z = [Invariant(Q.NCDT(i, N)) for i in Q.vertices(sort=False)]
     r = Q.vertex_num()
     W = WCS(rank=r+1, sform=None, prec=Q.prec()+[1])
     z = Stability([0]*r+[1])
