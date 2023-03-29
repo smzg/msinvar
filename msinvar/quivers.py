@@ -12,9 +12,9 @@ EXAMPLES::
     sage: from msinvar.quivers import *
     sage: Q=KroneckerQuiver(2); Q
     Kronecker quiver: Quiver with 2 vertices and 2 arrows
-    sage: Q.vertices()
+    sage: Q.vertices(sort=False)
     [1, 2]
-    sage: Q.arrows()
+    sage: sorted(Q.arrows())
     [(1, 2, 0), (1, 2, 1)]
     sage: Q.prec([2,2]) # precision vector
     sage: Q.simple().dict() # counting simple objects
@@ -28,7 +28,7 @@ EXAMPLES::
     
     sage: Q=Quiver('1-2-3', prec=[2,2,2]); Q
     Quiver with 3 vertices and 2 arrows
-    sage: Q.arrows()
+    sage: sorted(Q.arrows())
     [(1, 2, 1), (2, 3, 1)]
     sage: Q.simple().dict() # counting simple objects
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
@@ -37,7 +37,7 @@ EXAMPLES::
     
     sage: Q=Quiver('1-2-3,1-3', prec=[2,2,2]); Q
     Quiver with 3 vertices and 3 arrows
-    sage: Q.arrows()
+    sage: sorted(Q.arrows())
     [(1, 2, 1), (1, 3, 1), (2, 3, 1)]
     sage: Q.simple().dict() # counting simple objects
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
@@ -46,7 +46,7 @@ EXAMPLES::
     
     sage: CQ=CyclicQuiver(3, prec=[2,2,2]); CQ
     Cyclic quiver: Quiver with 3 vertices and 3 arrows
-    sage: CQ.arrows()
+    sage: sorted(CQ.arrows())
     [(0, 1, 1), (1, 2, 1), (2, 0, 1)]
     sage: CQ.simple().dict() # counting simple objects
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): y^2 - 1}
@@ -57,7 +57,7 @@ EXAMPLES::
     
     sage: PQ=CQ.translation_PQ(1); PQ
     Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
-    sage: PQ.arrows()
+    sage: sorted(PQ.arrows())
     [(0, 1, 'a0'),
      (0, 1, 'a1*'),
      (0, 1, 'l0'),
@@ -141,7 +141,8 @@ class Quiver(DiGraph, WCS):
 
     ::
 
-        sage: Q=Quiver(potential=['1-2-3-1',[[1,2,2],[2,1]]]); Q.arrows()
+        sage: Q=Quiver(potential=['1-2-3-1',[[1,2,2],[2,1]]])
+        sage: sorted(Q.arrows())
         [(1, 2, 1), (1, 2, 2), (2, 1, 1), (2, 3, 1), (3, 1, 1)]
         sage: Q.potential()
         [[(1, 2, 1), (2, 3, 1), (3, 1, 1)], [(1, 2, 2), (2, 1, 1)]]
@@ -168,7 +169,7 @@ class Quiver(DiGraph, WCS):
         DiGraph.__init__(self, data=data, loops=loops,
                          multiedges=multiedges, name=name)
         self._arrows = []
-        vert = self.vertices()
+        vert = self.vertices(sort=False)
         self._vertex_dict = {v: i for i, v in enumerate(vert)}
         self._set_quiver_dict()
         WCS.__init__(self, rank=len(vert), prec=prec)
@@ -189,7 +190,7 @@ class Quiver(DiGraph, WCS):
         if not n is None:
             return self._arrows[n]
         if len(self._arrows) != self.arrow_num():
-            self._arrows = list(self.edges())
+            self._arrows = list(self.edges(sort=False))
         return self._arrows
 
     def potential(self): return self._potential
@@ -262,7 +263,8 @@ class Quiver(DiGraph, WCS):
         EXAMPLES::
 
             sage: from msinvar import *
-            sage: Q=KroneckerQuiver(2); Q.arrows()
+            sage: Q=KroneckerQuiver(2)
+            sage: sorted(Q.arrows())
             [(1, 2, 0), (1, 2, 1)]
             sage: Q.eform([1,0],[0,1])
             -2
@@ -280,7 +282,8 @@ class Quiver(DiGraph, WCS):
         EXAMPLES::
 
             sage: from msinvar import *
-            sage: Q=KroneckerQuiver(2); Q.arrows()
+            sage: Q=KroneckerQuiver(2)
+            sage: sorted(Q.arrows())
             [(1, 2, 0), (1, 2, 1)]
             sage: Q.sform([1,0],[0,1])
             -2
@@ -576,7 +579,7 @@ class CyclicQuiver(Quiver):
             sage: from msinvar import *
             sage: Q=CyclicQuiver(3)
             sage: f=Q.shift(2)
-            sage: {i:f(i) for i in Q.vertices()}
+            sage: {i:f(i) for i in Q.vertices(sort=False)}
             {0: 2, 1: 0, 2: 1}
             sage: {i:f(i) for i in Q.arrows()}
             {(0, 1, 1): (2, 0, 1), (1, 2, 1): (0, 1, 1), (2, 0, 1): (1, 2, 1)}
