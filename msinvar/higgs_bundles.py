@@ -4,7 +4,7 @@ Motivic classes of the moduli spaces of twisted Higgs bundles
 For more details see :arxiv:`1104.5698` and :arxiv:`1901.02439`.
 
 EXAMPLES::
-    
+
     sage: from msinvar.higgs_bundles import CurveAlgebra
     sage: from msinvar.higgs_bundles import twisted_higgs_bundles_invariant as invar
     sage: C=CurveAlgebra(g=2)

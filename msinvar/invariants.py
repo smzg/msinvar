@@ -1,7 +1,7 @@
 r"""
 Invariant class that associates a value with every dimension vector
 
-An invariant can be constructed from a TMPolynomial, a dictionary, a function 
+An invariant can be constructed from a TMPolynomial, a dictionary, a function
 or another invariant. Every invariant can be transformed to a TMPolynomial
 or a dictionary. We cache the values of an invariant so that they don't have
 to be computed repeatedly.
@@ -46,10 +46,10 @@ from msinvar.stability import Stability
 
 class Invariant:
     """
-    Invariant class that associates an invariants I(d) with every dimension 
+    Invariant class that associates an invariants I(d) with every dimension
     vector d.
 
-    An argument can be a TMPolynomial, a dictionary, a function or another 
+    An argument can be a TMPolynomial, a dictionary, a function or another
     invariant.
     Objects have methods that return associated TMPolynomials and dictionaries.
     If possible, we save the ring (TMPoly) in order to transform our invariant
@@ -85,10 +85,10 @@ class Invariant:
         if isinstance(f, dict):
             try:
                 return f[tuple(d)]
-            except:
+            except KeyError:
                 try:
                     return f[ETuple(d)]
-                except:
+                except KeyError:
                     return 0
         return f(d)
 
@@ -135,7 +135,7 @@ class Invariant:
 
     def dict_neg(self, prec=None):
         """
-        Convert invariant to a dictionary, with keys having possibly negative entries. 
+        Convert invariant to a dictionary, with keys having possibly negative entries.
         """
         dct = {}
 
@@ -259,7 +259,8 @@ def log_map(I, d=None):
     if d is None:
         return Invariant(lambda d: log_map(I, d), I)
 
-    def F(l): return QQ((-1)**(len(l)-1)/len(l))
+    def F(l):
+        return QQ((-1)**(len(l) - 1) / len(l))
     val = 0
     for l in OrderedMultiPartitions_iterator(d):
         val += F(l) * prod(I(a) for a in l)
@@ -271,7 +272,8 @@ def exp_map(I, d=None):
     if d is None:
         return Invariant(lambda d: exp_map(I, d), I)
 
-    def F(l): return QQ(1/factorial(len(l)))
+    def F(l):
+        return QQ((1, factorial(len(l))))
     val = 0
     for l in OrderedMultiPartitions_iterator(d):
         val += F(l) * prod(I(a) for a in l)

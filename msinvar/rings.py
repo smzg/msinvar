@@ -2,7 +2,7 @@ r"""
 Some base rings in which our invariants take values
 
 EXAMPLES::
-    
+
     sage: from msinvar.rings import RF
     sage: R=RF('u,v')
     sage: R.inject_variables(verbose=False)
@@ -68,7 +68,7 @@ class RationalFunctionField(FractionField_generic):
 
     def _repr_(self):
         vars = ', '.join(self.variable_names())
-        return 'Field of Rational Functions in '+vars
+        return 'Field of Rational Functions in ' + vars
 
 
 RF = RationalFunctionField
@@ -85,7 +85,7 @@ class RationalFunction(FractionFieldElement):
         if self == 0:
             return self
         return self.parent(self.factor().expand())
-    
+
     def symb(self):
         return SR(self)
         # return self.parent().symbolic(self)
@@ -97,9 +97,10 @@ def root_vars(f, k=2):
     """
     R = f.parent()
     if R in QuotientFields:
-        return R(root_vars(f.numerator(), k)/root_vars(f.denominator(), k))
+        return R(root_vars(f.numerator(), k) / root_vars(f.denominator(), k))
 
-    def root(e): return tuple(i//k for i in e)
+    def root(e):
+        return tuple(i // k for i in e)
     dct = {root(e): c for e, c in f.dict().items()}
     return R(dct)
 

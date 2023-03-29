@@ -1,11 +1,13 @@
 import sage.all
-import sys, os, six
+import sys
+import os
+import six
 from sage.env import SAGE_DOC_SRC, SAGE_DOC, SAGE_SRC
 
 project = u"Moduli space invariants"
 copyright = u"2021, Sergey Mozgovoy"
 package_name = 'msinvar'
-package_folder = "../.." #root folder of the package folder
+package_folder = "../.."  # root folder of the package folder
 authors = u"Sergey Mozgovoy"
 
 sys.path.insert(0, os.path.abspath(package_folder))
@@ -15,15 +17,17 @@ sys.path.append(os.path.join(SAGE_SRC, "sage_setup", "docbuild", "ext"))
 
 from msinvar.version import version
 
-mathjax_path="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
+mathjax_path = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
 
 html_baseurl = 'https://smzg.github.io/msinvar/'
 html_extra_path = ['robots.txt']
+
 
 def setup(app):
     # app.connect("autodoc-skip-member", skip)
     app.add_role('arxiv', autolink('arXiv:', 'https://arxiv.org/abs/'))
     app.add_role('doi', autolink('doi:', 'https://doi.org/'))
+
 
 # add __init__ to autodoc
 def skip(app, what, name, obj, would_skip, options):
@@ -31,14 +35,17 @@ def skip(app, what, name, obj, would_skip, options):
         return False
     return would_skip
 
+
 def autolink(link_name, link_url):
     from docutils import nodes
+
     def role(name, rawtext, text, lineno, inliner, options={}, content=[]):
-        full_name=link_name+text
-        full_url=link_url+text
+        full_name = link_name + text
+        full_url = link_url + text
         node = nodes.reference(rawtext, full_name, refuri=full_url, **options)
         return [node], []
     return role
+
 
 autodoc_member_order = 'bysource'
 
@@ -213,29 +220,29 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  ('index', package_name + '.tex', u'Documentation of ' + six.text_type(package_name),
-   authors, 'manual'),
+    ('index', package_name + '.tex', u'Documentation of ' + six.text_type(package_name),
+     authors, 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
 # the title page.
-#latex_logo = None
+# latex_logo = None
 
 # For "manual" documents, if this is true, then toplevel headings are parts,
 # not chapters.
-#latex_use_parts = False
+# latex_use_parts = False
 
 # If true, show page references after internal links.
-#latex_show_pagerefs = False
+# latex_show_pagerefs = False
 
 # If true, show URL addresses after external links.
-#latex_show_urls = False
+# latex_show_urls = False
 
 # Documents to append as an appendix to all manuals.
-#latex_appendices = []
+# latex_appendices = []
 
 # If false, no module index is generated.
-#latex_domain_indices = True
+# latex_domain_indices = True
 
 
 # -- Options for manual page output ---------------------------------------
@@ -257,22 +264,22 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', package_name, six.text_type(package_name) + u" documentation",
-   authors, package_name, project,
-   'Miscellaneous'),
+    ('index', package_name, six.text_type(package_name) + u" documentation",
+     authors, package_name, project,
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.
-#texinfo_appendices = []
+# texinfo_appendices = []
 
 # If false, no module index is generated.
-#texinfo_domain_indices = True
+# texinfo_domain_indices = True
 
 # How to display URL addresses: 'footnote', 'no', or 'inline'.
-#texinfo_show_urls = 'footnote'
+# texinfo_show_urls = 'footnote'
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
-#texinfo_no_detailmenu = False
+# texinfo_no_detailmenu = False
 
 ########################################################################
 
@@ -316,10 +323,12 @@ texinfo_documents = [
 from sphinx.highlighting import PygmentsBridge
 from pygments.formatters.latex import LatexFormatter
 
+
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
         super(CustomLatexFormatter, self).__init__(**options)
         self.verboptions = r"formatcom=\footnotesize"
+
 
 PygmentsBridge.latex_formatter = CustomLatexFormatter
 
@@ -354,7 +363,7 @@ for macro in sage_latex_macros():
     pngmath_latex_preamble += macro + '\n'
 
 
-## The following is needed on conda-forge sagemath
+# The following is needed on conda-forge sagemath
 from sage.repl.user_globals import initialize_globals
 import sage.all
 my_globs = dict()
@@ -364,7 +373,7 @@ initialize_globals(sage.all, my_globs)
 plot_html_show_formats = False
 plot_formats = ['svg', 'pdf', 'png']
 
-### from Sage src/doc/common/conf.py
+# from Sage src/doc/common/conf.py
 # This code is executed before each ".. PLOT::" directive in the Sphinx
 # documentation. It defines a 'sphinx_plot' function that displays a Sage object
 # through matplotlib, so that it will be displayed in the HTML doc.

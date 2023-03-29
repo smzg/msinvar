@@ -36,22 +36,38 @@ def cache(function):
 
 class vec:
     @staticmethod
-    def le(a, b): return all(i <= j for i, j in zip(a, b))
+    def le(a, b):
+        return all(i <= j for i, j in zip(a, b))
+
     @staticmethod
-    def iszero(a): return all(i == 0 for i in a)
+    def iszero(a):
+        return all(i == 0 for i in a)
+
     zero = iszero
+
     @staticmethod
-    def equal(a, b): return all(i == j for i, j in zip(a, b))
+    def equal(a, b):
+        return all(i == j for i, j in zip(a, b))
+
     @staticmethod
-    def vmin(a, b): return [min(i, j) for i, j in zip(a, b)]
+    def vmin(a, b):
+        return [min(i, j) for i, j in zip(a, b)]
+
     @staticmethod
-    def vmax(a, b): return [max(i, j) for i, j in zip(a, b)]
+    def vmax(a, b):
+        return [max(i, j) for i, j in zip(a, b)]
+
     @staticmethod
-    def scal(c, v): return [c*i for i in v]
+    def scal(c, v):
+        return [c * i for i in v]
+
     @staticmethod
-    def dot(a, b): return sum(i*j for i, j in zip(a, b))
+    def dot(a, b):
+        return sum(i * j for i, j in zip(a, b))
+
     @staticmethod
-    def sub(a, b): return [i-j for i, j in zip(a, b)]
+    def sub(a, b):
+        return [i - j for i, j in zip(a, b)]
 
     @staticmethod
     def add(a, b=None):
@@ -60,7 +76,7 @@ class vec:
         If b=None, return the sum of vectors in the list a.
         """
         if b is not None:
-            return [i+j for i, j in zip(a, b)]
+            return [i + j for i, j in zip(a, b)]
         v = a[0]
         for i in range(1, len(a)):
             v = vec.add(v, a[i])
@@ -70,11 +86,11 @@ class vec:
     def basis(i, n):
         """Return the standard ``i``-th basis vector of dimension ``n``.
         Here 0<=i<n."""
-        return [0]*i+[1]+[0]*(n-i-1)
+        return [0] * i + [1] + [0] * (n - i - 1)
     # def zero(n): return [0]*n
 
 
-##### Information commands ##########
+# #### Information commands ####
 def info(f):
     if inspect.isclass(f):
         return inspect.getmro(f)
@@ -82,8 +98,9 @@ def info(f):
         print(inspect.getsource(f))
 
 
-def disp(G): return G.plot(edge_labels=True,
-                           layout='circular').matplotlib(figsize=[10, 6])
+def disp(G):
+    return G.plot(edge_labels=True,
+                  layout='circular').matplotlib(figsize=[10, 6])
 
 
 which = import_statements

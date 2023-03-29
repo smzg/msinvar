@@ -1,5 +1,5 @@
 r"""
-This module implements 
+This module implements
 attractor tree formula (see :arxiv:`1910.03098` and :arxiv:`2101.07636`)
 and flow tree formula (see :arxiv:`1804.06928` and :arxiv:`2102.11200`).
 
@@ -25,9 +25,9 @@ above stability z::
      (2, 0): 1/2*y/(y^2 + 1),
      (2, 1): 1,
      (2, 2): (-1/2*y^4 - 1/2)/(y^3 + y)}
-    
+
 Next we apply flow tree formula::
-    
+
     sage: Omb2=flow_tree_formula(Q, z, OmbAtt)
     sage: Omb2.simp().dict()
     {(0, 1): 1,
@@ -38,10 +38,10 @@ Next we apply flow tree formula::
      (2, 0): 1/2*y/(y^2 + 1),
      (2, 1): 1,
      (2, 2): (-1/2*y^4 - 1/2)/(y^3 + y)}
-    
+
 Finally, we apply the wall-crossing formula to determine the same invariant
-from the total invariant (stacky invariant for the trivial stability)::    
-    
+from the total invariant (stacky invariant for the trivial stability)::
+
     sage: Omb3=Q.rat_from_total(z, Q.total())
     sage: Omb3.dict()
     {(0, 1): 1,
@@ -81,7 +81,6 @@ def attr_tree_formula(W, z, I, t=0):
     - ``I`` -- rational attractor invariant `\bar\Omega_*`.
     - ``t`` -- rational number.
     """
-
     T = attr_tree_transform(W, z, t)
     T.twist = W.twist
     I1 = Invariant(lambda d: I(d)/W.gm, W)
@@ -151,12 +150,13 @@ def flow_tree_formula(W, z, I, d=None, quant=True):
         m = {}
         for i in l:
             i = tuple(i)
-            if not i in m:
+            if i not in m:
                 m[i] = 0
             m[i] += 1
         return prod(factorial(i) for i in m.values())
 
-    def rand1(c): return random()*1e-3 if c == 0 else c*(1+random()*1e-3)
+    def rand1(c):
+        return random()*1e-3 if c == 0 else c*(1+random()*1e-3)
 
     te = z.normalize(d)
     A = 0
@@ -201,5 +201,5 @@ def simp(f):
         return f
     try:
         return f.parent(f.factor().expand())
-    except:
+    except (TypeError, ValueError):
         return f

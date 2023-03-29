@@ -88,7 +88,7 @@ class Stability:
         return self.slope(d) <= self.slope(e)
 
     def equal(self, d, e=None):
-        """Return True if slope(d)=slope(e). 
+        """Return True if slope(d)=slope(e).
         If e=None, then d is a list of vectors which should have the same slope."""
         if e is not None:
             return self.slope(d) == self.slope(e)

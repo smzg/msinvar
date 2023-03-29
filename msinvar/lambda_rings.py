@@ -39,10 +39,10 @@ class LambdaRings(Category_singleton):
         sage: (x+y).adams(2)
         x^2 + y^2
 
-    We can add an existing parent to lambda-rings, or we can use the init 
+    We can add an existing parent to lambda-rings, or we can use the init
     method of a parent. For example, :class:`msinvar.tm_polynomials.TMPoly`
     is automatically equipped with a lambda-ring structure.
-    
+
     EXAMPLE::
 
         sage: from msinvar import TMPoly
@@ -105,7 +105,9 @@ class LambdaRings(Category_singleton):
             returns self[a]. For this reason we use a different name for our method.
             """
             p = f.parent().realization_of().powersum()
-            def g(part): return prod(self.adams(n) for n in part)
+
+            def g(part):
+                return prod(self.adams(n) for n in part)
             return p._apply_module_morphism(p(f), g)
 
 
@@ -115,7 +117,7 @@ def is_LambdaRingElement(a):
 
 def default_adams(f, n):
     """
-    Return the default adams operation.
+    Return the default Adams operation.
 
     It raises all variables in ``f`` to the ``n``-th power.
     """

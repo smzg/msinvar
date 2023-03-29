@@ -2,7 +2,7 @@ r"""
 DT invariants of curves
 
 We compute invariants of moduli stacks of semistable vector bundles on a curve
-using the formula of 
+using the formula of
 `Zagier <https://people.mpim-bonn.mpg.de/zagier/files/mpim/94-5/fulltext.pdf>`_
 in the form presented in :arxiv:`1310.4991`.
 
@@ -29,7 +29,7 @@ EXAMPLES::
     Curve of genus 2
     sage: I=C.intDT()
     sage: I([1,0])
-    y^4 - 4*y^3 + 6*y^2 - 4*y + 1   
+    y^4 - 4*y^3 + 6*y^2 - 4*y + 1
     sage: I([2,0])
     y^10 - 4*y^9 + 7*y^8 - 8*y^7 + 8*y^6 - 8*y^5 + 8*y^4 - 8*y^3 + 7*y^2 - 4*y + 1
     sage: I([2,1])
@@ -162,22 +162,22 @@ class Curve(WCS):
         return I.term_twist(lambda a: (-self.y)**(1-self.eform(a, a)))
 
     def intDT_val(self, r, d=None):
-        """Motivic class of the moduli space of stable vector bundles 
+        """Motivic class of the moduli space of stable vector bundles
         having rank ``r`` and degree ``d`` (not necessarily coprime)."""
         if d is None:
             r, d = r[0], r[1]
         return self.intDT()([r, d])
 
     def stable(self, slope=0):
-        """Motivic classes of moduli spaces of stable vector bundles 
+        """Motivic classes of moduli spaces of stable vector bundles
         having slope d/r equal ``slope``."""
         z = Stability([0, 1], [1, 0])
         I = self.stacky().restrict(z, slope)
         return self.stable_from_stacky(I)
 
     def stable_val(self, r, d=None):
-        """Motivic class of the moduli space of stable vector bundles 
+        """Motivic class of the moduli space of stable vector bundles
         having rank ``r`` and degree ``d`` (not necessarily coprime)."""
         if d is None:
             r, d = r[0], r[1]
-        return self.stable(d/r)([r, d])
+        return self.stable(d / r)([r, d])

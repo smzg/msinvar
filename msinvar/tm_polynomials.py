@@ -2,7 +2,7 @@ r"""
 Truncated Multivariate polynomials
 
 EXAMPLES::
-    
+
     sage: from msinvar import TMPoly
     sage: R=TMPoly(QQ,2,'x',prec=(2,2))
     sage: R.inject_variables(verbose=False)
@@ -65,7 +65,7 @@ class TMPolynomial(MPolynomial_polydict):
 
     def exp(self):
         N = self.prec_num()
-        if N == None:
+        if N is None:
             raise ValueError("Series is untruncated")
         if self.constant_coefficient() != 0:
             raise ValueError("The constant coefficient should be 0")
@@ -80,7 +80,7 @@ class TMPolynomial(MPolynomial_polydict):
 
     def log(self):
         N = self.prec_num()
-        if N == None:
+        if N is None:
             raise ValueError("Series is untruncated")
         if self.constant_coefficient() != 1:
             raise ValueError("The constant coefficient should be 1")
@@ -98,7 +98,7 @@ class TMPolynomial(MPolynomial_polydict):
         For simplicity we invert only poly with constant coefficient 1
         """
         N = self.prec_num()
-        if N == None:
+        if N is None:
             raise ValueError("Series is untruncated")
         if self.constant_coefficient() != 1:
             raise ValueError("The constant coefficient should be 1")
@@ -116,7 +116,7 @@ class TMPolynomial(MPolynomial_polydict):
 
     def Psi(self):
         N = self.prec_num()
-        if N == None:
+        if N is None:
             raise ValueError("Error: series is untruncated")
         if self.constant_coefficient() != 0:
             raise ValueError("The constant coefficient should be 0")
@@ -130,7 +130,7 @@ class TMPolynomial(MPolynomial_polydict):
 
     def IPsi(self):
         N = self.prec_num()
-        if N == None:
+        if N is None:
             raise ValueError("Error: series is untruncated")
         if self.constant_coefficient() != 0:
             raise ValueError("The constant coefficient should be 0")
@@ -239,7 +239,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
     where ``prec`` is a degree vector or an integer (total degree).
     Monomials of degree ``prec`` are included.
     We implement Adams operations, plethystic Exp and Log
-    (we introduce the category of lambda rings 
+    (we introduce the category of lambda rings
     :class:`msinvar.lambda_rings.LambdaRings` and embed our ring into it).
 
     This is the parent class for truncated multivariate polynomials.
@@ -315,7 +315,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
 
     def prec_num(self):
         d = self._prec
-        if d == None:
+        if d is None:
             return None
         if isiterable(d):
             return sum(d)
@@ -323,7 +323,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
 
     def le_prec(self, v):
         d = self._prec
-        if d == None:
+        if d is None:
             return True
         if isiterable(d):
             return all(i <= j for i, j in zip(v, d))
