@@ -18,7 +18,8 @@ develop:
 	$(SAGE) -pip install --upgrade -e .
 
 test:
-	$(SAGE) setup.py test
+	$(SAGE) -t --force-lib $(PACKAGE)
+	# setup.py test
 
 coverage:
 	$(SAGE) -coverage $(PACKAGE)/*

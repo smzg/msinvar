@@ -26,9 +26,9 @@ EXAMPLES::
 class Poset():
     """
     Poset class.
-    
+
     EXAMPLES::
-    
+
         sage: from msinvar.posets import Poset
         sage: P=Poset([[1,2],[1,3]]); P
         Poset with vertices
@@ -40,6 +40,7 @@ class Poset():
         sage: list(P.ideals())
         [{1, 2, 3}, {1, 2}, {1, 3}, {1}, set()]
     """
+
     def __init__(self, rel, vert=None):
         if vert is None:
             vert = set()
@@ -71,9 +72,9 @@ class Poset():
 
     def ideals(self, size=100):
         """
-        List if ideals in a poset having <=``size`` elements.
+        List of ideals in a poset having <=``size`` elements.
         """
-        if size<0:
+        if size < 0:
             return
         if len(self.vert) == 0 or size == 0:
             yield set()
@@ -94,4 +95,16 @@ class Poset():
 
     def __repr__(self):
         return "Poset with vertices\n"+str(self.vert)\
-            +"\nand relations\n"+str(self.rel)
+            + "\nand relations\n"+str(self.rel)
+
+    def le(self, a, b):
+        vert = {a}
+        new = vert
+        while len(new) > 0:
+            if b in new:
+                return True
+            new = set(r[1] for r in self.rel if r[0] in new)-vert
+            vert.update(new)
+        return False
+
+
