@@ -9,6 +9,7 @@ Collection of utilities.
 #                  http://www.gnu.org/licenses/
 # *****************************************************************************
 
+from functools import reduce, cmp_to_key
 import inspect
 from sage.misc.dev_tools import import_statements
 from sage.misc.misc_c import prod
@@ -18,20 +19,41 @@ def isiterable(i):
     return hasattr(i, '__iter__')
 
 
-def cache(function):
-    # Custom Decorator function
-    from functools import lru_cache
-    new_func = lru_cache(function)
+def hashable(x):
+    try:
+        hash(x)
+        return x
+    except:
+        return tuple(hashable(i) for i in x)
 
-    def tpl(l):
-        if isiterable(l) and not isinstance(l, tuple):
-            return tuple(tpl(x) for x in l)
-        return l
 
-    def wrapper(*args):
-        args = tuple(tpl(x) for x in args)
-        return new_func(*args)
-    return wrapper
+def memoize(f):
+    memo = {}
+
+    def helper(*args):
+        x = hashable(args)
+        if x not in memo:
+            memo[x] = f(*args)
+        return memo[x]
+    return helper
+
+
+cache = memoize
+
+
+def sort(l, le, reverse=False):
+    """Sort the list l in ascending order according to the function le"""
+    def cmp(i, j): return -1 if le(i, j) else 1
+    return sorted(l, key=cmp_to_key(cmp), reverse=reverse)
+
+
+sort1 = sort
+
+
+def prod1(a, b=None):
+    if b is not None:
+        return a*b
+    return reduce(prod1, a, 1)
 
 
 class vec:
@@ -61,10 +83,7 @@ class vec:
         """
         if b is not None:
             return [i+j for i, j in zip(a, b)]
-        v = a[0]
-        for i in range(1, len(a)):
-            v = vec.add(v, a[i])
-        return v
+        return reduce(vec.add, a)
 
     @staticmethod
     def basis(i, n):
@@ -75,6 +94,8 @@ class vec:
 
 
 ##### Information commands ##########
+
+
 def info(f):
     if inspect.isclass(f):
         return inspect.getmro(f)

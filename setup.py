@@ -17,7 +17,7 @@ def readfile(filename):
 # For the tests
 class SageTest(TestCommand):
     def run_tests(self):
-        errno = os.system("sage -t --force-lib msinvar")
+        errno = os.system("sage -t msinvar")
         sys.exit(errno)
 
 setup(
