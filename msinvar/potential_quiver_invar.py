@@ -8,7 +8,7 @@ quiver C_n with the potential consisting of one term (the cycle).
 the induced potential (consisting of 3-cycles), where the action is given
 by (1, k, -k-1) for any 0<=k<r. This potential quiver can be obtained as a
 translation potential quiver of a cyclic quiver, see :arxiv:`1911.01788`.
-Some of the results are presented in :arxiv:`2012.14358`. 
+Some of the results are presented in :arxiv:`2012.14358`.
 
 EXAMPLES::
 
@@ -22,13 +22,13 @@ EXAMPLES::
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -y}
 
 ::
-    
+
     sage: total=cyclic_potential_total(CQ) # Total invar for a cyclic quiver with potential
-    sage: CQ.intAtt(total).dict() #Attractor invar for a cyclic quiver with potential 
+    sage: CQ.intAtt(total).dict() #Attractor invar for a cyclic quiver with potential
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
 
 ::
-    
+
     sage: PQ = CQ.translation_PQ(1); PQ # translation quiver with potential
     Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
     sage: PQ.prec([2,2,2])
@@ -90,7 +90,7 @@ def interaction_invariant(S, si, dim, Q):
 def translation_PQ_total(PQ, prec=None):
     """
     Return total invariant (stacky invariant for the trivial stability)
-    for the translation potential quiver, assuming that the base quiver has 
+    for the translation potential quiver, assuming that the base quiver has
     implemented methods :meth:`ind_list`, :meth:`ind_dim`, :meth:`ind_hom`.
 
     ``PQ`` -- translation potential quiver or its wall-crossing structure.

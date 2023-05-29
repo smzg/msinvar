@@ -15,10 +15,10 @@ def readfile(filename):
         return f.read()
 
 # For the tests
-class SageTest(TestCommand):
-    def run_tests(self):
-        errno = os.system("sage -t msinvar")
-        sys.exit(errno)
+# class SageTest(TestCommand):
+#     def run_tests(self):
+#         errno = os.system("sage -t msinvar")
+#         sys.exit(errno)
 
 setup(
     name = 'msinvar',
@@ -46,5 +46,5 @@ setup(
     keywords = 'SageMath moduli spaces invariants',
     packages = ['msinvar'],
     install_requires = [],
-    cmdclass = {'test': SageTest}, # adding a special setup command for tests
+    # cmdclass = {'test': SageTest}, # adding a special setup command for tests
 )

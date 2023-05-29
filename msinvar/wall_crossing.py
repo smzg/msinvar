@@ -5,7 +5,7 @@ We define the class :class:`WCS` associated to a lattice with a skew-symmetric
 form (or to a quiver). This class contains the quantum affine plane where all
 invariants live and where wall-crossing takes place. It also contains
 algorithms to jump between various types of invariants:
-    
+
     1. Stacky, Rational, Integer invariants associated to a stability parameter.
     2. Total invariant (stacky invariant associated to the trivial stability parameter).
     3. Stacky, Rational, Integer invariants associated to the attractor stability.
@@ -29,7 +29,7 @@ EXAMPLES::
     (2, 2): y^12/(y^12 - 2*y^10 - y^8 + 4*y^6 - y^4 - 2*y^2 + 1)}
 
 ::
-    
+
     sage: I=Q.stacky([1,0]); I.dict()
     {(0, 0): 1,
      (0, 1): y/(-y^2 + 1),
@@ -44,7 +44,7 @@ EXAMPLES::
     {(0, 1): 1, (1, 0): 1, (1, 1): (-y^2 - 1)/y, (1, 2): 1, (2, 1): 1}
 
 ::
-    
+
     sage: I=Q.stacky([0,1]); I.dict()
     {(0, 0): 1,
      (0, 1): y/(-y^2 + 1),
@@ -53,7 +53,7 @@ EXAMPLES::
      (2, 0): y^2/(y^6 - y^4 - y^2 + 1)}
     sage: I1=Q.stk2int(I); I1.dict()
     {(0, 1): 1, (1, 0): 1}
-    
+
 ::
 
     sage: Q.intAtt().dict() #integer attractor invariants
@@ -78,7 +78,7 @@ from msinvar.utils import vec, cache
 from msinvar.iterators import IntegerVectors_iterator
 from msinvar.stability import Stability
 from msinvar.invariants import Invariant, Psi_map, IPsi_map
-from msinvar.invariants import log_transform,  exp_transform, reineke_transform, joyce_transform
+from msinvar.invariants import log_transform, exp_transform, reineke_transform, joyce_transform
 from msinvar.invariants import recursive_inversion
 
 
@@ -87,7 +87,7 @@ class WallCrossingStructure:
     Wall-crossing structure.
 
     Contains the quantum affine algebra and methods to compute and transform
-    different types of invariants (stacky, rational, integer DT invariants 
+    different types of invariants (stacky, rational, integer DT invariants
     corresponding to different stability parameters).
 
     INPUT:
@@ -131,9 +131,14 @@ class WallCrossingStructure:
             self._total = self.total_default()
         return self._total
 
-    def rank(self): return self._rank
-    def sform(self, a, b): return self._sform(a, b)
-    def total_default(self): pass
+    def rank(self):
+        return self._rank
+
+    def sform(self, a, b):
+        return self._sform(a, b)
+
+    def total_default(self):
+        pass
 
     def twist(self, a, b=None):
         """
@@ -156,7 +161,7 @@ class WallCrossingStructure:
         self.R.prod_twist = self.twist
 
     def untwist_product(self):
-        """Untwist the product in the quantum affine plane 
+        """Untwist the product in the quantum affine plane
         (make it commutative)."""
         self.R.prod_twist = None
 
@@ -170,7 +175,7 @@ class WallCrossingStructure:
 
         See :meth:`total2stacky_algo1` for more details.
         The value of ``algo`` can be 'fast', 'fast2', 'slow'.
-        If the total invariant ``I`` is None, we consider :meth:`total`.        
+        If the total invariant ``I`` is None, we consider :meth:`total`.
 
         EXAMPLES::
 
@@ -229,7 +234,7 @@ class WallCrossingStructure:
 
     def stk2stk(self, I, z, z1, algo="fast"):
         """
-        Transform stacky invariant ``I`` for stability ``z`` to the 
+        Transform stacky invariant ``I`` for stability ``z`` to the
         stacky invariant for stability ``z1``.
 
         The value of ``algo`` can be 'fast' or 'slow'.
@@ -266,12 +271,14 @@ class WallCrossingStructure:
 
     def rat2int(self, I):
         """Transform rational invariant ``I`` to the integer invariant."""
-        def I1(d): return I(d)/self.gm
+        def I1(d):
+            return I(d)/self.gm
         return Invariant(lambda d: IPsi_map(I1, d)*self.gm, self)
 
     def int2rat(self, I):
         """Transform integer invariant ``I`` to the rational invariant."""
-        def I1(d): return I(d)/self.gm
+        def I1(d):
+            return I(d)/self.gm
         return Invariant(lambda d: Psi_map(I1, d)*self.gm, self)
 
     def stk2int(self, I):
@@ -294,7 +301,7 @@ class WallCrossingStructure:
         considering only degrees having a given ``slope`` with respect to a
         given stability parameter ``z``.
         """
-        return I.poly(self, z,  slope)
+        return I.poly(self, z, slope)
 
     def series(self, *args, **kw):
         """Alias for :meth:`poly`."""
@@ -318,7 +325,7 @@ class WallCrossingStructure:
         """
         Count stable objects of a fixed slope, assuming that the stacky
         invariant ``I`` counting semistable objects of that slope is given.
-        Based on :arxiv:`0708.1259`.        
+        Based on :arxiv:`0708.1259`.
         """
         # f = self.series(I, z, slope)
         f = I.poly()
@@ -335,7 +342,7 @@ class WallCrossingStructure:
         """
         Count ``z``-stable representations having a given ``slope``, assuming
         that the total invariant ``I`` is given.
-        Based on :arxiv:`0708.1259`.        
+        Based on :arxiv:`0708.1259`.
 
         - ``z`` -- Stability parameter.
         - ``slope`` -- Slope value.
@@ -349,9 +356,9 @@ class WallCrossingStructure:
         return self.stable_from_total(*args, **kw)
 
     def simple(self, I=None):
-        """Count simple reprentations of a quiver, assuming that the total 
+        """Count simple reprentations of a quiver, assuming that the total
         invariant ``I`` is given. If ``I`` is None, we consider :meth:`total`.
-        Based on :arxiv:`0708.1259`.        
+        Based on :arxiv:`0708.1259`.
         """
         if I is None:
             I = self.total()
@@ -386,7 +393,7 @@ class WallCrossingStructure:
         return f
 
     def stkAtt(self, I=None, sign=None):
-        """Calculate stacky attractor invariant assuming that the total 
+        """Calculate stacky attractor invariant assuming that the total
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
         def f(d):
             z = self.attr_stab(d)
@@ -397,12 +404,12 @@ class WallCrossingStructure:
         return Invariant(f, self)
 
     def ratAtt(self, I=None, sign=None):
-        """Calculate rational attractor invariant assuming that the total 
+        """Calculate rational attractor invariant assuming that the total
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
         return self.stk2rat(self.stkAtt(I, sign))
 
     def intAtt(self, I=None, sign=None):
-        """Calculate integer attractor invariant assuming that the total 
+        """Calculate integer attractor invariant assuming that the total
         invariant is ``I``. If ``I`` is None, we consider :meth:`total`."""
         return self.stk2int(self.stkAtt(I, sign))
 
@@ -423,7 +430,7 @@ class WallCrossingStructure:
 
     def ratAtt2total(self, I=None):
         """
-        Calculate total invariant, assuming that the rational attractor 
+        Calculate total invariant, assuming that the rational attractor
         invariant is ``I``.
         """
         if I is None:
@@ -470,7 +477,7 @@ WCS = WallCrossingStructure
 
 def total2stacky_algo1(W, I, z):
     """
-    Calculate stacky invariant for stability ``z``, assuming that the total 
+    Calculate stacky invariant for stability ``z``, assuming that the total
     invariant is ``I``.
 
     - ``W`` -- Wall-crossing structure,
@@ -510,7 +517,7 @@ def total2stacky_algo1(W, I, z):
 
 def total2stacky_algo2(W, I, z):
     """
-    Calculate stacky invariant for stability ``z``, assuming that the total 
+    Calculate stacky invariant for stability ``z``, assuming that the total
     invariant is ``I``.
 
     - ``W`` -- Wall-crossing structure,
@@ -542,7 +549,7 @@ def total2stacky_algo2(W, I, z):
 
 def stacky2total_algo1(W, I, z):
     """
-    Calculate total invariant, assuming that the stacky invariant for 
+    Calculate total invariant, assuming that the stacky invariant for
     stability ``z`` is ``I``.
 
     This algorithm is faster than :meth:`stacky2total_algo2`.
@@ -568,7 +575,7 @@ def stacky2total_algo1(W, I, z):
 
 def stacky2total_algo2(W, I, z):
     """
-    Calculate total invariant, assuming that the stacky invariant for 
+    Calculate total invariant, assuming that the stacky invariant for
     stability ``z`` is ``I``.
 
     This is a recursive inversion of :meth:`total2stacky_algo1`.
@@ -578,7 +585,8 @@ def stacky2total_algo2(W, I, z):
     - ``I`` -- Invariant,
     - ``z``-- Stability.
     """
-    def T(I): return total2stacky_algo1(W, I, z)
+    def T(I):
+        return total2stacky_algo1(W, I, z)
     T1 = recursive_inversion(T)
     return T1(I)
 

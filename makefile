@@ -9,7 +9,9 @@ SAGE = sage
 all: install test
 
 install:
-	$(SAGE) -pip install --upgrade --no-index -v .
+	$(SAGE) -pip install --upgrade --no-index .
+	rm -r build
+	rm -r $(PACKAGE).egg-info
 
 uninstall:
 	$(SAGE) -pip uninstall $(PACKAGE)
@@ -18,8 +20,7 @@ develop:
 	$(SAGE) -pip install --upgrade -e .
 
 test:
-	$(SAGE) -t --force-lib $(PACKAGE)
-	# setup.py test
+	$(SAGE) -t --warn-long 0.0 --random-seed=0 $(PACKAGE)
 
 coverage:
 	$(SAGE) -coverage $(PACKAGE)/*
