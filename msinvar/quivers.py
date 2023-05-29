@@ -2,7 +2,7 @@ r"""
 Quivers and quivers with potentials
 
 Define a Quiver class (with or without potental) as well as special
-subclasses ChainQuiver, CyclicQuiver, 
+subclasses ChainQuiver, CyclicQuiver,
 TranslationPQ (for translation potential quivers of quivers
 with automorphisms, see :arxiv:`1911.01788`),
 and constructors KroneckerQuiver, JordanQuiver.
@@ -23,27 +23,27 @@ EXAMPLES::
     {(0, 1): 1, (1, 0): 1, (1, 1): (-y^2 - 1)/y, (1, 2): 1, (2, 1): 1}
     sage: Q.Om([0,1]).dict() # integer DT invariants for stability (0,1)
     {(0, 1): 1, (1, 0): 1}
-    
+
 ::
-    
+
     sage: Q=Quiver('1-2-3', prec=[2,2,2]); Q
     Quiver with 3 vertices and 2 arrows
     sage: Q.arrows()
     [(1, 2, 1), (2, 3, 1)]
     sage: Q.simple().dict() # counting simple objects
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
-    
+
 ::
-    
+
     sage: Q=Quiver('1-2-3,1-3', prec=[2,2,2]); Q
     Quiver with 3 vertices and 3 arrows
     sage: Q.arrows()
     [(1, 2, 1), (1, 3, 1), (2, 3, 1)]
     sage: Q.simple().dict() # counting simple objects
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1}
-    
+
 ::
-    
+
     sage: CQ=CyclicQuiver(3, prec=[2,2,2]); CQ
     Cyclic quiver: Quiver with 3 vertices and 3 arrows
     sage: CQ.arrows()
@@ -53,8 +53,8 @@ EXAMPLES::
     sage: CQ.intAtt().dict() # integer attractor invariants
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -y}
 
-::  
-    
+::
+
     sage: PQ=CQ.translation_PQ(1); PQ
     Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
     sage: PQ.arrows()
@@ -82,7 +82,7 @@ EXAMPLES::
      (2, 2, 2): (-2*y^2 - 1)/y}
 
 ::
-    
+
     sage: PQ=CQ.translation_PQ(0, prec=[1,1,1]); PQ
     Ginzburg PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
     sage: PQ.arrows()
@@ -198,10 +198,11 @@ class Quiver(WCS):
             return self._arrows
         return self._arrows[n]
 
-    def potential(self): return self._potential
+    def potential(self):
+        return self._potential
 
     def arrow_num(self, a=None):
-        """Return the index of an arrow ``a`` or the number of all arrows 
+        """Return the index of an arrow ``a`` or the number of all arrows
         if ``a`` is None.
         """
         if a is None:
@@ -304,7 +305,7 @@ class Quiver(WCS):
 
     def total_default(self):
         """
-        Total invariant of the quiver (stacky invariant for the trivial 
+        Total invariant of the quiver (stacky invariant for the trivial
         stability).
         """
         from msinvar.invariants import Invariant
@@ -352,8 +353,8 @@ class Quiver(WCS):
     @staticmethod
     def _get_potential(s):
         """
-        Convert a string or list potential to a list of cycles and drop the 
-        coefficients. 
+        Convert a string or list potential to a list of cycles and drop the
+        coefficients.
 
         Potential is of the form:
 
@@ -372,7 +373,7 @@ class Quiver(WCS):
         The string can be of the form:
             - '1-2-3,3->4'
 
-        The list can be of the form:        
+        The list can be of the form:
             - [[[1,2],[2,3]],[[3,4]]]
             - ['1-2-3','3-4']
             - ['a[1,2]a[2,3]','a[3,4]']
@@ -537,7 +538,7 @@ class CyclicQuiver(Quiver):
     def ind_list(self, d):
         r"""
         The list of nilpotent indecomposables up to dimension vector d, where
-        indecomposables are parametrized by triples (i,j,n) with 
+        indecomposables are parametrized by triples (i,j,n) with
         `i, j\in Z_r` and `n\ge 0`.
         """
         r = self.vertex_num()
@@ -689,12 +690,14 @@ class TranslationPQ(Quiver):
 
     def __init__(self, Q, tau=None, ind_tau=None, prec=None):
         if tau is None:
-            def tau(i): return i
+            def tau(i):
+                return i
             name = 'Ginzburg PQ'
         else:
             name = 'Translation PQ'
         if ind_tau is None:
-            def ind_tau(i): return i
+            def ind_tau(i):
+                return i
         if prec is None:
             prec = Q.prec()
         self.base_quiver = Q
@@ -704,13 +707,13 @@ class TranslationPQ(Quiver):
         for a in Q.arrows():
             i, j = a[0], a[1]
             b = tau(a)
-            na = 'a'+str(Q.arrow_num(a))
-            nb = 'a'+str(Q.arrow_num(b))
+            na = 'a' + str(Q.arrow_num(a))
+            nb = 'a' + str(Q.arrow_num(b))
             a = (a[0], a[1], na)
             b = (b[0], b[1], nb)
-            a1 = (tau(j), i, na+'*')
-            li = (i, tau(i), 'l'+str(i))
-            lj = (j, tau(j), 'l'+str(j))
+            a1 = (tau(j), i, na + '*')
+            li = (i, tau(i), 'l' + str(i))
+            lj = (j, tau(j), 'l' + str(j))
             W += [[a, lj, a1], [li, b, a1]]
         super().__init__(potential=W, name=name, prec=prec)
 
@@ -745,6 +748,5 @@ class TranslationPQ(Quiver):
              (1, 1, 1): (-2*y^2 - 1)/y,
              (2, 2, 2): (-2*y^2 - 1)/y}
         """
-
         from msinvar.potential_quiver_invar import translation_PQ_total
         return translation_PQ_total(self, prec)

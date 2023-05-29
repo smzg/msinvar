@@ -12,14 +12,14 @@ This set has a poset structure and can be interpreted as a crystal embedded
 in `\mathbb R^3`.
 For example, a brane tiling for `\mathbb C^3` corresponds to a quiver with one
 vertex 0, three loops x,y,z and potential W=x[y,z].
-The corresponding Jacobian algebra is `\mathbb C[x,y,z]` which has a basis 
+The corresponding Jacobian algebra is `\mathbb C[x,y,z]` which has a basis
 parametrized by `\Delta_0=\mathbb N^3`, our crystal.
 
-We define molten crystals as complements of finite ideals 
+We define molten crystals as complements of finite ideals
 `I\subset \Delta_i`, meaning a subset I such that `u\le v` and `v\in I`
 implies `u\in I`.
 For any path `u\in\Delta_i`, let `t(u)\in Q_0` be the target vertex of u.
-Define the dimension vector of I to be 
+Define the dimension vector of I to be
 `\dim I=\sum_{u\in I}e_{t(u)}\in\mathbb N^{Q_0}`.
 We compute the partition function
 `Z_{\Delta_i}(x)=\sum_{I\subset\Delta_i}x^{\dim I}`
@@ -38,7 +38,7 @@ EXAMPLES::
     x + 2*x^2 + 3*x^3 + 4*x^4 + 5*x^5 + 6*x^6 + 7*x^7 + 8*x^8
 
 ::
-    
+
     sage: BTD[1]
     ['Conifold=Y10',
      'Phi[1,2,1]*Phi[2,1,1]*Phi[1,2,2]*Phi[2,1,2]-Phi[1,2,1]*Phi[2,1,2]*Phi[1,2,2]*Phi[2,1,1]']
@@ -50,12 +50,12 @@ EXAMPLES::
     x0 - x0^2 - 2*x0*x1 - 2*x0^2*x1 + x0*x1^2 + 6*x0^2*x1^2 + 3*x0^3*x1^2 - 2*x0^2*x1^3
 
 ::
-    
+
     sage: CQ=CyclicQuiver(3)
     sage: PQ=CQ.translation_PQ(1); PQ
     Translation PQ: Quiver with 3 vertices, 9 arrows and potential with 6 terms
     sage: Q=BTQuiver(PQ,prec=[1,1,1])
-    sage: Q.intAtt_from_crystals().dict() # numerical integer attractor inv. 
+    sage: Q.intAtt_from_crystals().dict() # numerical integer attractor inv.
     {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -3}
 
 """
@@ -114,7 +114,7 @@ class BTQuiver(Quiver):
 
     def add_new_arrows(self, P, n):
         """
-        Add new arrows to the atoms in the poset ``P``. 
+        Add new arrows to the atoms in the poset ``P``.
 
         - ``P`` -- poset of atoms,
         - ``n`` -- index in ``P``, where atoms that require new arrows start.
@@ -223,8 +223,8 @@ def crystal_dict(Q, i, N=5):
 
 
 def NCDT(Q, i, N=5):
-    """Numerical NCDT invariants counting (with a sign) ideals 
-    (molten crystals) in the 
+    """Numerical NCDT invariants counting (with a sign) ideals
+    (molten crystals) in the
     crystal of atoms that start at the vertex ``i`` and have length <= ``N``.
 
     We keep track of the dimension vectors of ideals."""
@@ -294,7 +294,7 @@ def BT_example(n=None):
     """Brane tilings from the database by
     `Boris Pioline <https://www.lpthe.jussieu.fr/~pioline/computing.html>`_.
 
-    ``n`` -- number of the brane tiling. If None, we return the whole list. 
+    ``n`` -- number of the brane tiling. If None, we return the whole list.
     """
     if n is None:
         return {i: BT_example(i) for i in range(len(BTD))}
@@ -315,7 +315,7 @@ def ratAtt_from_crystals(Q):
         sage: Q=BT_example(6); Q
         P2=C^3/(1,1,1): Quiver with 3 vertices, 9 arrows and potential with 6 terms
         sage: Q.prec([1,1,1])
-        sage: Q.ratAtt_from_crystals().dict()  
+        sage: Q.ratAtt_from_crystals().dict()
         {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -3}
     """
     N = sum(Q.prec())
@@ -338,17 +338,16 @@ def ratAtt_from_crystals(Q):
             # the 'fake' value of the rational attr. inv. for the framed quiver
             # at e, with f1(e)=f(e) for e<d and f1(d)=0
             if sum(e) == 1:
-                return QQ(1)
+                return QQ.one()
             if e[-1] == 1:
-                return QQ(0)
+                return QQ.zero()
             if vec.equal(d, e):
                 return QQ(0)
             return J(e[:-1])
         ncdt = W.flow_tree_formula(z, f1, quant=False)
         # we use the fact that Z(d)=bOm(d,1)=flow_tree(f1)(d,1)+m(-1)^(m+1)*Om_*(d)
         return (ncdt(list(d)+[1])-Z[i](d))/m*(-1)**(m)
-    J = Invariant(f, Q)
-    return J
+    return Invariant(f, Q)
 
 
 def intAtt_from_crystals(Q):
@@ -364,7 +363,7 @@ def intAtt_from_crystals(Q):
         sage: Q=BT_example(6); Q
         P2=C^3/(1,1,1): Quiver with 3 vertices, 9 arrows and potential with 6 terms
         sage: Q.prec([1,1,1])
-        sage: Q.intAtt_from_crystals().dict()  
+        sage: Q.intAtt_from_crystals().dict()
         {(0, 0, 1): 1, (0, 1, 0): 1, (1, 0, 0): 1, (1, 1, 1): -3}
     """
     from msinvar.invariants import rat2int_num
