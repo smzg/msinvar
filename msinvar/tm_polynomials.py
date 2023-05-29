@@ -5,10 +5,11 @@ EXAMPLES::
 
     sage: from msinvar import TMPoly
     sage: R=TMPoly(QQ,2,'x',prec=(2,2))
-    sage: R.inject_variables(verbose=False)
-    sage: (x0+x1).Exp()
+    sage: x=R.gens()
+    sage: (x[0]+x[1]).Exp()
     1 + x0 + x1 + x0^2 + x0*x1 + x1^2 + x0^2*x1 + x0*x1^2 + x0^2*x1^2
 """
+## sage: R.inject_variables(verbose=False)
 
 # *****************************************************************************
 #  Copyright (C) 2021 Sergey Mozgovoy <mozhov@gmail.com>
@@ -102,8 +103,8 @@ class TMPolynomial(MPolynomial_polydict):
             raise ValueError("Series is untruncated")
         if self.constant_coefficient() != 1:
             raise ValueError("The constant coefficient should be 1")
-        s = self.parent().one()
-        f, x = 1, 1-self
+        p = self.parent()
+        s, f, x = p.one(), p.one(), p.one()-self
         for i in range(1, N+1):
             f = x*f
             if f == 0:
@@ -155,12 +156,10 @@ class TMPolynomial(MPolynomial_polydict):
 
     def _mul_(self, right):
         f = self.parent().prod_twist
-        if f is None:
+        if f is None or right in self.parent().base_ring():
             return super()._mul_(right)
         if len(self.dict()) == 0:   # product is zero anyways
             return self
-        if right in self.parent().base_ring():
-            return self*self._new_constant_poly(right, self.parent())
         d = {}
         for e0, c0 in self.dict().items():
             for e1, c1 in right.dict().items():
@@ -284,7 +283,11 @@ class TMPolynomialRing(MPolynomialRing_polydict):
         self._prec = prec
         self.prod_twist = prod_twist
         super().__init__(base_ring, n, names, order)
+        self._gens = tuple(self.gen(i) for i in range(self.ngens()))
         LambdaRings.add_ring(self)
+        
+    def gen(self, n=0):
+        return self(super().gen(n))
 
     def adams(self, a, n):
         d = {e.emul(n): adams(c, n) for e, c in a.dict().items()

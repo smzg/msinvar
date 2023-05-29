@@ -90,7 +90,7 @@ class BTQuiver(Quiver):
         A1 = A.augment(vector([1]*m))
         l = matrix(A1.right_kernel().basis()).columns()
         self.wzero = [0]*len(l[0])
-        self._wt = {a: l[self.arrow_num(a)] for a in self.arrows()}
+        self._wt = {a: l[n] for n, a in enumerate(self.arrows())}
 
     def wt(self, a):
         """Weight of an arrow or a path."""
@@ -107,11 +107,10 @@ class BTQuiver(Quiver):
 
     def ideal_dim(self, I):
         """Dimension vector of an ideal I that consists of atoms (paths)."""
-        vert = self.vertices()
-        d = {i: 0 for i in vert}
+        d = [0]*self.vertex_num()
         for u in I:
-            d[u.t] += 1
-        return tuple(d[vert[i]] for i in range(len(vert)))
+            d[self.vertex_num(u.t)] += 1
+        return d
 
     def add_new_arrows(self, P, n):
         """
@@ -123,16 +122,13 @@ class BTQuiver(Quiver):
         n1 = len(P.vert)
         for k in range(n, n1):
             u = P.vert[k]
-            for a in self.arrows():
-                if u.t == self.s(a):
-                    v = u.add_arrow(a)
-                    for v1 in P.vert:
-                        if v.equal(v1):
-                            v = v1
-                            break
-                    if v != v1:
-                        P.vert.append(v)
-                    P.rel.append([u, v])
+            for v in u.add_arrows():
+                v1 = v.element_of(P.vert)
+                if v1 is None:
+                    P.vert.append(v)
+                else:
+                    v = v1
+                P.rel.append([u, v])
         return n1
 
     def create_path_poset(self, i, N=10):
@@ -173,8 +169,8 @@ class Atom:
     Atom -- equivalence class of a path in the Jacobian algebra.
 
     - ``Q`` -- a BTQuiver,
-    - ``t`` -- a target,
-    - ``wt`` -- a weight.
+    - ``t`` -- target vertex of the path,
+    - ``wt`` -- weight of the path.
     """
 
     def __init__(self, Q, t, wt=None):
@@ -185,12 +181,27 @@ class Atom:
         self.wt = wt
 
     def add_arrow(self, a):
+        if self.t != self.Q.s(a):
+            return None
         wt = vec.add(self.wt, self.Q.wt(a))
         t = self.Q.t(a)
         return Atom(self.Q, t, wt)
 
+    def add_arrows(self):
+        """Add all possible arrows to the atom."""
+        for a in self.Q.arrows():
+            u = self.add_arrow(a)
+            if u is not None:
+                yield u
+
     def equal(self, u):
         return self.t == u.t and vec.equal(self.wt, u.wt)
+
+    def element_of(self, P):
+        for u in P:
+            if self.equal(u):
+                return u
+        return None
 
     def __repr__(self):
         return "Atom "+str(self.t)+"-"+str(self.wt)

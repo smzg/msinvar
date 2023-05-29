@@ -39,6 +39,7 @@ class Poset():
         sage: list(P.ideals())
         [{1, 2, 3}, {1, 2}, {1, 3}, {1}, set()]
     """
+
     def __init__(self, rel, vert=None):
         if vert is None:
             vert = set()
@@ -109,3 +110,13 @@ class Poset():
     def __repr__(self):
         return "Poset with vertices\n" + str(self.vert)\
             + "\nand relations\n" + str(self.rel)
+
+    def le(self, a, b):
+        vert = {a}
+        new = vert
+        while len(new) > 0:
+            if b in new:
+                return True
+            new = set(r[1] for r in self.rel if r[0] in new)-vert
+            vert.update(new)
+        return False

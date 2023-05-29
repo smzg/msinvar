@@ -115,12 +115,12 @@ EXAMPLES::
 import re
 from sage.rings.integer import Integer
 from sage.graphs.digraph import DiGraph
-from sage.matrix.constructor import matrix
+# from sage.matrix.constructor import matrix
 from msinvar.utils import vec
 from msinvar.wall_crossing import WCS
 
 
-class Quiver(DiGraph, WCS):
+class Quiver(WCS):
     """
     Create a quiver from a list of arrows or from a potential.
 
@@ -148,8 +148,7 @@ class Quiver(DiGraph, WCS):
     """
 
     def __init__(self, data=None, potential=None, prec=None,
-                 loops=True, multiedges=True, name=None,
-                 pos=None, format=None, weighted=None, data_structure=None):
+                 name=None):
         """Init a quiver."""
         if data is not None and isinstance(data, Quiver):
             self._potential = data.potential()
@@ -165,18 +164,19 @@ class Quiver(DiGraph, WCS):
                     data = Quiver._get_arrow_set(self._potential)
             else:
                 self._potential = None
-        DiGraph.__init__(self, data=data, loops=loops,
-                         multiedges=multiedges, name=name)
-        self._arrows = []
-        vert = self.vertices()
-        self._vertex_dict = {v: i for i, v in enumerate(vert)}
-        self._set_quiver_dict()
-        WCS.__init__(self, rank=len(vert), prec=prec)
-        # self._wcs = WCS(self, prec=prec)
+        self._name = name
+        self.digraph = DiGraph(data=data, loops=True,
+                               multiedges=True, name=name)
+        self._vertices = sorted(self.digraph.vertex_iterator())
+        self._arrows = sorted(self.digraph.edge_iterator())
+        self._vertex_num = {v: i for i, v in enumerate(self._vertices)}
+        self._arrow_num = {a: i for i, a in enumerate(self._arrows)}
 
-    def _repr_(self):
+        WCS.__init__(self, rank=self.vertex_num(), prec=prec)
+
+    def __repr__(self):
         sv = f'Quiver with {self.vertex_num()} vertices'
-        if hasattr(self, '_name'):
+        if self._name is not None:
             sv = self._name+": "+sv
         sa = f'{self.arrow_num()} arrows'
         W = self.potential()
@@ -184,13 +184,19 @@ class Quiver(DiGraph, WCS):
             return sv+', '+sa+f' and potential with {len(W)} terms'
         return sv+" and "+sa
 
+    def show(self):
+        return self.digraph.show()
+    
+    def name(self):
+        return self._name
+
+    def vertices(self): return self._vertices
+
     def arrows(self, n=None):
         """Return the ``n``-th arrow or the list of arrows if ``n`` is None."""
-        if n is not None:
-            return self._arrows[n]
-        if len(self._arrows) != self.arrow_num():
-            self._arrows = list(self.edges())
-        return self._arrows
+        if n is None:
+            return self._arrows
+        return self._arrows[n]
 
     def potential(self):
         return self._potential
@@ -200,16 +206,16 @@ class Quiver(DiGraph, WCS):
         if ``a`` is None.
         """
         if a is None:
-            return self.size()
-        return self.arrows().index(a)
+            return len(self._arrows)
+        return self._arrow_num[a]
 
     def vertex_num(self, i=None):
         """Return the index of a vertex ``i`` or the number of all vertices
         if ``i`` is None.
         """
         if i is None:
-            return self.order()
-        return self._vertex_dict[i]
+            return len(self._vertices)
+        return self._vertex_num[i]
 
     def s(self, a):
         """Source of an arrow ``a``, which can be an arrow or an index in the
@@ -247,7 +253,10 @@ class Quiver(DiGraph, WCS):
             a = self.arrows(a)
         return a[1]
 
-    def _set_quiver_dict(self):
+    @property
+    def quiver_dict(self):
+        if hasattr(self, '_quiver_dict'):
+            return self._quiver_dict
         d = {}
         for a in self.arrows():
             i, j = self.vertex_num(a[0]), self.vertex_num(a[1])
@@ -255,7 +264,8 @@ class Quiver(DiGraph, WCS):
                 d[(i, j)] += 1
             else:
                 d[(i, j)] = 1
-        self.quiver_dict = d
+        self._quiver_dict = d
+        return d
 
     def eform(self, a, b):
         """Euler form of the quiver.
@@ -308,22 +318,22 @@ class Quiver(DiGraph, WCS):
             return 0
         return Invariant(f, self)
 
-    def get_eform_matrix(self):
-        """Matrix of the eform."""
-        n = self.vertex_num()
-        M = matrix.identity(n)
-        for (i, j), k in self.quiver_dict.items():
-            M[(i, j)] -= k
-        return M
+    # def get_eform_matrix(self):
+    #     """Matrix of the eform."""
+    #     n = self.vertex_num()
+    #     M = matrix.identity(n)
+    #     for (i, j), k in self.quiver_dict.items():
+    #         M[(i, j)] -= k
+    #     return M
 
-    def get_sform_matrix(self):
-        """Matrix of the sform."""
-        n = self.vertex_num()
-        M = matrix(n)
-        for (i, j), k in self.quiver_dict.items():
-            M[(i, j)] -= k
-            M[(j, i)] += k
-        return M
+    # def get_sform_matrix(self):
+    #     """Matrix of the sform."""
+    #     n = self.vertex_num()
+    #     M = matrix(n)
+    #     for (i, j), k in self.quiver_dict.items():
+    #         M[(i, j)] -= k
+    #         M[(j, i)] += k
+    #     return M
 
     def translation_PQ(self, tau=None, ind_tau=None, prec=None):
         """
@@ -431,6 +441,16 @@ class Quiver(DiGraph, WCS):
         """
         raise NotImplementedError("Implement this method")
 
+    def set_wt(self, l):
+        """Set weights of arrows using the list l."""
+        self._wt = {a: l[i] for i, a in enumerate(self.arrows())}
+
+    def wt(self, a):
+        """Weight of an arrow or a list of arrows."""
+        if isinstance(a, tuple):
+            return self._wt[a]
+        return sum(self._wt[i] for i in a)
+
 
 def KroneckerQuiver(m=2, prec=None):
     """Return the Kronecker quiver with m arrows."""
@@ -512,11 +532,8 @@ class CyclicQuiver(Quiver):
     """
 
     def __init__(self, n, prec=None):
-        l = [[i, i+1, 1] for i in range(n-1)]
-        super().__init__(l, prec=prec, name='Cyclic quiver')
-
         l = [[i, i+1, 1] for i in range(n-1)]+[[n-1, 0, 1]]
-        super().__init__(l, prec=prec)
+        super().__init__(l, prec=prec, name='Cyclic quiver')
 
     def ind_list(self, d):
         r"""
