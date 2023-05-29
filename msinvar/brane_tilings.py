@@ -338,16 +338,17 @@ def ratAtt_from_crystals(Q):
             # the 'fake' value of the rational attr. inv. for the framed quiver
             # at e, with f1(e)=f(e) for e<d and f1(d)=0
             if sum(e) == 1:
-                return QQ.one()
+                return QQ(1)
             if e[-1] == 1:
-                return QQ.zero()
+                return QQ(0)
             if vec.equal(d, e):
                 return QQ(0)
             return J(e[:-1])
         ncdt = W.flow_tree_formula(z, f1, quant=False)
         # we use the fact that Z(d)=bOm(d,1)=flow_tree(f1)(d,1)+m(-1)^(m+1)*Om_*(d)
         return (ncdt(list(d)+[1])-Z[i](d))/m*(-1)**(m)
-    return Invariant(f, Q)
+    J = Invariant(f, Q)
+    return J
 
 
 def intAtt_from_crystals(Q):
