@@ -396,7 +396,7 @@ class Transform:
     to rational numbers.
 
     We define actions of transforms on 1-collections (Invariant class),
-    plethysm between transforms, inverse transfroms.
+    plethysm between transforms, inverse transforms.
 
     INPUT:
 

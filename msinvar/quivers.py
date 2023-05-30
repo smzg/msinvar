@@ -1,7 +1,7 @@
 r"""
 Quivers and quivers with potentials
 
-Define a Quiver class (with or without potental) as well as special
+Define a Quiver class (with or without potential) as well as special
 subclasses ChainQuiver, CyclicQuiver,
 TranslationPQ (for translation potential quivers of quivers
 with automorphisms, see :arxiv:`1911.01788`),
@@ -186,11 +186,12 @@ class Quiver(WCS):
 
     def show(self):
         return self.digraph.show()
-    
+
     def name(self):
         return self._name
 
-    def vertices(self): return self._vertices
+    def vertices(self):
+        return self._vertices
 
     def arrows(self, n=None):
         """Return the ``n``-th arrow or the list of arrows if ``n`` is None."""

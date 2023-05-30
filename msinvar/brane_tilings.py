@@ -132,7 +132,7 @@ class BTQuiver(Quiver):
         return n1
 
     def create_path_poset(self, i, N=10):
-        """Creat the poset of atoms (paths) that start at the vertex ``i``
+        """Create the poset of atoms (paths) that start at the vertex ``i``
         and have length <= ``N``."""
         u = Atom(self, i)
         P = Poset(rel=[], vert=[u])
