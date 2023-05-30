@@ -55,7 +55,7 @@ class TMPolynomial(MPolynomial_polydict):
         return self.__class__(self.parent(), d)
 
     def _new_constant_poly(self, x, P):
-        # overriden; needed to make 1-x[0] of type MPT
+        # overridden; needed to make 1-x[0] of type MPT
         return self._new_element({self.parent().zero_tuple(): x})
 
     def le_prec(self, v):  # <= precision
@@ -248,7 +248,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
     PARAMETERS:
 
         1. ``base_ring`` -- the base of our polynomial algebra.
-        2. ``n`` -- the number of vairables.
+        2. ``n`` -- the number of variables.
         3. ``names`` -- names of variables; can be just 'x' or 'x,y,..'.
         4. ``prec`` - precision vector (or integer, or None) for truncation
         5. ``order`` -- the order of variables.
@@ -285,7 +285,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
         super().__init__(base_ring, n, names, order)
         self._gens = tuple(self.gen(i) for i in range(self.ngens()))
         LambdaRings.add_ring(self)
-        
+
     def gen(self, n=0):
         return self(super().gen(n))
 
