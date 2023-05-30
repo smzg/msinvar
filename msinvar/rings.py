@@ -110,7 +110,7 @@ class SR1(SymbolicRing):
         super().__init__()
         self.var(vars)
         LambdaRings.add_ring(self)
-        # Parent.__init__(self, category=LambdaRings()) # wee add category explicitly now
+        # Parent.__init__(self, category=LambdaRings()) # we add category explicitly now
         # self.inject_variables() #does not work globally; need to invoke it later
 
     def ngens(self):

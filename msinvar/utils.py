@@ -43,7 +43,9 @@ cache = memoize
 
 def sort(l, le, reverse=False):
     """Sort the list l in ascending order according to the function le"""
-    def cmp(i, j): return -1 if le(i, j) else 1
+    def cmp(i, j):
+        return -1 if le(i, j) else 1
+
     return sorted(l, key=cmp_to_key(cmp), reverse=reverse)
 
 
