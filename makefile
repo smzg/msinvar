@@ -9,7 +9,7 @@ SAGE = sage
 all: install test
 
 install:
-	$(SAGE) -pip install --upgrade --no-index .
+	$(SAGE) -pip install --upgrade --no-index -v .
 	rm -r build
 	rm -r $(PACKAGE).egg-info
 

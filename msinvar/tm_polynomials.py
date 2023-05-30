@@ -9,7 +9,7 @@ EXAMPLES::
     sage: (x[0]+x[1]).Exp()
     1 + x0 + x1 + x0^2 + x0*x1 + x1^2 + x0^2*x1 + x0*x1^2 + x0^2*x1^2
 """
-## sage: R.inject_variables(verbose=False)
+# sage: R.inject_variables(verbose=False)
 
 # *****************************************************************************
 #  Copyright (C) 2021 Sergey Mozgovoy <mozhov@gmail.com>
@@ -76,7 +76,7 @@ class TMPolynomial(MPolynomial_polydict):
             f = x*f/i
             if f == 0:
                 break
-            s = s+f
+            s += f
         return s
 
     def log(self):
@@ -109,7 +109,7 @@ class TMPolynomial(MPolynomial_polydict):
             f = x*f
             if f == 0:
                 break
-            s = s + f
+            s += f
         return s
 
     def _div_(self, right):
@@ -285,7 +285,7 @@ class TMPolynomialRing(MPolynomialRing_polydict):
         super().__init__(base_ring, n, names, order)
         self._gens = tuple(self.gen(i) for i in range(self.ngens()))
         LambdaRings.add_ring(self)
-        
+
     def gen(self, n=0):
         return self(super().gen(n))
 

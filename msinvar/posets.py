@@ -39,11 +39,10 @@ class Poset():
         sage: list(P.ideals())
         [{1, 2, 3}, {1, 2}, {1, 3}, {1}, set()]
     """
+
     def __init__(self, rel, vert=None):
         if vert is None:
-            vert = set()
-            for r in rel:
-                vert.update(r)
+            vert = set().union(*rel)
         self.vert = vert
         self.rel = rel
 
@@ -85,7 +84,7 @@ class Poset():
 
     def ideals(self, size=100):
         """
-        List of ideals in a poset having <=``size`` elements.
+        List of ideals in a poset having <= ``size`` elements.
         """
         if size < 0:
             return

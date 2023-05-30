@@ -120,6 +120,9 @@ def info(f):
 
 
 def disp(G):
+    from msinvar.quivers import Quiver
+    if isinstance(G, Quiver):
+        G = G.digraph
     return G.plot(edge_labels=True,
                   layout='circular').matplotlib(figsize=[10, 6])
 
