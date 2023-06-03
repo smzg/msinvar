@@ -5,7 +5,7 @@ Core modules:
 
 .. toctree::
     :maxdepth: 1
-    
+
     quivers
     wall_crossing
     invariants

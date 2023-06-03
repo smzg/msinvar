@@ -115,6 +115,7 @@ EXAMPLES::
 import re
 from sage.rings.integer import Integer
 from sage.graphs.digraph import DiGraph
+
 # from sage.matrix.constructor import matrix
 from msinvar.utils import vec
 from msinvar.wall_crossing import WCS
@@ -147,8 +148,7 @@ class Quiver(WCS):
         [[(1, 2, 1), (2, 3, 1), (3, 1, 1)], [(1, 2, 2), (2, 1, 1)]]
     """
 
-    def __init__(self, data=None, potential=None, prec=None,
-                 name=None):
+    def __init__(self, data=None, potential=None, prec=None, name=None):
         """Init a quiver."""
         if data is not None and isinstance(data, Quiver):
             self._potential = data.potential()
@@ -165,8 +165,9 @@ class Quiver(WCS):
             else:
                 self._potential = None
         self._name = name
-        self.digraph = DiGraph(data=data, loops=True,
-                               multiedges=True, name=name)
+        self.digraph = DiGraph(
+            data=data, loops=True, multiedges=True, name=name
+        )
         self._vertices = sorted(self.digraph.vertex_iterator())
         self._arrows = sorted(self.digraph.edge_iterator())
         self._vertex_num = {v: i for i, v in enumerate(self._vertices)}
@@ -175,14 +176,14 @@ class Quiver(WCS):
         WCS.__init__(self, rank=self.vertex_num(), prec=prec)
 
     def __repr__(self):
-        sv = f'Quiver with {self.vertex_num()} vertices'
+        sv = f"Quiver with {self.vertex_num()} vertices"
         if self._name is not None:
-            sv = self._name+": "+sv
-        sa = f'{self.arrow_num()} arrows'
+            sv = self._name + ": " + sv
+        sa = f"{self.arrow_num()} arrows"
         W = self.potential()
         if W is not None:
-            return sv+', '+sa+f' and potential with {len(W)} terms'
-        return sv+" and "+sa
+            return sv + ", " + sa + f" and potential with {len(W)} terms"
+        return sv + " and " + sa
 
     def show(self):
         return self.digraph.show()
@@ -256,7 +257,7 @@ class Quiver(WCS):
 
     @property
     def quiver_dict(self):
-        if hasattr(self, '_quiver_dict'):
+        if hasattr(self, "_quiver_dict"):
             return self._quiver_dict
         d = {}
         for a in self.arrows():
@@ -281,9 +282,9 @@ class Quiver(WCS):
             sage: Q.eform([0,1],[1,0])
             0
         """
-        s = sum(a[i]*b[i] for i in range(len(a)))
+        s = sum(a[i] * b[i] for i in range(len(a)))
         for (i, j), k in self.quiver_dict.items():
-            s -= k * a[i]*b[j]
+            s -= k * a[i] * b[j]
         return s
 
     def sform(self, a, b):
@@ -301,7 +302,7 @@ class Quiver(WCS):
         """
         s = 0
         for (i, j), k in self.quiver_dict.items():
-            s += k * (a[j]*b[i]-a[i]*b[j])
+            s += k * (a[j] * b[i] - a[i] * b[j])
         return s
 
     def total_default(self):
@@ -311,12 +312,14 @@ class Quiver(WCS):
         """
         from msinvar.invariants import Invariant
         from msinvar.utils import phi
+
         y = self.y
 
         def f(d):
             if all(i >= 0 for i in d):
-                return (-y)**(-self.eform(d, d))/phi(1/y**2, d)
+                return (-y) ** (-self.eform(d, d)) / phi(1 / y**2, d)
             return 0
+
         return Invariant(f, self)
 
     # def get_eform_matrix(self):
@@ -363,7 +366,7 @@ class Quiver(WCS):
         - ['1-2-1','2-3-4-2']
         """
         if isinstance(s, str):
-            s = re.split('\\+|\\-', s)
+            s = re.split("\\+|\\-", s)
         return [Quiver._get_path(p) for p in s]
 
     @staticmethod
@@ -380,7 +383,7 @@ class Quiver(WCS):
             - ['a[1,2]a[2,3]','a[3,4]']
         """
         if isinstance(s, str):
-            s = s.split(',')
+            s = s.split(",")
         arrs = set()
         for p in s:
             arrs.update(Quiver._get_path(p))
@@ -407,9 +410,10 @@ class Quiver(WCS):
             l = re.findall(".*?\\[(.*?)\\]", p)
             if len(l) != 0:
                 return [Quiver._get_arrow(a) for a in l]
-            l = [int(re.sub(r'\D', '', i))
-                 for i in p.split('-')]  # remove non-digits
-            return [(l[i], l[i+1], 1) for i in range(len(l)-1)]
+            l = [
+                int(re.sub(r"\D", "", i)) for i in p.split("-")
+            ]  # remove non-digits
+            return [(l[i], l[i + 1], 1) for i in range(len(l) - 1)]
         return list(Quiver._get_arrow(a) for a in p)
 
     @staticmethod
@@ -422,7 +426,7 @@ class Quiver(WCS):
             - '1,2,1' (the last integer is the number of the arrow)
         """
         if isinstance(a, str):
-            a = tuple(int(i) for i in a.split(','))
+            a = tuple(int(i) for i in a.split(","))
         else:
             a = tuple(a)
         return (*a, 1) if len(a) == 2 else a
@@ -456,13 +460,13 @@ class Quiver(WCS):
 def KroneckerQuiver(m=2, prec=None):
     """Return the Kronecker quiver with m arrows."""
     l = [[1, 2, i] for i in range(m)]
-    return Quiver(l, name='Kronecker quiver', prec=prec)
+    return Quiver(l, name="Kronecker quiver", prec=prec)
 
 
 def JordanQuiver(m=1, prec=None):
     """Return the quiver with 1 vertex and m loops."""
     l = [[1, 1, i] for i in range(m)]
-    return Quiver(l, name='Jordan quiver', prec=prec)
+    return Quiver(l, name="Jordan quiver", prec=prec)
 
 
 class ChainQuiver(Quiver):
@@ -490,8 +494,8 @@ class ChainQuiver(Quiver):
     """
 
     def __init__(self, n, prec=None):
-        l = [[i, i+1, 1] for i in range(n-1)]
-        super().__init__(l, prec=prec, name='Chain quiver')
+        l = [[i, i + 1, 1] for i in range(n - 1)]
+        super().__init__(l, prec=prec, name="Chain quiver")
 
     def ind_list(self, *args):
         """
@@ -507,7 +511,7 @@ class ChainQuiver(Quiver):
     def ind_dim(self, a):
         n = self.vertex_num()
         i, j = a[0], a[1]
-        return [0]*i+[1]*(j-i+1)+[0]*(n-j-1)
+        return [0] * i + [1] * (j - i + 1) + [0] * (n - j - 1)
 
     def ind_hom(self, a, b):
         i, j, k, l = a[0], a[1], b[0], b[1]
@@ -533,8 +537,8 @@ class CyclicQuiver(Quiver):
     """
 
     def __init__(self, n, prec=None):
-        l = [[i, i+1, 1] for i in range(n-1)]+[[n-1, 0, 1]]
-        super().__init__(l, prec=prec, name='Cyclic quiver')
+        l = [[i, i + 1, 1] for i in range(n - 1)] + [[n - 1, 0, 1]]
+        super().__init__(l, prec=prec, name="Cyclic quiver")
 
     def ind_list(self, d):
         r"""
@@ -547,16 +551,19 @@ class CyclicQuiver(Quiver):
         l = []
         for i in range(r):
             for j in range(r):
-                l += [(i, j, n)
-                      for n in range(m) if vec.le(self.ind_dim([i, j, n]), d)]
+                l += [
+                    (i, j, n)
+                    for n in range(m)
+                    if vec.le(self.ind_dim([i, j, n]), d)
+                ]
         return l
 
     def ind_dim(self, a):
         r = self.vertex_num()
         i, j, n = tuple(a)
-        d = [n]*r
-        for k in range((j-i) % r + 1):
-            d[(i+k) % r] += 1
+        d = [n] * r
+        for k in range((j - i) % r + 1):
+            d[(i + k) % r] += 1
         return d
 
     def ind_hom(self, a, b):
@@ -565,9 +572,9 @@ class CyclicQuiver(Quiver):
         r = self.vertex_num()
         i, j, m = tuple(a)
         k, l, n = tuple(b)
-        d1 = (j-i) % r+r*m
-        d2 = (l-k) % r+r*n
-        return _cong_number(max(0, d2-d1), d2, i-k, r)
+        d1 = (j - i) % r + r * m
+        d2 = (l - k) % r + r * n
+        return _cong_number(max(0, d2 - d1), d2, i - k, r)
 
     def ind_shift(self, k=1):
         """
@@ -584,7 +591,8 @@ class CyclicQuiver(Quiver):
         r = self.vertex_num()
 
         def tau(a):
-            return ((a[0]+k) % r, (a[1]+k) % r, a[2])
+            return ((a[0] + k) % r, (a[1] + k) % r, a[2])
+
         return tau
 
     def shift(self, k=1):
@@ -605,8 +613,9 @@ class CyclicQuiver(Quiver):
 
         def tau(a):
             if isinstance(a, tuple):  # an arrow
-                return ((a[0]+k) % r, (a[1]+k) % r, 1)
-            return (a+k) % r  # a vertex
+                return ((a[0] + k) % r, (a[1] + k) % r, 1)
+            return (a + k) % r  # a vertex
+
         return tau
 
     def translation_PQ(self, k=1, prec=None):
@@ -634,10 +643,10 @@ def _cong_number(a, b, i, r):
     """
     if a > b:
         return 0
-    q = (b-a) // r
-    if (b-a) % r < (i-a) % r:
+    q = (b - a) // r
+    if (b - a) % r < (i - a) % r:
         return q
-    return q+1
+    return q + 1
 
 
 class TranslationPQ(Quiver):
@@ -691,14 +700,18 @@ class TranslationPQ(Quiver):
 
     def __init__(self, Q, tau=None, ind_tau=None, prec=None):
         if tau is None:
+
             def tau(i):
                 return i
-            name = 'Ginzburg PQ'
+
+            name = "Ginzburg PQ"
         else:
-            name = 'Translation PQ'
+            name = "Translation PQ"
         if ind_tau is None:
+
             def ind_tau(i):
                 return i
+
         if prec is None:
             prec = Q.prec()
         self.base_quiver = Q
@@ -708,13 +721,13 @@ class TranslationPQ(Quiver):
         for a in Q.arrows():
             i, j = a[0], a[1]
             b = tau(a)
-            na = 'a' + str(Q.arrow_num(a))
-            nb = 'a' + str(Q.arrow_num(b))
+            na = "a" + str(Q.arrow_num(a))
+            nb = "a" + str(Q.arrow_num(b))
             a = (a[0], a[1], na)
             b = (b[0], b[1], nb)
-            a1 = (tau(j), i, na + '*')
-            li = (i, tau(i), 'l' + str(i))
-            lj = (j, tau(j), 'l' + str(j))
+            a1 = (tau(j), i, na + "*")
+            li = (i, tau(i), "l" + str(i))
+            lj = (j, tau(j), "l" + str(j))
             W += [[a, lj, a1], [li, b, a1]]
         super().__init__(potential=W, name=name, prec=prec)
 
@@ -750,4 +763,5 @@ class TranslationPQ(Quiver):
              (2, 2, 2): (-2*y^2 - 1)/y}
         """
         from msinvar.potential_quiver_invar import translation_PQ_total
+
         return translation_PQ_total(self, prec)

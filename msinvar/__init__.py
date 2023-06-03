@@ -3,6 +3,8 @@ msinvar: Sagemath module for counting moduli space invariants
 """
 from __future__ import absolute_import, print_function
 
+from .version import version as __version__
+
 from .utils import phi, vec, set_plots
 from .lambda_rings import LambdaRings
 from .tm_polynomials import TMPoly
