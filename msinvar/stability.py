@@ -49,12 +49,12 @@ class Stability:
             return
         self.a = a  # np.array(a)
         if b is None:
-            self.b = [1]*len(a)  # np.ones(len(a), int)
+            self.b = [1] * len(a)  # np.ones(len(a), int)
         else:
             self.b = b  # np.array(b)
 
     def __repr__(self):
-        return "Stability function "+str([list(self.a), list(self.b)])
+        return "Stability function " + str([list(self.a), list(self.b)])
 
     def __call__(self, d, e=None):
         if e is None:
@@ -63,7 +63,10 @@ class Stability:
 
     def _slope(self, d):
         """Slope of the vector ``d``."""
-        return vec.dot(self.a, d)/vec.dot(self.b, d)
+        r = vec.dot(self.b, d)
+        if r == 0:
+            return 1e10
+        return vec.dot(self.a, d) / r
 
     def slope(self, d):
         """Slope of the vector ``d``."""
@@ -71,11 +74,11 @@ class Stability:
 
     def compare(self, d, e):
         """Difference of slopes."""
-        return self.slope(d)-self.slope(e)
+        return self.slope(d) - self.slope(e)
 
     def has_slope(self, d, slope):
         try:
-            return np.round(self._slope(d)-slope, PRECISION) == 0
+            return np.round(self._slope(d) - slope, PRECISION) == 0
         except AttributeError:
             return False
 
@@ -89,7 +92,8 @@ class Stability:
 
     def equal(self, d, e=None):
         """Return True if slope(d)=slope(e).
-        If e=None, then d is a list of vectors which should have the same slope."""
+        If e=None, then d is a list of vectors which should have the same slope.
+        """
         if e is not None:
             return self.slope(d) == self.slope(e)
         if len(d) == 1:
@@ -109,7 +113,7 @@ class Stability:
     def randomize(self, d=None):
         """Generic perturbation of self."""
         if d is None:
-            return Stability([i+random()*1e-5 for i in self.a], self.b)
+            return Stability([i + random() * 1e-5 for i in self.a], self.b)
         z = self.randomize()
         while not z.is_generic(d):
             z = self.randomize()
@@ -127,12 +131,12 @@ class Stability:
                 s.add(c)
         return True
 
-    @ staticmethod
+    @staticmethod
     def trivial(n):
         """Return trivial stability of dimension ``n``."""
-        return Stability([0]*n)
+        return Stability([0] * n)
 
-    @ staticmethod
+    @staticmethod
     def check(z):
         """Check if ``z`` is a stability.
         If it is a vector, convert it to a stability."""
