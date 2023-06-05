@@ -124,15 +124,15 @@ def default_adams(f, n):
     try:
         d = {x: x**n for x in f.parent().gens()}
         return f.subs(d)
-    except:
+    except (AttributeError, TypeError, ValueError):
         return f
 
 
 def adams(f, n):
     try:
         return f.adams(n)
-    except:
+    except (AttributeError, TypeError, ValueError):
         try:
             return f.parent().adams(f, n)
-        except:
+        except (AttributeError, TypeError, ValueError):
             return default_adams(f, n)

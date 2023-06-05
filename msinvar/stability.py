@@ -76,7 +76,7 @@ class Stability:
     def has_slope(self, d, slope):
         try:
             return np.round(self._slope(d)-slope, PRECISION) == 0
-        except:
+        except AttributeError:
             return False
 
     def less(self, d, e):

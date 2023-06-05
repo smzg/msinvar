@@ -137,7 +137,7 @@ class BTQuiver(Quiver):
         u = Atom(self, i)
         P = Poset(rel=[], vert=[u])
         n = 0
-        for k in range(N):
+        for _ in range(N):
             n = self.add_new_arrows(P, n)
         P.vert = set(P.vert)
         return P

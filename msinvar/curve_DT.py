@@ -127,7 +127,7 @@ class Curve(WCS):
 
     def stacky(self):
         """Motivic classes of stacks of semistable vector bundles."""
-        return Invariant(lambda a: self.stacky_val(a), self)
+        return Invariant(self.stacky_val, self)
 
     def stacky_val(self, r, d=None):
         """Motivic class of the stack of semistable vector bundles having

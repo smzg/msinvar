@@ -72,7 +72,7 @@ def Multiplicities_iterator(M, b):
     """
     M = np.array(M)
     b = np.array(b)
-    m, n = M.shape
+    _, n = M.shape
     a = np.zeros(n, int)
     k = 0
     while k < n:

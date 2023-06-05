@@ -182,7 +182,7 @@ class Invariant:
         def f(d):
             try:
                 return self.value(d).subs(**kw)
-            except:
+            except (TypeError, ValueError, AttributeError):
                 return self.value(d)
         return Invariant(f, self)
 
@@ -191,7 +191,7 @@ class Invariant:
         def f(d):
             try:
                 return self.value(d).root_vars(k)
-            except:
+            except (TypeError, ValueError, AttributeError):
                 return self.value(d)
         return Invariant(f, self)
 
@@ -200,7 +200,7 @@ class Invariant:
         def simp(f):
             try:
                 return f.simp()
-            except:
+            except (TypeError, ValueError, AttributeError):
                 return f
         if d is None:
             return Invariant(lambda d: simp(self(d)), self)
@@ -447,7 +447,7 @@ class Transform:
     def inverse(self, l=None):
         """Inverse transformation."""
         if l is None:
-            return Transform(lambda l: self.inverse(l))
+            return Transform(self.inverse)
         if len(l) == 1:
             return 1
         # if not isinstance(l, np.ndarray):

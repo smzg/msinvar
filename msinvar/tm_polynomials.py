@@ -37,7 +37,7 @@ class TMPolynomial(MPolynomial_polydict):
     2. Truncation is performed in the :meth:`__init__` method.
     3. Arithmetic operations are inherited from :class:`MPolynomial_polydict`.
     4. We implement Adams operation adams, exp, log and plethystic Exp, Log.
-    5. Function for the twisted multilpication is given by self.parent().prod_twist
+    5. Function for the twisted multiplication is given by self.parent().prod_twist
     """
 
     def __init__(self, parent, x):
@@ -105,7 +105,7 @@ class TMPolynomial(MPolynomial_polydict):
             raise ValueError("The constant coefficient should be 1")
         p = self.parent()
         s, f, x = p.one(), p.one(), p.one()-self
-        for i in range(1, N+1):
+        for _ in range(1, N+1):
             f = x*f
             if f == 0:
                 break
@@ -182,7 +182,7 @@ class TMPolynomial(MPolynomial_polydict):
         """
         try:
             return self.element()[list(e)]
-        except:
+        except (KeyError, AttributeError, ValueError, TypeError):
             return 0
 
     def subs_base(self, **kw):
@@ -190,7 +190,7 @@ class TMPolynomial(MPolynomial_polydict):
         for e, c in self.dict().items():
             try:
                 c = c.subs(**kw)
-            except:
+            except (ValueError, TypeError):
                 pass
             dct[e] = c
         return self._new_element(dct)

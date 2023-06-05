@@ -740,7 +740,7 @@ class TranslationPQ(Quiver):
         if self._total is None:
             try:
                 self._total = self.translation_PQ_total()
-            except:
+            except (TypeError, ValueError, AttributeError):
                 self._total = self.total_default()
         return self._total
 

@@ -92,9 +92,8 @@ class Poset():
             yield set()
             return
         nonmin = set(r[1] for r in self.rel)
-        for i in self.vert - nonmin:
-            break  # choose a minimal element
-        # yield {i}
+        i = next(iter(self.vert - nonmin))
+        # choose a minimal element
         rel = list(r for r in self.rel if r[0] != i)  # relations without i
         P = Poset(rel, self.vert - {i})  # for ideals with i
         for I in P.ideals(size - 1):
@@ -102,8 +101,7 @@ class Poset():
         vert = self.vert - set(self.succ(i))
         rel = list(r for r in self.rel if r[1] in vert)  # relations on vert
         P = Poset(rel, vert)  # for ideals without i
-        for I in P.ideals(size):
-            yield I
+        yield from P.ideals(size)
 
     def __repr__(self):
         return "Poset with vertices\n" + str(self.vert)\

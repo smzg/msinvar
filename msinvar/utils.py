@@ -22,9 +22,10 @@ def isiterable(i):
 def hashable(x):
     try:
         hash(x)
-        return x
-    except:
+    except (TypeError, ValueError):
         return tuple(hashable(i) for i in x)
+    else:
+        return x
 
 
 def memoize(f):
@@ -111,7 +112,7 @@ class vec:
     # def zero(n): return [0]*n
 
 
-##### Information commands ##########
+# #### Information commands ####
 
 
 def info(f):
@@ -135,7 +136,7 @@ which = import_statements
 def timer(f, n=1000):
     from time import time
     t1 = time()
-    for i in range(n):
+    for _ in range(n):
         f
     return time()-t1
 
