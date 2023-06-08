@@ -49,13 +49,12 @@ def IntegerVectors_iterator(vect):
         [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
     """
     n = len(vect)
-    a = list(0 for i in range(n))
+    a = [0] * n
     k = 0
     while k < n:
         if a[k] < vect[k]:
             a[k] += 1
-            for i in range(k):
-                a[i] = 0
+            a = [0] * k + a[k:]
             yield a.copy()
             k = -1
         k += 1
@@ -94,7 +93,7 @@ def OrderedMultiPartitionsLE_iterator(vect):
     for b in IntegerVectors_iterator(vect):
         yield [b]
         for a in OrderedMultiPartitionsLE_iterator(vec.sub(vect, b)):
-            yield [b]+a
+            yield [b] + a
 
 
 def OrderedMultiPartitions_iterator(vect):
@@ -106,7 +105,7 @@ def OrderedMultiPartitions_iterator(vect):
         yield [vect]
     for b in IntegerVectors_iterator(vect):
         for a in OrderedMultiPartitions_iterator(vec.sub(vect, b)):
-            yield [b]+a
+            yield [b] + a
 
 
 def OrderedPartitionsLE_iterator(n):
@@ -114,10 +113,10 @@ def OrderedPartitionsLE_iterator(n):
     Iterator over collections of positive numbers
     (a_1,..,a_k) such that a_1+..+a_k <= ``n``.
     """
-    for b in range(1, n+1):
+    for b in range(1, n + 1):
         yield [b]
-        for a in OrderedPartitionsLE_iterator(n-b):
-            yield [b]+a
+        for a in OrderedPartitionsLE_iterator(n - b):
+            yield [b] + a
 
 
 def OrderedPartitions_iterator(n):
@@ -127,9 +126,9 @@ def OrderedPartitions_iterator(n):
     """
     if n != 0:
         yield [n]
-    for b in range(1, n+1):
-        for a in OrderedPartitions_iterator(n-b):
-            yield [b]+a
+    for b in range(1, n + 1):
+        for a in OrderedPartitions_iterator(n - b):
+            yield [b] + a
 
 
 def MultiPartitionsLE_iterator(vect, bound=None):
@@ -144,7 +143,7 @@ def MultiPartitionsLE_iterator(vect, bound=None):
     for b in IntegerVectors_iterator(bound):
         yield [b]
         for a in MultiPartitionsLE_iterator(vec.sub(vect, b), b):
-            yield [b]+a
+            yield [b] + a
 
 
 def MultiPartitions_iterator(vect, bound=None):
@@ -159,7 +158,7 @@ def MultiPartitions_iterator(vect, bound=None):
     bound = vec.vmin(vect, bound)
     for b in IntegerVectors_iterator(bound):
         for a in MultiPartitions_iterator(vec.sub(vect, b), b):
-            yield [b]+a
+            yield [b] + a
 
 
 def Subsets_iterator(n):
@@ -169,7 +168,7 @@ def Subsets_iterator(n):
     for i in range(n):  # the maximal element of the subset
         yield [i]
         for s in Subsets_iterator(i):
-            yield s+[i]
+            yield s + [i]
 
 
 def ListPartitions_iterator(l):
@@ -178,7 +177,7 @@ def ListPartitions_iterator(l):
     such that l1+...+lk= ``l``.
     """
     for a in OrderedPartitions_iterator(len(l)):
-        yield list(l[sum(a[:i]):sum(a[:i+1])] for i in range(len(a)))
+        yield list(l[sum(a[:i]) : sum(a[: i + 1])] for i in range(len(a)))
 
 
 def UnorderedMultiPartitions_iterator(vect, bound=None):
@@ -187,6 +186,7 @@ def UnorderedMultiPartitions_iterator(vect, bound=None):
     (a_1,...,a_k) such that a_1+...+a_k = ``vect`` and a_i>0.
     We order vectors lexicographically.
     """
+
     def lex(a, b=None):
         if b is None:
             return True
@@ -202,7 +202,7 @@ def UnorderedMultiPartitions_iterator(vect, bound=None):
     for b in IntegerVectors_iterator(vect):
         if lex(b, bound):
             for a in UnorderedMultiPartitions_iterator(vec.sub(vect, b), b):
-                yield [b]+a
+                yield [b] + a
 
 
 # def UnorderedPartitions_iterator(d):

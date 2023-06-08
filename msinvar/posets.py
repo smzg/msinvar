@@ -22,7 +22,7 @@ EXAMPLES::
 # *****************************************************************************
 
 
-class Poset():
+class Poset:
     """
     Poset class.
 
@@ -46,6 +46,9 @@ class Poset():
         self.vert = vert
         self.rel = rel
 
+    def opposite(self):
+        return Poset(([r[1], r[0]] for r in self.rel), self.vert)
+
     def upper_closure(self, vert):
         """
         upper ideal
@@ -53,8 +56,7 @@ class Poset():
         vert = set(vert)
         new = vert
         while new:
-            for i in new:
-                yield i
+            yield from new
             new = set(r[1] for r in self.rel if r[0] in new) - vert
             vert.update(new)
 
@@ -62,13 +64,7 @@ class Poset():
         """
         lower ideal
         """
-        vert = set(vert)
-        new = vert
-        while new:
-            for i in new:
-                yield i
-            new = set(r[0] for r in self.rel if r[1] in new) - vert
-            vert.update(new)
+        return self.opposite().upper_closure(vert)
 
     def succ(self, i):
         """
@@ -86,14 +82,11 @@ class Poset():
         """
         List of ideals in a poset having <= ``size`` elements.
         """
-        if size < 0:
-            return
         if len(self.vert) == 0 or size == 0:
             yield set()
             return
         nonmin = set(r[1] for r in self.rel)
-        i = next(iter(self.vert - nonmin))
-        # choose a minimal element
+        i = next(iter(self.vert - nonmin))  # choose a minimal element
         rel = list(r for r in self.rel if r[0] != i)  # relations without i
         P = Poset(rel, self.vert - {i})  # for ideals with i
         for I in P.ideals(size - 1):
@@ -104,5 +97,9 @@ class Poset():
         yield from P.ideals(size)
 
     def __repr__(self):
-        return "Poset with vertices\n" + str(self.vert)\
-            + "\nand relations\n" + str(self.rel)
+        return (
+            "Poset with vertices "
+            + str(self.vert)
+            + "\nand relations "
+            + str(self.rel)
+        )

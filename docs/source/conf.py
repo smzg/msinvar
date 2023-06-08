@@ -4,7 +4,7 @@ project = "Moduli space invariants"
 authors = "Sergey Mozgovoy"
 copyright = "2021-2023, Sergey Mozgovoy"
 package_name = "msinvar"
-package_folder = "../.."  # root folder of the package
+package_folder = "../../"  # root folder of the package
 html_baseurl = "https://smzg.github.io/msinvar/"
 
 import sys
@@ -16,7 +16,7 @@ import sage.all
 sys.path.insert(0, os.path.abspath(package_folder))
 
 version = {}
-with open(package_folder + "/" + package_name + "/version.py") as f:
+with open(package_folder + package_name + "/version.py") as f:
     exec(f.read(), version)
 version = version["version"]
 
