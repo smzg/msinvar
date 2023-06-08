@@ -5,7 +5,7 @@ EXAMPLES::
 
     sage: from msinvar.iterators import *
     sage: list(IntegerVectors_iterator([2,2]))
-    [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
+    [[0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
 
 ::
 
@@ -35,7 +35,7 @@ from msinvar.utils import vec
 
 def IntegerVectors_iterator(vect):
     r"""
-    Iterator over integer vectors 0 < a <= vect
+    Iterator over integer vectors 0 < a <= vect in lexicographic order
 
     It is more efficient than
     :meth:`sage.combinat.vector_partition.IntegerVectorsIterator`.
@@ -46,18 +46,18 @@ def IntegerVectors_iterator(vect):
 
         sage: from msinvar.iterators import *
         sage: list(IntegerVectors_iterator([2,2]))
-        [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
+        [[0, 1], [0, 2], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2]]
     """
     n = len(vect)
     a = [0] * n
-    k = 0
-    while k < n:
+    k = n - 1
+    while k >= 0:
         if a[k] < vect[k]:
             a[k] += 1
-            a = [0] * k + a[k:]
+            a = a[: k + 1] + [0] * (n - k - 1)
             yield a.copy()
-            k = -1
-        k += 1
+            k = n
+        k -= 1
 
 
 def Multiplicities_iterator(M, b):
