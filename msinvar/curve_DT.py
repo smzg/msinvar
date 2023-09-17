@@ -47,11 +47,10 @@ EXAMPLES::
 #  Copyright (C) 2021 Sergey Mozgovoy <mozhov@gmail.com>
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
-#                  http://www.gnu.org/licenses/
+#                  https://www.gnu.org/licenses/
 # *****************************************************************************
 
 from sage.misc.misc_c import prod
-from sage.functions.other import floor
 from msinvar.iterators import OrderedPartitions_iterator
 from msinvar import RF, TMPoly, WCS, Invariant, Stability
 
@@ -147,7 +146,7 @@ class Curve(WCS):
             for i in range(len(l)-1):
                 r1 += l[i]
                 r2 = l[i]+l[i+1]
-                p -= r2*floor(r1*d/r)
+                p -= r2*((r1*d)//r)
                 s = s*(1-q**r2)
             return q**p/s
 
