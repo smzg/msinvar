@@ -33,6 +33,7 @@ import numpy as np
 from msinvar.utils import vec
 from sage.misc.mrange import cartesian_product_iterator
 from sage.combinat.fast_vector_partitions import fast_vector_partitions
+from sage.combinat.composition import composition_iterator_fast
 
 
 def IntegerVectors_iterator(vect):
@@ -114,16 +115,9 @@ def OrderedPartitionsLE_iterator(n):
             yield [b]+a
 
 
-def OrderedPartitions_iterator(n):
-    r"""
-    Iterator over collections of positive numbers
-    (a_1,...,a_k) such that a_1+...+a_k = ``n``.
-    """
-    if n != 0:
-        yield [n]
-    for b in range(1, n+1):
-        for a in OrderedPartitions_iterator(n-b):
-            yield [b]+a
+OrderedPartitions_iterator = composition_iterator_fast
+# Iterator over collections of positive numbers
+# (a_1,...,a_k) such that a_1+...+a_k = ``n``.
 
 
 def MultiPartitionsLE_iterator(vect, bound=None):
