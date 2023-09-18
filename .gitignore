@@ -1,8 +1,6 @@
-nogit*
 current*
-notebooks1*
-*Untitled*
-*.pdf
+ignore
+gh-pages
 .DS_Store
 
 # Byte-compiled / optimized / DLL files
@@ -96,6 +94,9 @@ ENV/
 # Rope project settings
 .ropeproject
 
-/.travis_ci_gh_pages_deploy_key
-/.travis_ci_gh_pages_deploy_key.pub
-/gh-pages
+# /.travis_ci_gh_pages_deploy_key
+# /.travis_ci_gh_pages_deploy_key.pub
+
+# VS Code
+.vscode
+*.code-workspace
