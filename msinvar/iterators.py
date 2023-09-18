@@ -5,11 +5,11 @@ EXAMPLES::
 
     sage: from msinvar.iterators import *
     sage: list(IntegerVectors_iterator([2,2]))
-    [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
+    [(0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
 
 ::
 
-    sage: M=[[1,2,1],[3,1,1]]
+    sage: M = [[1,2,1],[3,1,1]]
     sage: list(Multiplicities_iterator(M,[3,4]))
     [[1, 0, 0],
      [0, 1, 0],
@@ -26,11 +26,14 @@ EXAMPLES::
 #  Copyright (C) 2021 Sergey Mozgovoy <mozhov@gmail.com>
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
-#                  http://www.gnu.org/licenses/
+#                  https://www.gnu.org/licenses/
 # *****************************************************************************
 
 import numpy as np
 from msinvar.utils import vec
+from sage.misc.mrange import cartesian_product_iterator
+from sage.combinat.fast_vector_partitions import fast_vector_partitions
+from sage.combinat.composition import composition_iterator_fast
 
 
 def IntegerVectors_iterator(vect):
@@ -46,19 +49,11 @@ def IntegerVectors_iterator(vect):
 
         sage: from msinvar.iterators import *
         sage: list(IntegerVectors_iterator([2,2]))
-        [[1, 0], [2, 0], [0, 1], [1, 1], [2, 1], [0, 2], [1, 2], [2, 2]]
+        [(0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
     """
-    n = len(vect)
-    a = list(0 for i in range(n))
-    k = 0
-    while k < n:
-        if a[k] < vect[k]:
-            a[k] += 1
-            for i in range(k):
-                a[i] = 0
-            yield a.copy()
-            k = -1
-        k += 1
+    it = iter(cartesian_product_iterator([range(c + 1) for c in vect]))
+    next(it)
+    yield from it
 
 
 def Multiplicities_iterator(M, b):
@@ -120,16 +115,9 @@ def OrderedPartitionsLE_iterator(n):
             yield [b]+a
 
 
-def OrderedPartitions_iterator(n):
-    r"""
-    Iterator over collections of positive numbers
-    (a_1,...,a_k) such that a_1+...+a_k = ``n``.
-    """
-    if n != 0:
-        yield [n]
-    for b in range(1, n+1):
-        for a in OrderedPartitions_iterator(n-b):
-            yield [b]+a
+OrderedPartitions_iterator = composition_iterator_fast
+# Iterator over collections of positive numbers
+# (a_1,...,a_k) such that a_1+...+a_k = ``n``.
 
 
 def MultiPartitionsLE_iterator(vect, bound=None):
@@ -181,29 +169,13 @@ def ListPartitions_iterator(l):
         yield list(l[sum(a[:i]):sum(a[:i+1])] for i in range(len(a)))
 
 
-def UnorderedMultiPartitions_iterator(vect, bound=None):
+def UnorderedMultiPartitions_iterator(vect):
     r"""
     Iterator over sets of vectors
-    (a_1,...,a_k) such that a_1+...+a_k = ``vect`` and a_i>0.
+    (a_1,...,a_k) such that a_1+...+a_k = ``vect`` and all a_i>0.
     We order vectors lexicographically.
     """
-    def lex(a, b=None):
-        if b is None:
-            return True
-        for i in range(len(a)):
-            if a[i] < b[i]:
-                return True
-            if a[i] > b[i]:
-                return False
-        return True
-
-    if not vec.zero(vect) and lex(vect, bound):
-        yield [vect]
-    for b in IntegerVectors_iterator(vect):
-        if lex(b, bound):
-            for a in UnorderedMultiPartitions_iterator(vec.sub(vect, b), b):
-                yield [b]+a
-
+    yield from fast_vector_partitions(vect)
 
 # def UnorderedPartitions_iterator(d):
 #     l=list(IntegerVectors_iterator(d))

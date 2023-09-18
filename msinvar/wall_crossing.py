@@ -356,7 +356,7 @@ class WallCrossingStructure:
         return self.stable_from_total(*args, **kw)
 
     def simple(self, I=None):
-        """Count simple reprentations of a quiver, assuming that the total
+        """Count simple representations of a quiver, assuming that the total
         invariant ``I`` is given. If ``I`` is None, we consider :meth:`total`.
         Based on :arxiv:`0708.1259`.
         """
