@@ -17,7 +17,6 @@ EXAMPLES::
 #                  http://www.gnu.org/licenses/
 # *****************************************************************************
 
-from sage.symbolic.ring import SymbolicRing, SR
 from sage.rings.fraction_field import FractionField_generic
 from sage.rings.fraction_field_element import FractionFieldElement
 from sage.rings.polynomial.multi_polynomial_libsingular import MPolynomialRing_libsingular
@@ -59,13 +58,6 @@ class RationalFunctionField(FractionField_generic):
         super().__init__(R, element_class=RationalFunction)  # , category=cat)
         LambdaRings.add_ring(self)
 
-    def symb(self, f):
-        """
-        Symbolic expression of a given rational function f.
-        """
-        d = {v: SR.var(n) for n, v in zip(self.variable_names(), self.gens())}
-        return f.subs(d)
-
     def _repr_(self):
         vars = ', '.join(self.variable_names())
         return 'Field of Rational Functions in ' + vars
@@ -86,10 +78,6 @@ class RationalFunction(FractionFieldElement):
             return self
         return self.parent(self.factor().expand())
 
-    def symb(self):
-        return SR(self)
-        # return self.parent().symbolic(self)
-
 
 def root_vars(f, k=2):
     """
@@ -103,27 +91,3 @@ def root_vars(f, k=2):
         return tuple(i // k for i in e)
     dct = {root(e): c for e, c in f.dict().items()}
     return R(dct)
-
-
-class SR1(SymbolicRing):
-    def __init__(self, vars):
-        super().__init__()
-        self.var(vars)
-        LambdaRings.add_ring(self)
-        # Parent.__init__(self, category=LambdaRings()) # we add category explicitly now
-        # self.inject_variables() #does not work globally; need to invoke it later
-
-    def ngens(self):
-        """Return the number of variables."""
-        return len(self.symbols)
-
-    def gen(self, i=0):  # needed for gens, inject_variables to work
-        """Return the i-th variable."""
-        return list(self.symbols.values())[i]
-
-    def variable_names(self):  # needed for inject_variables to work
-        """Return the tuple of all names of variables."""
-        return tuple(self.symbols.keys())
-
-    def _repr_(self):
-        return 'Symbolic ring with lambda-ring structure'
