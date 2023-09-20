@@ -78,7 +78,7 @@ class RationalFunction(FractionFieldElement):
             return f
         num, den = f.numerator(), f.denominator()
         content = den.content()
-        num //= content
+        num /= content
         den /= content
         return num / den
 

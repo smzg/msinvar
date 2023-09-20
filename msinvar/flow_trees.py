@@ -203,7 +203,7 @@ def simp(f):
     try:
         num, den = f.numerator(), f.denominator()
         content = den.content()
-        num //= content
+        num /= content
         den /= content
         return num / den
     except (TypeError, ValueError, AttributeError):
