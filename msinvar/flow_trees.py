@@ -58,7 +58,7 @@ from the total invariant (stacky invariant for the trivial stability)::
 #  Copyright (C) 2021 Sergey Mozgovoy <mozhov@gmail.com>
 #
 #  Distributed under the terms of the GNU General Public License (GPL)
-#                  http://www.gnu.org/licenses/
+#                  https://www.gnu.org/licenses/
 # *****************************************************************************
 
 from sage.misc.misc_c import prod
@@ -66,6 +66,7 @@ from sage.functions.other import factorial
 from sage.combinat.permutation import Permutations
 from sage.misc.prandom import random
 from sage.rings.rational_field import QQ
+
 from msinvar.utils import vec
 from msinvar.invariants import Transform, Invariant
 from msinvar.iterators import UnorderedMultiPartitions_iterator
@@ -200,6 +201,10 @@ def simp(f):
     if f == 0:
         return f
     try:
-        return f.parent(f.factor().expand())
-    except (TypeError, ValueError):
+        num, den = f.numerator(), f.denominator()
+        content = den.content()
+        num //= content
+        den /= content
+        return num / den
+    except (TypeError, ValueError, AttributeError):
         return f

@@ -73,10 +73,14 @@ class RationalFunction(FractionFieldElement):
         """See :meth:`root_vars`."""
         return root_vars(self, k)
 
-    def simp(self):
-        if self == 0:
-            return self
-        return self.parent(self.factor().expand())
+    def simp(f):
+        if f == 0:
+            return f
+        num, den = f.numerator(), f.denominator()
+        content = den.content()
+        num //= content
+        den /= content
+        return num / den
 
 
 def root_vars(f, k=2):
