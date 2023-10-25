@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 """
 SageMath package for computing various moduli space invariants.
 """

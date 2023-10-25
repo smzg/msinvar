@@ -352,7 +352,7 @@ from pygments.formatters.latex import LatexFormatter
 
 class CustomLatexFormatter(LatexFormatter):
     def __init__(self, **options):
-        super(CustomLatexFormatter, self).__init__(**options)
+        super().__init__(**options)
         self.verboptions = r"formatcom=\footnotesize"
 
 
