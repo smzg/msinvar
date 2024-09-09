@@ -28,12 +28,13 @@ EXAMPLES::
 #  Distributed under the terms of the GNU General Public License (GPL)
 #                  https://www.gnu.org/licenses/
 # *****************************************************************************
+from itertools import product
 
 import numpy as np
-from msinvar.utils import vec
-from sage.misc.mrange import cartesian_product_iterator
 from sage.combinat.fast_vector_partitions import fast_vector_partitions
 from sage.combinat.composition import composition_iterator_fast
+
+from msinvar.utils import vec
 
 
 def IntegerVectors_iterator(vect):
@@ -51,7 +52,7 @@ def IntegerVectors_iterator(vect):
         sage: list(IntegerVectors_iterator([2,2]))
         [(0, 1), (0, 2), (1, 0), (1, 1), (1, 2), (2, 0), (2, 1), (2, 2)]
     """
-    it = iter(cartesian_product_iterator([range(c + 1) for c in vect]))
+    it = product(*[range(c + 1) for c in vect])
     next(it)
     yield from it
 
@@ -166,7 +167,7 @@ def ListPartitions_iterator(l):
     such that l1+...+lk= ``l``.
     """
     for a in OrderedPartitions_iterator(len(l)):
-        yield list(l[sum(a[:i]) : sum(a[: i + 1])] for i in range(len(a)))
+        yield list(l[sum(a[:i]): sum(a[: i + 1])] for i in range(len(a)))
 
 
 def UnorderedMultiPartitions_iterator(vect):
