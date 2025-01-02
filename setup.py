@@ -34,4 +34,13 @@ setup(
     keywords="SageMath, moduli spaces, invariants",
     packages=["msinvar"],
     install_requires=[],
+    extras_require={
+        'passagemath': [
+            'passagemath-combinat',
+            'passagemath-graphs',
+            'passagemath-modules',
+            'passagemath-repl',
+            'passagemath-singular',
+        ],
+    },
 )
